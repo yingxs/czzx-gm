@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<link rel="stylesheet"
+	href="${ctx}/static/kindeditor/themes/default/default.css" />
+<link rel="stylesheet"
+	href="${ctx}/static/kindeditor/plugins/code/prettify.css" />
+<script charset="utf-8" src="${ctx}/static/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="${ctx}/static/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8" src="${ctx}/static/kindeditor/plugins/code/prettify.js"></script>
+<script charset="utf-8"  src="${ctx}/static/js/ajaxfileupload.js"></script>
+	
+<script>
+KindEditor.ready(function(K) {
+	editor = K.create('textarea[name="taContent"]', {
+      resizeType : 1,
+      formatUploadUrl:false,
+      allowPreviewEmoticons : false,
+      allowImageUpload : true,
+      uploadJson : ctx+'/admin/article/imageUpload',
+      filePostName:'file',
+     	items : [
+     	 		'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', '|', 'justifyleft', 'justifycenter', 'justifyright',
+     	 		'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+     	 		'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+     	 		'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+     	 		'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+     	 		'anchor', 'link', 'unlink', '|', 'about'
+     	 	],
+	});
+
+});
+
+</script>
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+	vertical-align: top;
+}
+
+.adBtn {
+	width: 56px;
+	height: 30px;
+	border: 1px solid #ccc;
+	background: green;
+	color: #fff;
+}
+
+.box .myfiles {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+
+.aptitude {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+.submit-btn {
+	display: inline-block;
+	width: 76px;
+	height:28px;
+	text-decoration: none;
+	background-color: green;
+	text-align: center;
+	color: white;
+	border-radius: 3px;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+.fitem label + div {
+	display: inline-block;
+	vertical-align: top;
+}
+</style>
+</head>
+<body>
+	<div >
+		<div class="panel-header">
+			<div class="panel-title">编辑文章</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;line-height:30px;">
+			<form id="addfm" method="post" >
+				
+				<div class="fitem">
+					<label>文章分类:</label> <select id="taColumnId"
+						class="easyui-combotree" name="taColumnId" style="width: 200px;" data-options="prompt:'请选择文章分类'"  animate="true">
+					</select><span style="color: red">*</span>
+					<input type="hidden"  id="taId" name="taId"  value="${tbArticle.taId!''}" />
+				</div>
+				
+				<div class="fitem">
+					<label>文章标题:</label> <input name="taTitle" id="taTitle"
+						class="easyui-textbox" style="width: 300px;"  value="${tbArticle.taTitle!''}"  data-options="prompt:'请输入文章标题'" /><span style="color: red">*</span>
+				</div>
+				
+				<div class="fitem">
+					<label>封面图片:</label> 
+					<div id="preview1" style="width:600px;height:130px;display: inline-block;vertical-align: bottom;">
+					
+						<div style="width:130px;float:left" >
+            			 <img src="${ctx}${tbArticle.taPicture!''}"  id="photoimage" height="100px" width="100px" />
+						<input type="hidden"  id="taPicture" name ="taPicture" value="${tbArticle.taPicture!''}" />
+						</div>
+						<div >
+							<input id="productImage" name ="myfiles"  type="file"  data-options="prompt:'请选择产品图片文件'" style="width:70px;" >
+            			 	<input type="button" style="width:70px;" value="上传" onclick="ajaxFileUpload()"/> &nbsp;&nbsp;
+						</div>
+					</div>
+				</div>
+				<div class="fitem">
+					<label>发布时间:</label> <input id="taAddtime"
+						class="easyui-datetimebox" name="taAddtime" value="${tbArticle.taAddtime!''}" style="width: 150px;" data-options="prompt:'请选择发布时间'" />
+					<span style="color: red">*</span>
+				</div>
+				
+				
+				<div class="fitem">
+					<label>详细内容:</label>
+
+					<textarea name="taContent" id="taContent" style="width: 600px; height: 480px; visibility: hidden;">${tbArticle.taContent }</textarea>
+				</div>
+				<div class="fitem">
+					<label>发布选项:</label>置顶:<input type="checkbox" name="taTop" id="taTop"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					 <!-- 设为校园头条:<input type="checkbox" name="taHeadline" id="taHeadline" value="1"/> -->
+				</div>
+	
+				<input type="hidden" name="action" id="hidtype" />
+			</form>
+			<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+			<div id="dlg-buttons">
+				<a href="javascript:void(0)" class="submit-btn"
+					onclick="save()">提交</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+	$(function(){
+		if('${tbArticle.taTop }' == "1"){
+			//document.getElementById("taTop").value="否";
+			$("#taTop").attr("checked", true);// or 
+		}else{
+			$("#taTop").attr("checked", false);
+		}
+	})
+	
+	</script>
+	<script type="text/javascript">
+	
+	var taColumnId = "${tbArticle.taColumnId}";
+	
+	var taPicture = "${tbArticle.taPicture!""}";
+	
+	var taTop =  "${tbArticle.taTop!""}";
+	
+	/* if(taTop == 1)
+		$("#taTop").attr("checked", true);// or 
+	else
+		$("#taTop").attr("checked", false);// or  */
+
+	//树形下拉
+	$('#taColumnId').combotree({
+
+	}).combotree("tree").tree({
+		url : '${ctx}/admin/column/getColumnForTree',
+		cascadeCheck : true,
+		onlyLeafCheck : true,
+		checkbox : true,
+		animate : true,
+		onBeforeExpand : function(node, param) {
+			//$('#selColumn').combotree("tree").tree("options").url = "${ctx}/admin/column/get_all_column.json";
+		}
+	});
+	
+
+	
+	//新增保存
+	function save() {
+		editor.sync();
+		if ($("#addfm").form('validate') == false) {
+			return false;
+		}
+		var taTitle = $("#taTitle").textbox('getValue');
+		var column = $("#taColumnId").combobox('getValue');
+		var taContent = $("#taContent").val();
+		var taId =$("#taId").val();
+		if($("#taTop").attr("checked")){
+			$("#taTop").val(1);
+		}else{
+			$("#taTop").val(0);
+		}
+		if (isEmpty(taTitle)) {
+			$.messager.alert("提示信息", "请输入文章标题");
+			return false;
+		}
+		
+		if (taTitle.length > 50) {
+			$.messager.alert("提示信息", "请输入少于50字的文章标题");
+			return false;
+		}
+
+		
+		if (isEmpty(column)) {
+			$.messager.alert("提示信息", "请选择所属分类");
+			return false;
+		}
+		if (isEmpty(taContent)) {
+			$.messager.alert("提示信息", "请输入详细内容");
+			return false;
+		}
+
+		$("#addfm").form("submit", {
+			url : '${ctx}/admin/article/update',
+			success : function(result) {
+				if (result == "100") {
+					$.messager.alert("提示信息", "文章添加成功...");
+					parent.addTabFun({
+						src : ctx + "/admin/article/index/list",
+						title : "文章管理"
+					});
+					parent.closeTab("编辑文章");
+				} else {
+					$.messager.alert("提示信息", "操作失败");
+				}
+			}
+		});
+	}
+
+	/**
+	 * 判断是否为空
+	 * 
+	 * @param str
+	 * @returns {Boolean}
+	 */
+	function isEmpty(str) {
+		if (str == null || str.length <= 0) {
+			return true;
+		}
+		return false;
+	}
+		
+	
+	function getNowFormatDate() {
+	    var date = new Date();
+	    var seperator1 = "-";
+	    var seperator2 = ":";
+	    var year = date.getFullYear();
+	    var month = date.getMonth() + 1;
+	    var strDate = date.getDate();
+	    if (month >= 1 && month <= 9) {
+	        month = "0" + month;
+	    }
+	    if (strDate >= 0 && strDate <= 9) {
+	        strDate = "0" + strDate;
+	    }
+	    var currentdate = year + seperator1 + month + seperator1 + strDate
+	            + " " + date.getHours() + seperator2 + date.getMinutes()
+	            + seperator2 + date.getSeconds();
+	    return currentdate;
+	}
+	
+	
+	
+
+	/*上传图片操作*/
+	
+   function ajaxFileUpload(){
+	   
+ 	    //开始上传文件时显示一个图片,文件上传完成将图片隐藏
+ 	    $("#loading").ajaxStart(function(){$(this).show();}).ajaxComplete(function(){$(this).hide();});
+ 	    //执行上传文件操作的函数
+ 	    $.ajaxFileUpload({
+ 	        //处理文件上传操作的服务器端地址(可以传参数)
+ 	        url:ctx + '/publicUploadTwo/fileUpload',
+ 	        secureuri:false,                       //是否启用安全提交,默认为false
+ 	        fileElementId:'productImage',                 //文件选择框的id属性
+ 	        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+ 	       data:{folder:"image"},
+ 	        success:function(data, status){        //服务器响应成功时的处理函数
+ 	        	data = data.split(">")[1];
+ 	            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+ 	            data = data.replace("</PRE>", '');
+ 	            data = data.replace("<pre>", '');
+ 	            data = data.replace("</pre", '');  //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+ 	            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+ 	            	$("#photoimage").attr("src", ctx+data.substring(2));
+ 	            //	$("tpImage").val= data.substring(2);
+ 	            	
+ 	            	document.getElementById("taPicture").value = data.substring(2);
+ 	               // $('#result').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+ 	            }else{
+ 	                alert(data.substring(2));
+ 	            }
+ 	        },
+ 	        error:function(data, status, e){ //服务器响应失败时的处理函数
+ 	            alert("aaaa->" +data);
+ 	        }
+ 	    });
+ 	}
+	
+
+	$(function(){
+	
+		
+		$('#taColumnId').combotree('setValue', taColumnId);
+		
+	
+	});
+	</script>
+</body>
+</html>

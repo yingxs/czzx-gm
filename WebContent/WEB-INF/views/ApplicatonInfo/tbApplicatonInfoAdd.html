@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/applicationInfo/applicatonInfo/tbApplicatonInfo.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+</head>
+<script type="text/javascript">
+
+//文件上传
+function ajaxFileUpload(){
+    //执行上传文件操作的函数
+    
+    	/**
+    	 * web版图片上传
+    	 */
+    	$.ajaxFileUpload({
+	        //处理文件上传操作的服务器端地址(可以传参数,已亲测可用)
+	        url:ctx + '/publicUploadTwo/fileUpload',
+	        secureuri:false,                       //是否启用安全提交,默认为false
+	        fileElementId:'tbIcon',          		   //文件选择框的id属性
+	        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+	        data:{"folder":"tbIcon"},		   		//上传文件传到后台参数
+	        success:function(data, status){        //服务器响应成功时的处理函数	 
+	        	data = data.split(">")[1];
+	            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+	            data = data.replace("</PRE>", '');
+	            data = data.replace("<pre>", '');
+	            data = data.replace("</pre", ''); //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+	            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+	            	//alert(data.substring(2));
+	            	$("img[id='webImage']").attr("src",  data.substring(2));
+	            	$("#tacWebImage").val(data.substring(2));
+	                $('#result1').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+	            }else{
+	                $('#result1').html(data.substring(2));
+	            } 
+	        },
+	        error:function(data, status, e){ //服务器响应失败时的处理函数
+	            $('#result1').html(data);
+	        }
+	    });
+    }
+
+/**
+ * 添加
+ */
+function addContent(){
+//	alert(123);
+		var taiName = $("#taiName").val(); //应用名称
+		var taiWebAddr = $("#taiWebAddr").val();//应用地址
+		var taiIcon = $("#tacWebImage").val();//应用小图标
+		var taiDesp = $("#taiDesp").val();//应用介绍
+		if($("#add-form").form('validate') == false){
+			return false;
+		}
+		
+		$.ajax({
+ 			url:ctx+ '/tbApplicatonInfo/add',
+ 			data:{taiName:taiName,taiWebAddr:taiWebAddr,taiIcon:taiIcon,taiDesp:taiDesp},
+ 			type:"post",
+ 			success:function(data){
+ 				//alert(data);
+ 				if(data == '100')
+ 				{
+ 					parent.addTabFun({
+ 						src : ctx + "/tbApplicatonInfo/index/tbApplicatonInfo",
+ 						title : "应用管理"
+ 					});
+ 					parent.closeTab("新增应用");
+ 				}else{
+ 					$.messager.alert('提示','新增失败','warning');
+ 				}
+ 			}
+ 		});
+
+}
+
+</script>
+<body>
+		<table id="tbApplicatonInfoAdd" title="内容管理  > 应用管理   > 新增"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+	   	
+	    <form id="add-form" class="formc" method="post" action="#">
+		<table>
+		        <tr height="15px"></tr>
+				<tr>
+				      <td style="font-weight: bold;" align="right" width="80px">应用名称：</td>
+                      <td><input id="taiName" name="taiName" style="width:150px;" class="easyui-textbox"  data-options="required:true,missingMessage:'应用名称不能为空!',prompt:'请输入应用名称(20字内)'"
+                            maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20"  /><font color="red">&nbsp;*</font>
+                      </td>
+	            </tr>	
+	            <tr height="15px"></tr>
+	            <tr>
+				      <td style="font-weight: bold;" align="right" width="80px">应用地址：</td>
+                      <td><input id="taiWebAddr" name="taiWebAddr" style="width:150px;" class="easyui-textbox"  data-options="prompt:'请输入应用web地址'" 
+                             maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />
+                      </td>
+	            </tr>	
+	            <tr height="15px"></tr>
+	            
+	            <tr>
+	                  <td style="font-weight: bold;" width="80px" align="right">应用图标：</td>
+	                  <td><input type="file" id="tbIcon" name="myfiles" onchange="ajaxFileUpload()"/></td>
+	            </tr>
+	            				
+				<tr>
+					<td align="right"></td>
+					<td>
+						<div id="result1" style="color: red"></div>
+						<input type="hidden" id="tacWebImage" name="tacWebImage" />
+						<img src="" id="webImage" name="webImage" height="150px" width="150px" /><font color="red">(建议:150*150)</font>
+					</td>
+				</tr>
+				
+	            <tr height="15px"></tr>
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">应用介绍：</td>
+	                  <td><input type="text" id="taiDesp" name="taiDesp" class="easyui-textbox"  data-options="required:true,missingMessage:'应用介绍不能为空!',prompt:'请输入应用介绍',multiline:true"  maxlength="100" validtype="length[1,100]" invalidMessage="有效长度为1-100" style="width: 260px; height: 120px;"/>&nbsp;<font color="red">&nbsp;*</font>
+	                  
+	                  </td>
+	            </tr>
+	            <tr height="15px"></tr> 
+		</table>
+			<div style="width: 158px;">
+			<div align="right">
+			     <input style="width: 60px; height: 30px;" class="btn btn-primary btn-sm" type="button" value="提交"  onclick="addContent()" />&nbsp;
+			</div>
+			</div>
+		</form>		
+</body>
+</html>

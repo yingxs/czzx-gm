@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/system/group.js"></script>
+</head>
+<body>
+<table id="torgan-list" title="用户组列表" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+</table>
+<div id="tb">
+	&nbsp;&nbsp;
+	<a class="easyui-linkbutton" plain="true" icon="icon-add" onclick="$('#add-form').form('reset');$('#add-win').window('open');">新增</a>
+	&nbsp;&nbsp;
+	<a class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="openUpdate();">编辑</a>
+	&nbsp;&nbsp;
+	<a class="easyui-linkbutton" plain="true" icon="icon-remove" onclick="onDeleteSubmit();">删除</a>
+</div>
+	   
+	   <div id="add-win" class="easyui-window" title="新增" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true" 
+    	style="width:350px;height:200px;">
+    	<div class="m-form">
+		    <form id="add-form" name="" action="#" method="post">
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		                <label class="lab">名　　称：</label>
+		                <div class="ipt">
+		                    <input type="text" id="add-name" name="add-name" class="easyui-textbox"  data-options="required:true,missingMessage:'名称不能为空!',prompt:'请输入菜单名称...'" style="width:200px;" maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />	                  
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">备　　注：</label>
+		                <div class="ipt">
+		                    <input type="text" id="add-remark" name="add-remark" class="easyui-textbox"  data-options="prompt:'请输入备注...'" style="width:200px;" maxlength="255" validtype="length[1,255]" invalidMessage="有效长度为1-255" />
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+		            <!-- <div style="border-top: 2px dashed black; display: block; height: 2px;"></div>
+		            <div style="height: 10px;"></div> -->
+					<div align="right" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="onAddSubmit()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="reset" value="重置">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+    
+    <div id="update-win" class="easyui-window" title="编辑" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true" 
+    	style="width:350px;height:200px;">
+    	<div class="m-form">
+		    <form id="update-form" name="" action="#" method="post">
+		        <fieldset style="border:0;">
+		        	<input type="hidden" id="update-id" />
+		            <div class="formitm">
+		                <label class="lab">名　　称：</label>
+		                <div class="ipt">
+		                    <input type="text" id="update-name" name="update-name" class="easyui-textbox" data-options="required:true,missingMessage:'名称不能为空!',prompt:'请输入菜单名称...'" style="width:200px;" maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />		                  
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">备　　注：</label>
+		                <div class="ipt">
+		                    <input type="text" id="update-remark" name="update-remark" class="easyui-textbox"  data-options="prompt:'请输入备注...'" style="width:200px;" maxlength="255" validtype="length[1,255]" invalidMessage="有效长度为1-255" />
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+		            <!-- <div style="border-top: 2px dashed black; display: block; height: 2px;"></div>
+		            <div style="height: 10px;"></div> -->
+					<div align="right" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="onUpdateSubmit()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="reset" value="重置">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+</body>
+</html>

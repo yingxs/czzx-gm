@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/notice/notice.js"></script>
+</head>
+<body>
+	<table id="channel-list" title="公告管理" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+	</table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px 0px 10px 10px;">
+		&nbsp;&nbsp; 
+		通告标题： <input class="easyui-textbox"  id="tniTitle" name ="tniTitle"  style="width: 150px" data-options="prompt:'请输入链接名称'" />
+		<span id="companySpan">
+		&nbsp;&nbsp; 
+		公告类型：<input type="text" id="tniType" name="tniType" class="easyui-combobox"  data-options="prompt:'请选择'" style="width: 150px;" editable="false"/>
+		</span>
+		&nbsp;&nbsp;
+		创建时间：<input id="AddDate" name="AddDate" style="width: 100px" class="easyui-datebox" data-options="prompt:'选择开始时间'" editable="false"/> -
+       	<input id="AddDateEnd" name="AddDateEnd" style="width: 100px" class="easyui-datebox" data-options="prompt:'选择结束时间'" editable="false"/>
+       	&nbsp;
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		&nbsp;
+		<a href="#" class="easyui-linkbutton" plain="true" icon="icon-add"  onclick="addRow()">新增</a>
+		&nbsp;
+	</div>
+</body>
+</html>

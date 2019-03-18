@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<@h.easyui />
+		<script type="text/javascript" src="${ctx}/static/js/views/userjs/tbClass_list.js"></script>
+	</head>
+<body class="easyui-layout">
+	<!-- 左边栏 -->
+	<div data-options="title:'年级选择',region:'west',split:true" style="width:15%">
+ 			<ul id="menuTree"></ul>
+    </div> 
+	<!-- /左边栏 -->
+	
+	<!-- 右边栏 -->
+   <div data-options="region:'center'"style="width: 85%" > 
+    	<table id="tbClass-list"  title="班级管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true" style="width: 100%"></table>
+
+		<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+			&nbsp;
+			<a class="easyui-linkbutton" plain="true" icon="icon-add" onclick="addHtml()">新增班级</a>
+		</div>
+	 </div>
+	<!-- /右边栏 -->
+	
+	<!-- 添加班级窗口  -->
+	<div id="add-win" class="easyui-window" title="新增班级" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:370px;height:270px;" hidden="hidden">
+    	<div class="m-form" style="margin-top: 20px">
+		    <form id="add-form" name="" action="#" method="post">
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		                <label class="lab">所属年级：</label>
+		                <div class="ipt">
+		                    <input type="text" id="tbGrades" name="tbGrades" class="easyui-combobox"  editable="false"
+		                    data-options="required:true,missingMessage:'不能为空!',prompt:'请选择年级'" style="width: 200px;"/>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">班级名称：</label>
+		                <div class="ipt">
+		                    <input id="tbClassName" name="tbClassName" class="easyui-textbox" 
+		                    data-options="required:true,missingMessage:'不能为空!',prompt:'请输入班级名称'" style="width:200px;" validtype="length[1,25]" invalidMessage="有效长度为1-25">
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">班级主任：</label>
+		                <div class="ipt">
+		                    <input type="text" id="tbTeacher" name="tbTeacher" class="easyui-combobox"  data-options="prompt:'请选择班级主任'" style="width: 200px;" editable="false"/>
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+					<div align="center" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="onAddSubmit()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="button" onclick="myReset()" value="取消">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+    
+    <!-- 编辑班级窗口  -->
+	<div id="edit-win" class="easyui-window" title="编辑" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:370px;height:270px;" hidden="hidden">
+    	<div class="m-form" style="margin-top: 20px">
+		    <form id="edit-form" name="" action="#" method="post">
+		    	<input type="hidden" id="edit_tcId" name="edit_tcId">
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		                <label class="lab">所属年级：</label>
+		                <div class="ipt">
+		                    <input type="text" id="edit_tbGrade" name="edit_tbGrades" class="easyui-combobox"  editable="false"
+		                    data-options="required:true,missingMessage:'不能为空!',prompt:'请选择年级'" style="width: 200px;"/>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">班级名称：</label>
+		                <div class="ipt">
+		                    <input id="edit_tbClassName" name="edit_tbClassName" class="easyui-textbox" 
+		                    data-options="required:true,missingMessage:'不能为空!',prompt:'请输入班级名称'" style="width:200px;" validtype="length[1,25]" invalidMessage="有效长度为1-25">
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">班级主任：</label>
+		                <div class="ipt">
+		                    <input type="text" id="edit_tbTeacher" name="edit_tbTeacher" class="easyui-combobox"  data-options="prompt:'请选择班级主任'" style="width: 200px;" editable="true"/>
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+					<div align="center" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="edit_onAddSubmit()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="button" onclick="edit_myReset()" value="取消">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+   
+   <!-- 设置班主任窗口  -->
+	<div id="setTeacher-win" class="easyui-window" title="设置班主任" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:370px;height:270px;" hidden="hidden">
+    	<div class="m-form" style="margin-top: 20px">
+		    <form id="setTeacher-form" name="" action="#" method="post">
+		    	<input type="hidden" id="set_tcId" name="set_tcId">
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		                <label class="lab">所属年级：</label>
+		                <div class="ipt">
+		                    <label id="setTeacher_tbGrade" style="width: 200px;"></label>
+		                	<input type="hidden" id="set_tbGradeId" name="set_tbGradeId">
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">班级名称：</label>
+		                <div class="ipt">
+		                    <label id="setTeacher_tbClassName" style="width:200px;"></label>
+		                	<input type="hidden" id="set_tbClassName" name="set_tbClassName">
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">班级主任：</label>
+		                <div class="ipt">
+		                    <input type="text" id="set_tbTeacher" name="set_tbTeacher" class="easyui-combobox"  data-options="prompt:'请选择班级主任'" style="width: 200px;" editable="true"/>
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+					<div align="center" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="set_onAddSubmit()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="button" onclick="set_myReset()" value="取消">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+	
+    
+	<script type="text/javascript">
+	$('#tbGrade').combobox({
+       valueField:'id', //值字段
+       textField:'name', //显示的字段
+       url:'${ctx}/admin/gac/get_all_grade',
+       panelHeight:"auto",
+	});
+	$('#tbGrades').combobox({
+       valueField:'id', //值字段
+       textField:'name', //显示的字段
+       url:'${ctx}/admin/gac/get_all_grade',
+       panelHeight:"auto",
+	});
+	$('#tbTeacher').combobox({
+       valueField:'id', //值字段
+       textField:'name', //显示的字段
+       url:'${ctx}/admin/gac/get_all_teacher',
+       formatter:function(row){
+	    	var value = row.id+'-'+row.name;
+	    	return value;
+	    }
+	});
+	$('#edit_tbGrade').combobox({
+       valueField:'id', //值字段
+       textField:'name', //显示的字段
+       url:'${ctx}/admin/gac/get_all_grade',
+       panelHeight:"auto",
+	});
+	$('#edit_tbTeacher').combobox({
+	    valueField:'id', //值字段
+	    textField:'name', //显示的字段
+	    url:'${ctx}/admin/gac/get_all_teacher',
+	    formatter:function(row){
+	    	var value = row.id+'-'+row.name;
+	    	return value;
+	    }
+	});
+	
+	$('#set_tbTeacher').combobox({
+	    valueField:'id', //值字段
+	    textField:'name', //显示的字段
+	    url:'${ctx}/admin/gac/get_all_teacher',
+	    formatter:function(row){
+	    	var value = row.id+'-'+row.name;
+	    	return value;
+	    }
+	});
+	
+	//打开新增窗口
+	function addHtml(){
+		$("#add-win").show();
+		$("#add-form").form("clear");
+		$("#add-win").window("open");
+		var  selected = $("#menuTree").tree('getSelected');
+		if(selected != null){
+			$('#tbGrades').combobox('setValue',selected.id);
+		}
+	}
+	
+	//返回
+	function myReset(){
+		$("#add-win").window("close");
+		$("#add-win").hide();
+	}
+
+	//打开编辑窗口
+	function onEditSubmit(tcId,tgId,tcName,ttId){
+		$("#edit-form").form("clear");
+		$("#edit-win").show();
+		$("#edit-win").window("open");
+		
+		$("#edit_tcId").val(tcId);
+		$("#edit_tbGrade").combobox('setValue',tgId);
+		$("#edit_tbClassName").textbox('setValue',tcName);
+		if(ttId == "null" || ttId == null || ttId == ""){
+			$("#edit_tbTeacher").combobox('setValue',"");
+		}else{
+			$("#edit_tbTeacher").combobox('setValue',ttId);
+		}
+	}
+	
+	
+	</script>
+</body>
+</html>

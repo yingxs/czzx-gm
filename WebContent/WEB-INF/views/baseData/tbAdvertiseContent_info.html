@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>广告详情</title> 
+<@h.easyui />
+<link rel="stylesheet" type="text/css" href="${ctx}/static/style/page.css" />
+
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 5px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+
+<script type="text/javascript">
+
+$(function(){
+	$("img[id='tacPhoneImage']").attr("src", "${advertise.tacPhoneImage!'' }");
+	$("img[id='tacWebImage']").attr("src","${advertise.tacWebImage!'' }");
+})
+
+function closewindow(){
+	parent.addTabFun({
+			src : ctx + "/advertise/index/list",
+			title : "广告内容管理"
+		});
+	parent.closeTab("广告内容详情");
+}
+
+</script>
+
+	</head>
+	<body>
+		<div>
+			<div class="panel-header">
+				<div class="panel-title">详情</div>
+				<div class="panel-tool"></div>
+			</div>
+
+			<div style="margin: 10px;">
+				<form id="info-form" class="formc" method="post" action="#">
+					<table style="width:800px;">
+					
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">板块名称：</td>
+							<td align="left">${advertise.tacCataName!'' }</td>
+						</tr>
+					
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">广告名称：</td>
+							<td align="left">${advertise.tacContent!'' }</td>
+						</tr>
+						
+						<tr valign="top">
+							<td width="80" style="text-align:right;font-weight:bold">手&nbsp; 机&nbsp; 版：</td>
+							<td align="left"><img id="tacPhoneImage" src="" height="225px" width="400px" /></td>
+						</tr>
+						
+						<tr valign="top">
+							<td width="80" style="text-align:right;font-weight:bold">web&nbsp;&nbsp;&nbsp;&nbsp;版：</td>
+							<td align="left"><img id="tacWebImage" src="" height="200px" width="400px" /></td>
+						</tr>
+						
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">广告链接：</td>
+							<td align="left">${advertise.tacLink!'' }</td>
+						</tr>
+						
+						<tr height="8px"></tr>
+						<tr height="8px"></tr>
+						<tr height="8px"></tr>
+					</table>
+					
+					<div class="submit">
+						<div colspan="2" align="left">
+						 <input style="width: 70px;"
+							class="btn btn-default btn-sm" type="reset" onclick='closewindow()' value="返回"></div>
+					</div>
+				</form>
+			</div>
+
+		</div>
+	</body>
+</html>

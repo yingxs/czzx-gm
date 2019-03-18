@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title> 
+<@h.easyui />
+<link rel="stylesheet" media="screen" href="${ctx}/static/css/otherStyle.css">
+<script type="text/javascript" src="${ctx}/static/js/views/userjs/tbClass_detail.js"></script>
+</head>
+	<body>
+		<div>
+			<div class="panel-header" class="easyui-tabs">
+				<div class="panel-title">学生列表</div>
+				<div class="panel-tool"></div>
+			</div>
+			<input type="hidden" id="tcId" name="tcId" value="${tcId!''}">
+			<div style="margin: 10px;">
+				<form id="add-form" class="formc" method="post" action="#">
+					<table>
+						<tr height="10px"></tr>
+						<tr>
+							<td align="right"  style="font-weight: bold;width: 80px;">班级名称：</td>
+							<td>${className!''}&nbsp;&nbsp;&nbsp;<span style="font-weight: bold;">班主任：</span>${teacherName!''}</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td align="right"  style="font-weight: bold;width: 80px;">学生人数：</td>
+							<td>${studentNumber!''}</td>
+						</tr>
+						<tr height="15px"></tr>
+						<tr>
+							<td align="left" style="font-weight: bold;">学员列表</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td colspan="2">
+							<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px; width: 600px"></div>
+							</td>
+						</tr>
+					</table>
+					<table id="student-list"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

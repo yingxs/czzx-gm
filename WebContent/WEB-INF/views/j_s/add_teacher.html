@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+	text-align: right;
+}
+.submit-btn {
+	display: inline-block;
+	width: 76px;
+	height:28px;
+	text-decoration: none;
+	background-color: #458BCE;
+	text-align: center;
+	color: white;
+	border-radius: 3px;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin:15px;width: 900px;">
+			<form id="add-form" method="post">
+			     <div style="float: left;font-weight: bold;">基础资料</div>
+			    <br/>
+				<hr style="border: 1px #eee solid;margin: 5px 0; clear:both;"/>
+				<div>
+					<div class="fitem">
+						<label>姓名：</label>
+						<input name="name" id="ttName" class="easyui-textbox" style="width:170px;" 
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请输入姓名'"
+						validType="length[1,5]" invalidMessage="长度不能超过5位，请检查!"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>性别：</label>
+						<input id="ttSex" class="easyui-combobox" name="sex" style="width:170px;" editable="false"
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请选择性别'"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>职工编号：</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input name="number" id="ttNumber" class="easyui-textbox" style="width:170px;" 
+						data-options="prompt:'请输入职工编号'"
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+					<div class="fitem">
+						<label>出生日期：</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="ttBirth" name="birth" style="width: 170px" class="easyui-datebox" 
+						data-options="prompt:'请选择出生日期'" editable="false"/>
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+					<div class="fitem">
+						<label>手机号码：</label>
+						<input id="ttPhone" name="phone" class="easyui-textbox" style="width:170px;" 
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请输入手机号码'" 
+						validType="mobile" invalidMessage="手机号码格式不正确，请检查!"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>邮箱：</label><!-- required:true,missingMessage:'不能为空!', 
+						validType="email" invalidMessage="邮箱格式不正确，请检查!"-->
+						<input name="mail" id="ttMail" class="easyui-textbox" style="width:170px;" 
+						data-options="prompt:'请输入邮箱'" />
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+					<div class="fitem">
+						<label>家庭地址：</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="province" class="easyui-combobox" name="provinceId" style="width:120px;" data-options="prompt:'选择省'" editable="false"/>
+						<input id="city" class="easyui-combobox" name="cityId" style="width:120px;" data-options="prompt:'选择市'" editable="false"/>
+						<input id="county" class="easyui-combobox" name="regionId" style="width:120px;" data-options="prompt:'选择区'" editable="false"/>
+						<br/>
+					</div>
+					<div class="fitem">
+						<label></label><!-- required:true,missingMessage:'不能为空!', validType="length[1,50]" invalidMessage="长度不能超过50位，请检查!"-->
+						<input name="address" id="ttAddress" class="easyui-textbox" style="width:373px;" 
+						data-options="prompt:'请输入详细地址（如街道，门牌号等）'" />
+						<!-- <span style="color: red"> *</span> -->
+						<br/>
+					</div>
+					<div class="fitem">
+						<label>入职日期：</label>
+						<input id="ttInDate" name="inDate" style="width: 170px" class="easyui-datebox" data-options="prompt:'请选择入职日期'" editable="false"/>
+					</div>
+					<div class="fitem">
+						<label>婚姻状况：</label>
+						<input id="ttMarriage" class="easyui-combobox" name="marriage" style="width:170px;" 
+						data-options="prompt:'请选择婚姻状况'"/>
+					</div>
+					<div class="fitem">
+						<label>政治面貌：</label>
+						<input name="political" id="tsPolitical" class="easyui-combobox" style="width:170px;" data-options="prompt:'请输入政治面貌'" editable="false" 
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+					</div>
+					<div class="fitem">
+						<label>教师证号：</label>
+						<input name="teacherNum" id="ttTeacherNum" class="easyui-textbox" style="width:170px;" data-options="prompt:'请输入教师证号'"
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+					</div>
+					<div class="fitem">
+						<label>身份证号：</label>
+						<input name="cardNum" id="ttCardNum" class="easyui-textbox" style="width:170px;" data-options="prompt:'请输入身份证号'"
+						validType="idcard" invalidMessage="身份证号格式不正确，请检查!"/>
+					</div>
+					<div class="fitem">
+						<label>紧急联系人：</label><!-- required:true,missingMessage:'不能为空!', required:true,missingMessage:'不能为空!',
+						validType="mobile" invalidMessage="手机号码格式不正确，请检查!"-->
+						<input name="contactPerson" id="ttContactPerson" class="easyui-textbox" style="width:170px;" 
+						data-options="prompt:'请输入紧急联系人'"
+						validType="length[1,10]" invalidMessage="长度不能超过10位，请检查!"/>
+						<input name="contactPhone" id="ttContactPhone" class="easyui-textbox" style="width:170px;" 
+						data-options="prompt:'请输入紧急联系人联系电话'"/>
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+					<div class="fitem">
+						<label>头像：</label>
+						<input type="file" id="phone" name="myfiles" onchange="ajaxFileUpload()" />
+					</div>
+					<div class="fitem" style="margin-left: 86px">
+						<div id="result" style="color: red"></div>
+						<input type="hidden" id="ttPhoto" name="photo" />
+						<img src="" id="phoneImage" height="100px" width="100px" />
+					</div>
+				</div>
+				<div style="clear: both;padding-top: 10px">
+					<label style="font-weight: bold;">账号信息</label>
+					<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+					<div class="fitem">
+						<label>登录账号:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input name="loginUser" id="ttLoginUser" class="easyui-textbox" style="width: 170px"
+						data-options="prompt:'请输入登录账号'"
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+					<div class="fitem">
+						<label>登录密码:</label><!-- required:true,missingMessage:'不能为空!',validType="length[6,15]" invalidMessage="请输入6-15位的字符" -->
+						<input type="password" name="loginPass" id="ttLoginPass" class="easyui-textbox" 
+						data-options="prompt:'请输入登录密码'" style="width: 170px" />
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+					<div class="fitem">
+						<label>重复密码:</label><!-- required:true,missingMessage:'不能为空!',
+						validType="equalTo['#ttLoginPass']" invalidMessage="两次输入密码不匹配" -->
+						<input type="password" name="retsPassword" id="retsPassword" class="easyui-textbox" 
+						data-options="prompt:'请重复登录密码'" style="width: 170px"/>
+						<!-- <span style="color: red"> *</span> -->
+					</div>
+				</div>
+			</form>
+			<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+			<div id="dlg-buttons">
+				<a href="javascript:void(0)" class="submit-btn" onclick="saveOpen()">提交</a>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		//地址联动
+		$("#province").combobox({
+	  		url:ctx+'/AcquisitionArea/chinaCityService',
+	  		method:'POST',
+	  		valueField:'pid',
+	  		textField:'pname',
+	  		mode : 'remote',
+	  		editable : false,
+	  		filter: function(q, row){
+	  			var opts = $(this).combobox('options');
+	  			return row[opts.textField].indexOf(q) == 0;
+	  		},
+	  		onChange:function(rec){
+	  			$('#city').combobox({   
+	  				url:ctx+'/AcquisitionArea/chinaCityServiceByCity?id='+rec,
+	  				method:'POST',
+					valueField:'cid',
+					textField:'cname',
+					mode : 'remote',
+					editable : false,
+					});  
+	  		}
+		}); 
+		
+		$("#city").combobox({   
+	  		url:ctx+'/AcquisitionArea/chinaCityServiceByCity?id=',
+	  		valueField:'cid',   
+	  		textField:'cname',  
+	  		filter: function(q, row){
+	  			var opts = $(this).combobox('options');
+	  			return row[opts.textField].indexOf(q) == 0;
+	  		},
+	  		onChange:function(rec){
+	  			$("#county").combobox({   
+	  		  		url:ctx+'/AcquisitionArea/chinaCityServiceByCountTy?id='+rec,
+	  		  		valueField:'oid',   
+	  		  		textField:'oname',
+	  			});  
+	  		}
+		});
+	
+		$('#tsPolitical').combobox({
+	    	   data:[{political:"群众",text:"群众"},
+	   		      	{political:"共青团员",text:"共青团员"},
+	   		      	{political:"中共党员",text:"中共党员"}],
+		   		valueField:'political',
+		   		textField:'text',
+		   		panelHeight:'auto'
+	       });
+        
+        $('#ttSex').combobox({
+    		data:[{id:"1",text:"男"},
+    		      {id:"0",text:"女"}],
+    		valueField:'id',
+    		textField:'text',
+    		panelHeight:'auto',
+    	}); 
+    	 $("#ttMarriage").combobox({
+    		data:[
+    		      {id:"1",text:"已婚"},
+    		      {id:"0",text:"未婚"}],
+    		      valueField:'id',
+    		      textField:'text',
+    		      editable:false,
+    		      panelHeight:"auto",
+    	}); 
+		
+    	 function saveOpen(){
+ 	  	 	if($("#add-form").form('validate') == false){
+     			return false;
+     		}
+         	
+ 			$.ajax({
+ 				type:"POST",
+ 	 			dataType:'json',
+ 	 			url:ctx+ '/admin/teacher/save',
+ 	 			data:$("#add-form").serialize(),
+ 	 			success:function(msg){
+ 	 				if(msg == '100'){
+ 	 					parent.addTabFun({
+ 	 						src : ctx + "/admin/teacher/list",
+ 	 						title : "教师管理"
+ 	 					});
+ 	 				parent.closeTab("新增教师");
+ 	 				}else if(msg == '101'){
+ 	 					$.messager.alert('提示','添加失败！','error');
+ 	 				}else if(msg == '102'){
+ 	 					//$("#ttLoginUser").textbox().next('span').find('input').focus();
+ 	 					//$('#ttLoginUser').textbox('textbox').focus(); 
+ 	 					$.messager.alert('提示','您输入的登录账号已经被教师注册过了，请仔细检查！','info'); 
+ 	 				}else if(msg == '103'){
+ 	 					//$("#ttLoginUser").textbox().next('span').find('input').focus();
+ 	 					//$('#ttLoginUser').textbox('textbox').focus(); 
+ 	 					$.messager.alert('提示','您输入的登录账号已经被学生注册过了，请仔细检查！','info'); 
+ 	 				}else if(msg == '104'){
+ 	 					//$("#ttLoginUser").textbox().next('span').find('input').focus();
+ 	 					//$('#ttLoginUser').textbox('textbox').focus(); 
+ 	 					$.messager.alert('提示','您输入的登录账号已经被注册过了，请仔细检查！','info'); 
+ 	 				}else if(msg == '105'){
+ 	 					$.messager.alert('提示','您输入的教师证号已存在，请仔细检查！','info');  
+ 	 				}else if(msg == '106'){
+ 	 					$.messager.alert('提示','您输入的身份证号已存在，请仔细检查！','info');   
+ 	 				}else if(msg == '107'){
+ 	 					$.messager.alert('提示','您输入的职工编号已存在，请仔细检查！','info');    
+ 	 				}
+ 	 			}
+ 	 		});
+         	
+          }
+		
+		function ajaxFileUpload(){
+		    $.ajaxFileUpload({
+		        //处理文件上传操作的服务器端地址(可以传参数)
+		        url:ctx + '/publicUploadTwo/fileUpload',
+		        secureuri:false,                       //是否启用安全提交,默认为false
+		        fileElementId:'phone',                 //文件选择框的id属性
+		        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+		        data:{"folder":"phone"},		   //上传文件传到后台参数
+		        success:function(data, status){        //服务器响应成功时的处理函数	
+		        	data = data.split(">")[1];
+		            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+		            data = data.replace("</PRE>", '');
+		            data = data.replace("<pre>", '');
+		            data = data.replace("</pre", ''); //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+		            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+		            	$("img[id='phoneImage']").attr('src', data.substring(2));
+		            	$("#ttPhoto").val(data.substring(2));
+		            	
+		                $('#result').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+		            }else{
+		                $('#result').html(data.substring(2));
+		            }
+		        },
+		        error:function(data, status, e){ //服务器响应失败时的处理函数
+		            $('#result').html(data);
+		        }
+		    });
+		}
+		
+	</script>
+</body>
+</html>

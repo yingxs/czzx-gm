@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<link rel="stylesheet"
+	href="${ctx}/static/kindeditor/themes/default/default.css" />
+<link rel="stylesheet"
+	href="${ctx}/static/kindeditor/plugins/code/prettify.css" />
+<script charset="utf-8" src="${ctx}/static/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="${ctx}/static/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8"
+	src="${ctx}/static/kindeditor/plugins/code/prettify.js"></script>
+<script>
+KindEditor.ready(function(K) {
+	var editor1 = K.create('textarea[name="tniContent"]', {
+		cssPath : '${ctx}static/kindeditor/plugins/code/prettify.css',
+		uploadJson : '${ctx}static/kindeditor/jsp/upload_json.jsp',
+		allowFileManager : true,
+		afterBlur : function() {
+			var self = this;
+			self.sync();
+		}
+	});
+	prettyPrint();
+});
+</script>
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+
+.padded {padding: 0px 10px;}
+            .inline { display: inline-block;}
+            .line { background: #ccc; height: 1px; width: 100%; margin: 10px 0px; }
+            .btn {
+                display: inline-block;
+                padding: 6px 12px;
+                margin-bottom: 0;
+                font-size: 14px;
+                font-weight: 400;
+                line-height: 1.42857143;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                -ms-touch-action: manipulation;
+                touch-action: manipulation;
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                background-image: none;
+                border: 1px solid transparent;
+                border-radius: 4px;
+            }
+
+        .btn-cor { background: #028A39; color: #fff;}
+       
+       /* .table_area_h { display: none;}*/
+       
+       
+       #fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+
+
+.adBtn {
+	width: 56px;
+	height: 30px;
+	border: 1px solid #ccc;
+	background: green;
+	color: #fff;
+}
+
+.box .myfiles {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+
+.aptitude {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+</style>
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增公告</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div data-options="region:'center',title:'Main Title',iconCls:'icon-ok'">
+         <form id="nns" method="post" enctype="multipart/form-data">
+            <table cellpadding="5" style="width: 100%;">
+                <tr>
+                    <td>文章标题:</td>
+                    <td><input class="easyui-textbox" type="text" name="tniTitle" id="add_tniTitle" style="height:30px;" data-options="prompt:'请输入文章标题'"></input></td>
+                </tr>
+                <tr>
+                    <td>公告类型:</td>
+                    <td>
+                        <input type="radio" class="changg_ra" name="tniType" value="1" checked/><span>内部公告</span> 
+                        <input type="radio" class="changg_ra" name="tniType" value="2"/><span>外部公告</span>
+                    </td>
+                </tr>
+                <tr>
+                        <td><label>封面图片:</label> </td>
+						<td colspan="1">
+							<div id="preview1" style="width:185px;display: inline-block;vertical-align: bottom;">
+						   		<img src="" id="apImg" width="185" height="85" class="border apImg" />
+						   	</div>
+						<button class="adBtn">浏览</button>
+						<input type="file" class="aptitude" onchange="previewImage(this,1)" name="fileUrl" id="fileUrl" accept="image/*" data-required="true" data-descriptions="detail_drawing" /> 
+						<input type="hidden" id="taPicture" class="diUrl" value="" />
+						</td>
+                </tr>
+                <tr>
+                    <td>详细内容:</td>
+				    <td colspan="3"><textarea name="tniContent" id="taContent" style="width: 100%; height: 300px; visibility: hidden;"></textarea></td>
+                </tr>
+                <tr id="toUser">
+                    <td>接收人:</td>
+                    <td><select id="depaName" class="easyui-combobox" name="tniRecvType" style="width:100px;height:30px;">
+							<option value="0">全部</option>
+							<option value="1">家长</option>
+							<option value="2">教师</option></select>
+							</td>
+                </tr>
+            </table>
+         </form>
+         <div style="margin:20px 0;"></div>
+         <div class="padded table_area_h" id="table_area_h">
+	         <div class="inline">
+	             <label for="">姓名:</label>
+	             <input class="easyui-textbox" type="text" name="thname" data-options="prompt:'请输入姓名'" id="thname" style="height:30px;"></input>
+	         </div>
+
+	         <div class="inline">
+	             <label for="">登录账号:</label>
+	             <input class="easyui-textbox" type="text" name="loguse" id="loguse"  data-options="prompt:'请输入登录账号'" style="height:30px;"></input>
+	         </div>
+         	<div class="inline"> <button class="btn" onclick="chaTh()">查询</button></div>
+        
+       	 	<div style="height:10px;"></div>
+	
+	        <table id="dgs" title="" class="easyui-datagrid" style="width:500px;height:250px " url="${ctx}/admin/notice/th_list_json.json" toolbar="#toolbar" pagination="true" rownumbers="true" fitColumns="true" singleSelect="false">
+		        <thead>
+		            <tr>
+		                <th data-options="field:'ck',checkbox:true"></th>
+		                <th field="name">姓名</th>
+		                <th field="loginUser">登录账号</th>
+		                <th field="phone">手机号</th>
+		            </tr>
+		        </thead>
+	        </table>
+        </div>
+
+        <div class="padded">
+          <div class="line"></div>
+
+        </div>
+    	</div>
+
+	    <script>
+	        //alert($)
+	     function formatObj1(value,rec) {
+			return "Admin";
+			}
+	     function formatObj2(value,rec) {
+	 		 if(value=="2"){
+	 			   return "对外公告";
+	 		  }else{
+	 			return "对内公告";
+	 		  }
+	 		}
+	    </script>
+	    <div id="dlg-buttons">
+			<button  class="btn btn-cor"
+				onclick="saven()" iconcls="icon-save">保存</button>
+				 <!-- <button  class="btn btn-cor"
+				onclick="javascript:parent.closeTab('新增公告');" iconcls="icon-cancel">取消</button> -->
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		//条件查询
+		function chaTh() {
+			$("#dgs").datagrid('load', {
+				"keywords" : $("#thname").val(),
+				"logUse" : $("#loguse").val()
+			});
+		}
+		
+		$(":radio[name='tniType']").click(function(){
+	        //alert(1);
+	        console.log($(this).val())
+	        if($(this).val()==2){
+	            $("#toUser").hide();
+	            $("#table_area_h").hide();
+	        }
+	
+	        if($(this).val()==1){
+	            $("#toUser").show();
+	            $("#table_area_h").show();
+	        }
+	
+	
+	     });
+		function saven(){
+			 var add_tniTitle = $("#add_tniTitle").textbox('getValue');
+			 var taContent = $("#taContent").val();
+			 if(isEmpty(add_tniTitle)){
+				$.messager.alert("提示信息", "请输入公告标题");
+				return false;
+			 }
+			 if(add_tniTitle.length>50){
+				$.messager.alert("提示信息", "公告标题长度不能超过50个字符");
+				return false;
+			 }
+			 if(isEmpty(taContent)){
+				$.messager.alert("提示信息", "请输入公告内容");
+				return false;
+			 }
+			 
+			 var ids = [];
+			 var rows = $('#dgs').datagrid('getSelections');
+			 for(var i=0; i<rows.length; i++){
+			 	ids.push(rows[i].id);
+			 }
+			 
+			 $("#nns").form("submit", {
+					url : '${ctx}/admin/notice/save.htm?ids='+ids,
+					onsubmit : function() {
+						return $(this).form("validate");
+					},
+					success : function(result) {
+						if (result == "1") {
+							$.messager.alert("提示信息", "操作成功");
+							parent.addTabFun({
+								src : ctx + "/admin/notice/init_page",
+								title : "公告管理"
+							});
+							parent.closeTab("新增公告");
+						} else {
+							$.messager.alert("提示信息", "操作失败");
+						}
+					}
+				});
+		 }
+		 
+		 /**
+		 * 判断是否为空
+		 * 
+		 * @param str
+		 * @returns {Boolean}
+		 */
+		function isEmpty(str) {
+			if (str.length <= 0 || str == null) {
+				return true;
+			}
+			return false;
+		}
+		//图片上传预览，IE用了滤镜
+		 function previewImage(file,indexs){
+			 var MAXWIDTH  = 185;
+			 var MAXHEIGHT = 85;
+			 var div = document.getElementById('preview'+indexs);
+			 if (file.files && file.files[0])
+			 {
+			     div.innerHTML ='<img id=imghead'+indexs+'>';
+			     var img = document.getElementById('imghead'+indexs);
+			     img.onload = function(){
+			       var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+			       img.width  =  rect.width;
+			       img.height =  rect.height;
+			       img.style.marginTop = rect.top+'px';
+			     }
+			     var reader = new FileReader();
+			     reader.onload = function(evt){img.src = evt.target.result;}
+			     reader.readAsDataURL(file.files[0]);
+			 }
+			 else //兼容IE
+			 {
+			   var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+			   file.select();
+			   $('#preview1').focus();
+			   var src = document.selection.createRange().text;
+			   div.innerHTML = '<img id=imghead'+indexs+' style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);"/>';
+			   var img = document.getElementById('imghead'+indexs);
+			   img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+			   var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+			   status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+			   div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+			 }
+		 }
+		 function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+			  var param = {top:0, left:0, width:width, height:height};
+			  if( width>maxWidth || height>maxHeight )
+			  {
+			      rateWidth = width / maxWidth;
+			      rateHeight = height / maxHeight;
+			      if( rateWidth > rateHeight )
+			      {
+			          param.width =  maxWidth;
+			          param.height = Math.round(height / rateWidth);
+			      }else
+			      {
+			          param.width = Math.round(width / rateHeight);
+			          param.height = maxHeight;
+			      }
+			  }
+			  param.left = Math.round((maxWidth - param.width) / 2);
+			  param.top = Math.round((maxHeight - param.height) / 2);
+			  return param;
+			}
+	</script>
+</body>
+</html>

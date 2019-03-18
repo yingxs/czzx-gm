@@ -1,0 +1,442 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>校园之星修改</title>
+<@h.easyui />
+<link rel="stylesheet" href="${ctx}/static/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="${ctx}/static/kindeditor/plugins/code/prettify.css" />
+<script charset="utf-8" src="${ctx}/static/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="${ctx}/static/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8" src="${ctx}/static/kindeditor/plugins/code/prettify.js"></script>
+<script charset="utf-8"  src="${ctx}/static/js/ajaxfileupload.js"></script>
+	
+<script>
+KindEditor.ready(function(K) {
+	editor = K.create('textarea[name="tsContent"]', {
+      resizeType : 1,
+      formatUploadUrl:false,
+      allowPreviewEmoticons : false,
+      allowImageUpload : true,
+      uploadJson : ctx+'/admin/star/imageUpload',
+      filePostName:'file',
+     	items : [
+     	 		'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', '|', 'justifyleft', 'justifycenter', 'justifyright',
+     	 		'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+     	 		'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+     	 		'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+     	 		'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+     	 		'anchor', 'link', 'unlink', '|', 'about'
+     	 	],
+	});
+
+});
+</script>
+<style type="text/css">
+*{
+font-size: 12px;
+}
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+
+.adBtn {
+	width: 56px;
+	height: 30px;
+	border: 1px solid #ccc;
+	background: green;
+	color: #fff;
+	/* margin-left: 90px;
+	margin-top: -55px; */
+}
+
+.box .myfiles {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+
+.aptitude {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+	vertical-align: top;
+}
+.submit-btn {
+	display: inline-block;
+	width: 66px;
+	height:28px;
+	text-decoration: none;
+	background-color: green;
+	text-align: center;
+	color: white;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+
+</head>
+<body>
+<div style="margin: 10px;">
+	<form id="editfm" method="post">
+			<div class="fitem">
+				<label>类型:</label> 
+				<input id="add_Type" class="easyui-combobox" data-options="required:true,missingMessage:'不能为空!',prompt:'请选择类型'" name="tsType" style="width:170px"/>
+			</div>
+			<div class="fitem">
+				<label>姓名:</label> 
+				<input id="add_tsUserName" class="easyui-combobox" name="tsUserName" style="width: 170px;"/>
+			</div>
+			<div class="fitem">
+				<!-- <label>头像:</label> 
+				<div id="preview1" style="width:85px;height:85px;display: inline-block;vertical-align: bottom;">
+				<img src="${tbStar.tsPhoto}" id="apImg" width="85" height="85"class="border apImg" style="vertical-align: bottom;" />
+				</div>
+				
+				<button class="adBtn">浏览</button>
+				<input type="file" class="aptitude" name="fileUrl" id="fileUrl"
+					data-required="true" onchange="previewImage(this,1)"
+					data-descriptions="detail_drawing" /> <input type="hidden"
+					id="taPicture" class="diUrl" value="" /> -->
+					<label>头像:</label> 
+					<div id="preview1" style="width:350px;display: inline-block;vertical-align: bottom;">
+						<img src="${tbStar.tsPhoto}" id="photoimage" width="85" height="85"class="border apImg" />
+						<input type="hidden"  id="tsPhoto"  name="tsPhoto" value="${tbStar.tsPhoto}"/>
+						<input id="productImage" name ="myfiles"  type="file"  data-options="prompt:'请选择产品图片文件'" style="width:70px;" >
+	          			 <input type="button" style="width:70px;" value="上传" onclick="ajaxFileUpload()"/> &nbsp;&nbsp;
+					</div>
+			</div>
+			<div class="fitem">
+				<label> 简介:</label> 
+				<input name="tsDesc" value="${tbStar.tsDesc}" id="tsDesc"class="easyui-textbox" data-options="multiline:true,prompt:'请输入简介内容'"style="width: 160px; height: 35px"/>
+			</div>
+
+			<div class="fitem">
+				<label>详细内容:</label><br/><br/>
+				<textarea name="tsContent"  id="tsContent" cols="100" rows="8" style="width: 700px; height: 300px; visibility: hidden;">${tbStar.tsContent}</textarea>
+			</div>
+
+			<input type="hidden" name="action" id="hidtype" />
+			<div id="editdlg-buttons"  style="position:relative; bottom: -20px;">
+				<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+				<a href="javascript:void(0)" class="submit-btn" onclick="update(${tbStar.tsId})">确认修改</a>
+			</div>
+		</form>
+	</div>
+
+	<script type="text/javascript">
+		$(function(){
+			$("#add_Type").combobox({
+				valueField:'id',
+				textField:'value',
+				data:[{
+					id:0,
+					value:'请选择类型'
+				},{
+					id:1,
+					value:'学生'
+				},{
+					id:2,
+					value:'老师'
+				}],
+				panelHeight:"auto",
+				onChange:function(n,o){
+					if(n == 1){//学生
+						$("#add_tsUserName").combobox({
+							url:ctx+'/admin/star/getTypeAll?type='+n,
+							valueField:'tsId',
+							textField:'tsName',
+							onLoadSuccess:function(data){
+								for(var i=0;i<data.length;i++){
+									var tsName = data[i].tsName;
+									if(tsName == '${tbStar.tsUserName}'){
+										$("#add_tsUserName").combobox('setValue',data[i].tsId);
+									}
+								}
+							}
+						});
+					}else if (n == 2){//老师
+						$("#add_tsUserName").combobox({
+							url:ctx+'/admin/star/getTypeAll?type='+n,
+							valueField:'ttId',
+							textField:'ttName',
+							onLoadSuccess:function(data){
+								for(var i=0;i<data.length;i++){
+									var ttName = data[i].ttName;
+									if(ttName == '${tbStar.tsUserName}'){
+										$("#add_tsUserName").combobox('setValue',data[i].ttId);
+									}
+								}
+							}
+						});
+					}
+				}
+			});
+			$('#add_Type').combobox('setValue','${tbStar.tsType}').combobox('setText','${typeName}');
+			
+		});
+
+		//提交修改
+		function update(id) {
+			
+			editor.sync();
+			if ($("#editfm").form('validate') == false) {
+				return false;
+			}
+			
+			var tsType = $("#add_Type").combobox('getValue');
+			var userId = $("#add_tsUserName").combobox('getValue');
+			var tsDesc = $("#tsDesc").val();
+			var tsContent = $("#tsContent").val();
+			var filename = $("#tsPhoto").val();
+			if(isEmpty(tsType)){
+				$.messager.alert("提示信息", "请选择类型");
+				return false;
+			}
+			if(isEmpty(userId)|| userId=="--请选择--"){
+				$.messager.alert("提示信息", "请输入名字");
+				return false;
+			}
+			if(isEmpty(tsDesc)){
+				$.messager.alert("提示信息", "请输入简介");
+				return false;
+			}
+			if(isEmpty(tsContent)){
+				$.messager.alert("提示信息", "请输入详细内容");
+				return false;
+			}
+			if(isEmpty(filename) && '${tbStar.tsPhoto}'==null){
+				$.messager.alert("提示信息","请选择头像");
+				return false;
+			}
+			
+			$("#editfm").form("submit", {
+				url : '${ctx}/admin/star/update/'+id+'.htm?userId='+userId,
+				onsubmit : function() {
+					return $(this).form("validate");
+				},
+				success : function(result) {
+					if (result == "1") {
+						$.messager.alert("提示信息", "操作成功");
+						parent.addTabFun({
+							src : ctx + "/admin/star/init_page",
+							title : "校园之星"
+						});
+					} else {
+						$.messager.alert("提示信息", "操作失败");
+					}
+				}
+			});
+			
+		}
+		
+		$('#tsUserName').combobox({
+			forceSelection : true,
+			typeAhead : true,  
+			allowBlank : false, 
+			value:'--请选择--',
+	        onChange:function(gId){
+	        	var type = $("#tsType").combobox('getValue');
+	        	var text = $(this).combobox('getText');
+	        	var url='';
+	        	if(type==1){
+	        		url+='${ctx}/admin/students/selByName.json?name='+text;
+	        	}else if(type==2){
+	        		url+='${ctx}/admin/teacher/selByName.json?name='+text;
+	        	}else{
+	        		$.messager.alert("提示信息", "请选择类型");
+	        		return false;
+	        	}
+	        	var str= "";
+	        	jQuery.ajax({
+	        		cache : true,
+	        		type : "get",
+	        		dataType : "JSON",
+	        		url : url,
+	        		async : false,
+	        		error : function(request) {
+	        			alert("服务器繁忙，请刷新重试!");
+	        		},
+	        		success : function(data) {
+	        			console.log(data);
+	        			var d =data.rows;
+	        			var dataArr = [];
+	        			for (var i=0;i<d.length;i++){
+	        				var slid;
+	 	        			var slname;
+	        				if(type==1){
+	 	        				slid=d[i].id;
+	 	        				slname=d[i].tbStudent;
+	 	        			}else{
+	 	        				slid=d[i].id;
+	 	        				slname=d[i].name;
+	 	        			}
+	        				dataArr.push({ "text": slname, "id": slid, "value": slid });
+	        			} 
+	        			$("#tsUserName").combobox("loadData", dataArr);
+	        		}
+	        	});
+	        	
+	        }
+	     });
+		/**
+		 * 判断是否为空
+		 * 
+		 * @param str
+		 * @returns {Boolean}
+		 */
+		function isEmpty(str){
+			if(str.length<=0 || str == null){
+				return true ;
+			}
+			return false ;
+		}
+		 
+
+		 function ajaxFileUpload(){
+			   
+		 	    //开始上传文件时显示一个图片,文件上传完成将图片隐藏
+		 	    $("#loading").ajaxStart(function(){$(this).show();}).ajaxComplete(function(){$(this).hide();});
+		 	    //执行上传文件操作的函数
+		 	    $.ajaxFileUpload({
+		 	        //处理文件上传操作的服务器端地址(可以传参数)
+		 	        url:ctx + '/publicUploadTwo/fileUpload',
+		 	        secureuri:false,                       //是否启用安全提交,默认为false
+		 	        fileElementId:'productImage',                 //文件选择框的id属性
+		 	        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+		 	       data:{folder:"image"},
+		 	        success:function(data, status){        //服务器响应成功时的处理函数
+		 	        	data = data.split(">")[1];
+		 	            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+		 	            data = data.replace("</PRE>", '');
+		 	            data = data.replace("<pre>", '');
+		 	            data = data.replace("</pre", '');  //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+		 	            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+		 	            	$("#photoimage").attr("src", data.substring(2));
+		 	            //	$("tpImage").val= data.substring(2);
+		 	            	
+		 	            	document.getElementById("tsPhoto").value = data.substring(2);
+		 	               // $('#result').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+		 	            }else{
+		 	                alert(data.substring(2));
+		 	            }
+		 	        },
+		 	        error:function(data, status, e){ //服务器响应失败时的处理函数
+		 	            alert("aaaa->" +data);
+		 	        }
+		 	    });
+		 	}
+		//图片上传预览，IE用了滤镜
+		 function previewImage(file,indexs){
+			 var MAXWIDTH  = 85;
+			 var MAXHEIGHT = 85;
+			 var div = document.getElementById('preview'+indexs);
+			 if (file.files && file.files[0])
+			 {
+			     div.innerHTML ='<img id=imghead'+indexs+'>';
+			     var img = document.getElementById('imghead'+indexs);
+			     img.onload = function(){
+			       var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+			       img.width  =  rect.width;
+			       img.height =  rect.height;
+			       img.style.marginTop = rect.top+'px';
+			     }
+			     var reader = new FileReader();
+			     reader.onload = function(evt){img.src = evt.target.result;}
+			     reader.readAsDataURL(file.files[0]);
+			 }
+			 else //兼容IE
+			 {
+			   var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+			   file.select();
+			   $('#preview1').focus();
+			   var src = document.selection.createRange().text;
+			   div.innerHTML = '<img id=imghead'+indexs+' style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);"/>';
+			   var img = document.getElementById('imghead'+indexs);
+			   img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+			   var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+			   status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+			   div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+			 }
+		 }
+		 function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+			  var param = {top:0, left:0, width:width, height:height};
+			  if( width>maxWidth || height>maxHeight )
+			  {
+			      rateWidth = width / maxWidth;
+			      rateHeight = height / maxHeight;
+			      if( rateWidth > rateHeight )
+			      {
+			          param.width =  maxWidth;
+			          param.height = Math.round(height / rateWidth);
+			      }else
+			      {
+			          param.width = Math.round(width / rateHeight);
+			          param.height = maxHeight;
+			      }
+			  }
+			  param.left = Math.round((maxWidth - param.width) / 2);
+			  param.top = Math.round((maxHeight - param.height) / 2);
+			  return param;
+			}
+	</script>
+</body>
+</html>

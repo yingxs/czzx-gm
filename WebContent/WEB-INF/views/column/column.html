@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/userjs/tbColumn.js"></script>
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+.submit-btn {
+	display: inline-block;
+	width: 66px;
+	height:28px;
+	text-decoration: none;
+	background-color: green;
+	text-align: center;
+	color: white;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+</head>
+<body>
+		<table id="column-list" title="运营管理  > 栏目管理"  data-options="rownumbers:true,toolbar:'#tb',fit:true"></table>	
+	    
+	    <div id="tb" class="datagrid-toolbar" style="padding:5px;">	
+	    	<table>
+	    		<tr>
+	    		<td style="width: 30px"></td>
+				<td><a class="addcls" onclick="newDlg()" >新增</a></td>
+				<td style="width: 30px"></td>
+				<td><a class="allcls" onclick="selectAll()" >全选</a></td>
+				<td style="width: 30px"></td>
+				<td><a class="delcls" onclick="removeColumn()" >删除</a></td>
+			</tr>
+	    	</table>
+		</div>
+		
+		
+		<!-- 添加栏目窗口  -->
+		<div id="add-win" class="easyui-window" title="新增栏目"
+	    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+	    	style="width:320px;height:270px;" hidden="hidden">
+	    	
+	    	
+	    	<div style="margin: 10px;"><!-- 内容 -->
+			<form id="addfm" method="post">
+			  <fieldset style="border:0;">
+				<div class="fitem">
+					<label> 栏目名称:</label>
+					<input name="tcName" id="tcName" class="easyui-textbox" style="width:171px;" data-options="required:true,missingMessage:'栏目名称不能为空!',prompt:'请输入栏目名称'" /><span style="color: red">*</span>
+				</div>
+				<div class="fitem">
+					<label>上级栏目:</label>
+					<select id="tcParentIds" class="easyui-combobox" name="tcParentIds" style="width:170px;" data-options="prompt:'请选择(仅支持栏目组增加子类)'">
+					</select>
+					<input type="hidden" name="tcParentId" id="tcParentId"/>
+				</div>
+				<div class="fitem">
+					<label>栏目类型:</label>
+					<select id="tcType" class="easyui-combobox" name="tcType" style="width:170px;" data-options="prompt:'请选择栏目类型'">
+						<option value="1">栏目组</option>
+						<option value="2">单页</option>
+						<option value="3">文章列表</option>
+						<option value="4">相册列表</option>
+					</select>
+				</div>
+				<div class="fitem">
+					<label> 栏目序号:</label>
+					<input name="tcIndex" id="tcIndex" class="easyui-textbox" data-options="prompt:'请输入栏目序号'" style="width:170px;"/>
+				</div>
+				<div class="fitem">
+					<label> 栏目说明:</label> 
+					<input name="tcContent" id="tcContent" class="easyui-textbox" data-options="multiline:true,prompt:'请输入栏目说明'" style="width: 170px; height: 55px"/>
+				</div>
+				
+				<input type="hidden" name="action" id="hidtype" />
+				</fieldset>
+			</form>
+		</div><!--/内容  -->
+			<div align="center" style="margin-right: 10px;">
+				<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="saveObj()" />
+				<input style="width: 70px;" class="btn btn-default btn-sm" type="button" onclick="myReset()" value="取消">
+			</div>
+	    </div>
+	    
+	    
+	    <!-- 编辑栏目窗口  -->
+		<div id="edit-win" class="easyui-window" title="编辑栏目"
+	    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+	    	style="width:320px;height:270px;" hidden="hidden">
+	    	
+	    	<div style="margin: 10px;"><!-- 内容 -->
+			<form id="editfm" method="post">
+			  <fieldset style="border:0;">
+				<div class="fitem">
+					<input name="edit_tcId" id="edit_tcId" hidden="true"/>
+					<label> 栏目名称:</label>
+					<input name="edit_tcName" id="edit_tcName" class="easyui-textbox" style="width:171px;" data-options="required:true,missingMessage:'栏目名称不能为空!',prompt:'请输入栏目名称'" /><span style="color: red">*</span>
+				</div>
+				<div class="fitem">
+					<label>上级栏目:</label>
+					<select id="edit_tcParentIds" class="easyui-combobox" name="edit_tcParentIds" style="width:170px;" data-options="prompt:'请选择(仅支持栏目组增加子类)'">
+					</select>
+				</div>
+				<div class="fitem">
+					<label>栏目类型:</label>
+					<input id="edit_tcType" class="easyui-combobox" name="edit_tcType" style="width:170px;" data-options="prompt:'请选择栏目类型'	"/>
+						<!-- <option value="1">栏目组</option>
+						<option value="2">单页</option>
+						<option value="3">文章列表</option>
+						<option value="4">相册列表</option> -->
+				</div>
+				<div class="fitem">
+					<label> 栏目序号:</label>
+					<input name="edit_tcIndex" id="edit_tcIndex" class="easyui-textbox" data-options="prompt:'请输入栏目序号'" style="width:170px;"/>
+				</div>
+				<div class="fitem">
+					<label> 栏目说明:</label> 
+					<input name="edit_tcContent" id="edit_tcContent" class="easyui-textbox" data-options="multiline:true,prompt:'请输入栏目说明'" style="width: 170px; height: 55px"/>
+				</div>
+				
+				</fieldset>
+			</form>
+		</div><!--/内容  -->
+			<div align="center" style="margin-right: 10px;">
+				<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="edit_onSubmit()" />
+				<input style="width: 70px;" class="btn btn-default btn-sm" type="button" onclick="editReset()" value="取消">
+			</div>
+	    </div>
+	    
+<script type="text/javascript">
+	//查询上级栏目
+	$('#tcParentIds').combobox({
+        valueField:'tcId', //值字段
+        textField:'tcName', //显示的字段
+        url:'${ctx}/admin/column/get_first_column.json',
+        width : "170px",
+        editable:true//不可编辑，只能选择
+	})
+	
+	//查询编辑栏目上级栏目 
+	$('#edit_tcParentIds').combobox({
+        valueField:'tcId', //值字段
+        textField:'tcName', //显示的字段
+        url:'${ctx}/admin/column/get_first_column.json',
+        width : "170px",
+        editable:true//不可编辑，只能选择
+	})
+	
+	//新增保存
+	function saveObj() {
+		var tcName = $("#tcName").textbox('getValue');
+		var tcIndex = $("#tcIndex").textbox('getValue');
+		var tcType = $("#tcType").combobox('getValue');
+		var tcParentIds = $("#tcParentIds").combobox('getValue');
+		var tcContent = $("#tcContent").val();
+		if (isEmpty(tcName)||tcName.length>10) {
+			$.messager.alert("提示信息", "栏目名称的长度不能为空且长度不超过10个汉字，请检查");
+			return false;
+		}
+		if (isEmpty(tcType)) {
+			$.messager.alert("提示信息", "请选择栏目类型");
+			return false;
+		}
+		if (isEmpty(tcIndex)) {
+			$.messager.alert("提示信息", "请输入栏目序号");
+			return false;
+		}
+		if(tcParentIds=="请选择(仅支持栏目组增加子类)"){
+			$("#tcParentId").val(0);
+		}else{
+			$("#tcParentId").val(tcParentIds);
+		}
+		$("#addfm").form("submit", {
+			url : '${ctx}/admin/column/save.htm',
+			onsubmit : function() {
+				return $(this).form("validate");
+			},
+			success : function(result) {
+				if (result == "100") {
+					$.messager.alert("提示信息", result.message);
+					parent.addTabFun({
+						src : ctx + "/admin/column/init_page",
+						title : "栏目管理"
+					});
+					parent.closeTab("新增栏目");
+				} else if(result == "102") {
+					$.messager.alert("提示信息", "请输入纯数字的栏目序号！");
+				}else if(result == "103") {
+					$.messager.alert("提示信息", "该栏目下此排序已存在！");
+				}else{
+					$.messager.alert("提示信息", "操作失败！");
+				}
+			}
+		});
+	}
+
+	//打开编辑窗口
+	function onEditSubmit(tcId,tcName,tcParentId,tcType,tcIndex,tcContent){
+		$("#editfm").form("clear");
+		$("#edit-win").show();
+		$("#edit-win").window("open");
+		$("#edit_tcName").textbox('setValue',tcName);
+		$("#edit_tcId").val(tcId);
+		if(tcParentId != 0){
+			$("#edit_tcType").combobox({
+				valueField: 'typeId',    
+				textField: 'typeValue',
+				data: [{
+					typeId: 2,
+					typeValue: '单页'
+				},{
+					typeId: 3,
+					typeValue: '文章列表'
+				},{
+					typeId: 4,
+					typeValue: '相册列表'
+				}
+				]
+			});
+		}else{
+			$("#edit_tcType").combobox({
+				valueField: 'typeId',    
+				textField: 'typeValue',
+				data: [{
+					typeId: 1,
+					typeValue: '栏目组'
+				},{
+					typeId: 2,
+					typeValue: '单页'
+				},{
+					typeId: 3,
+					typeValue: '文章列表'
+				},{
+					typeId: 4,
+					typeValue: '相册列表'
+				}
+				]
+			});
+		}
+		
+		
+		$("#edit_tcParentIds").combobox('setValue',tcParentId);	
+		$('#edit_tcType').combobox('setValue',tcType);	
+		$("#edit_tcIndex").textbox('setValue',tcIndex);
+		if(tcContent == 'null'){
+			tcContent='';
+		}
+		$("#edit_tcContent").textbox('setValue',tcContent);
+		
+		
+	}
+	
+	//编辑栏目
+	function edit_onSubmit(){
+		
+		if($("#editfm").form('validate') == false){
+			return false;
+		}
+		var tcId = $("#edit_tcId").val();
+		var tcName = $("#edit_tcName").val();
+		var tcParentIds = $("#edit_tcParentIds").combobox('getValue');
+		var tcType = $("#edit_tcType").combobox('getValue');
+		var tcIndex = $("#edit_tcIndex").val();
+		var tcContent = $("#edit_tcContent").val();
+		if (isEmpty(tcName)||tcName.length>10) {
+			$.messager.alert("提示信息", "栏目名称的长度不能为空且长度不超过10个汉字，请检查");
+			return false;
+		}
+		$.ajax({
+	        type: 'POST',
+	        url: ctx+"/admin/column/edit",
+	        data:{
+	        	tcId:tcId,
+	        	tcName:tcName,
+	        	tcParentIds:tcParentIds,
+	        	tcType:tcType,
+	        	tcIndex:tcIndex,
+	        	tcContent:tcContent},
+	        dataType: 'text',
+	        success: function (msg) {
+	        	if(msg == '100'){
+	        		/* parent.addTabFun({
+	        			src : ctx + "/admin/column/init_page",
+	        			title : "栏目管理"
+	        		}); */
+	        		$("#edit-win").window("close");
+	        		$("#column-list").treegrid('reload');
+	        		var select = $("#column-list").treegrid('getSelected');
+	        		$("#column-list").treegrid('unselect',select.tcId);
+	        		
+	        	}else if(msg == '101'){
+	        		$.messager.alert('提示','编辑失败！','error');
+	        	}else if(msg == '102'){
+	        		$.messager.alert('提示','栏目下有关联的数据,不可修改栏目类型','warning');
+	        	}else if(msg == '103'){
+	        		$.messager.alert('提示','请输入纯数字的栏目序号','warning');
+	        	}else if(msg == '104'){
+	        		$.messager.alert('提示','该栏目下此排序已存在','warning');
+	        	}
+	        }
+		});
+	}
+	/**
+	 * 判断是否为空
+	 * 
+	 * @param str
+	 * @returns {Boolean}
+	 */
+	function isEmpty(str) {
+		if (str.length <= 0 || str == null) {
+			return true;
+		}
+		return false;
+	}
+	</script>
+</body>
+</html>

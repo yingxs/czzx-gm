@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbAdvertiseContent.js"></script>
+</head>
+
+<body>	
+	
+	<table id="advertise-list" title="广告内容列表" nowrap="false" style="height:auto" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+    
+	<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+       	&nbsp;&nbsp;
+       	广告名称 : <input type="text" id="tacContent" class="easyui-textbox" data-options="prompt:'请输入广告名称'" style="width: 120px;"/>
+		&nbsp;&nbsp;
+		所属板块 : <input type="text" id=tacCata class="easyui-combobox" data-options="prompt:'请选择板块名称'" panelHeight="auto" style="width: 120px;"/>
+		&nbsp;&nbsp;
+		创建时间：<input id="AddDate" name="AddDate" style="width: 120px" class="easyui-datebox" data-options="prompt:'选择开始时间'" /> -
+		<input id="AddDateEnd" name="AddDateEnd" style="width: 120px" class="easyui-datebox" data-options="prompt:'选择结束时间'" />
+		&nbsp;&nbsp;
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)" >查询</a>
+		&nbsp;
+		<a class="addcls" icon="icon-add" onclick="parent.addTabFun({src : '${ctx}/advertise/index/add',title : '新增广告内容'});">添加</a>
+	</div>	
+	
+</body>
+</html>

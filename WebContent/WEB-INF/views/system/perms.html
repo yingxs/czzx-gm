@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/system/perms.js"></script>
+</head>
+<body class="easyui-layout">
+      
+      <div data-options="region:'west',border:false" style="width:400px;padding:5px;">
+     	<div class="easyui-layout" data-options="fit:true">
+             <div data-options="region:'north',split:true,collapsible:false" title="组织机构列表" style="width:200px;height: 200px">
+             	<ul id="groupTree"></ul>
+             </div>
+             <div data-options="region:'center'"  title="用户列表">
+    			<table id="userTree"></table>
+    			<div id="tb" style="padding:5px;height:auto;display:none"></div>
+             </div>
+         </div>
+      </div>
+      
+      <div data-options="region:'center',border:false" style="padding:5px">
+      	<div class="easyui-tabs" data-options="fit:true">
+	        <!-- <div title="设置用户组权限" style="padding:10px">
+	            
+	        </div> -->
+	        <div title="设置用户权限" style="padding:10px">
+	            <table class="easyui-treegrid" id="menu-list"
+	            data-options="
+                method: 'get',
+                rownumbers: true,
+                idField: 'id',
+                toolbar : '#toolbar',
+                treeField: 'name',
+                fit:true,
+	    		fitColumns:true
+            ">
+		        <thead>
+		            <tr>
+		                <th data-options="field:'name'" width="220">名称</th>
+		                <th data-options="field:'url'" width="300" align="left">Url</th>
+		                <th data-options="field:'checked',formatter:formatChecked" width="100" align="left"><a id='all' onclick="allChecked();">全选</a></th>
+		            </tr>
+		        </thead>
+		    </table>
+		    <div id="toolbar">
+				<a class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="onsubmitClick();">设置</a>
+			</div>
+	        </div>
+	    </div>
+      </div>
+</body>
+</html>

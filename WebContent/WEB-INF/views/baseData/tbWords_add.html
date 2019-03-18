@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 70px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript">
+	
+	/**
+	 * 通过ID查找根项目编码
+	 * @return
+	 */
+	$(function () {
+		$('#add-fatherType').combobox({
+			url:ctx+ '/words/getRootWords',
+			method:'POST',
+			valueField:'twId',
+			textField:'twName',
+			mode : 'remote',
+			editable : false,
+			onChange: function (n,o) {
+				if (null == n || "" == n) {
+					$("#superCode").html("");
+				} else {
+					$.post(ctx+"/words/findSuperCodeById",{superCodeid:n},function(msg){
+						if(msg==""){
+							$.messager.alert('提示','提交参数不对，请稍后再试！');
+							return;
+						}else {
+							
+							$("#superCode").html(msg);
+						}
+					},"text");
+				}
+			}
+		});
+	});
+	
+	function addUser(){
+		if($("#add-form").form('validate') == false){
+			return false;
+		}
+		var twName = $("#twName").val();
+		var superCode = $("#superCode").html();
+		var twCode = $("#twCode").val();
+		var code = superCode + twCode;
+		
+		$.ajax({
+			type:"POST",
+			dataType:'json',
+			url:ctx+ '/words/add?date='+new Date()+'&code='+code,
+			data:$("#add-form").serialize(),
+			success:function(data){
+				if(data == '100')
+				{
+					parent.addTabFun({
+						src : ctx + "/words/index/tbWords_list",
+						title : "数据字典"
+					});
+					parent.closeTab("新增数据字典");
+				}
+				else if(data=='101'){
+					$.messager.alert('提示','参数提交不完整!','warning');
+				}
+				else if(data=='102'){
+					$.messager.alert('提示','编码已经存在,请核对数据!','warning');
+				}
+				else if(data=='103'){
+					$.messager.alert('提示','编码必须是数字,请核对数据!','warning');
+				}
+				else if(data=='104'){
+					$.messager.alert('提示','编码的长度必须是2位,请核对数据!','warning');
+				}
+				else if(data=='112'){
+					$.messager.alert('提示','编码名称已存在,请核对数据!','warning');
+				}
+				else if(data=='110'){
+					$.messager.alert('提示','本次操作出现不明错误，请联系技术人员解决!','warning');
+				}
+				else{
+						
+				}
+			}
+		});
+		
+	}
+	
+function resetr(){
+	$("#add-fatherType").combobox("setValue","");
+	$("#twName").textbox("setValue","");
+	$("#superCode").html("");
+	$("#twCode").textbox("setValue","");
+	$("#twValue").textbox("setValue","");
+} 
+
+</script>
+
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增数据字典</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;">
+			<form id="add-form" class="formc" action="#">
+				<table cellspacing="12" width="400px" >
+				
+					
+					<tr>
+						<td width="80" style="text-align:right;font-weight:bold">父　　级：</td>
+						<td><input id="add-fatherType" class="easyui-combobox" data-options="prompt:'请选择父级,不选择默认为父级...'" style="width: 200px;"/>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">编　　码：</td>
+						<td><label id="superCode" style="width: 40px;height: 10px"></label>
+						<input type="text" id="twCode" name="twCode" 
+						class="easyui-textbox" data-options="required:true,prompt:'请输入编码...',missingMessage:'编码不能为空!'"
+						style="width:200px;" validType="integer" invalidMessage="编码必须是数字,请核对数据!"
+						/></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">名　　称：</td>
+						<td><input type="text" id="twName" name="twName" class="easyui-textbox" data-options="required:true,missingMessage:'名称不能为空!',prompt:'请输入名称...'"
+						style="width:200px;" maxlength="10" validtype="length[1,10]" invalidMessage="有效长度为1-10"
+						/><label
+							class="red"></label></td>
+					</tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">备　　注：</td>
+						<td><input type="text" id="twValue" name="twValue" 
+						class="easyui-textbox"  data-options="prompt:'请输入备注信息...',multiline:true"  style="width:200px;height:50px"
+						maxlength="20" validtype="length[0,20]" invalidMessage="有效长度为0-20"
+						/></td>
+					</tr>
+					
+					<tr><td colspan="2">
+					<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px;"></div>
+					</td></tr>
+					<tr class="submit">
+						<td colspan="2"><input style="width: 70px;"
+							class="btn btn-primary btn-sm" type="button" value="提交"
+							onclick="addUser()" /></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

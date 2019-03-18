@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/TbStudent/TbStudent_list.js"></script>
+<script type="text/javascript">
+//该用户对这个菜单的权限按钮
+var btnList=${btnList!'0'};
+</script>
+<style type="text/css">
+.datagrid-btable .datagrid-cell{padding:6px 4px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}  
+</style>
+</head>
+<body>
+	<table id="tb_student_info"  title="基础数据->学生管理" data-options="rownumbers:true,singleSelect:true,toolbar:'#div_toobar',fit:true">
+	</table >
+		<div id="div_toobar" class="datagrid-toolbar" style="padding:10px;">
+	<form action="#" id="list_student_form">
+		<!--学号  -->
+		<div style="display:inline;width:200px;margin-right:10px;">&nbsp;&nbsp;&nbsp;&nbsp;学&nbsp;号&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input style="width:140px" id="stuNumber" name="stuNumber" class="easyui-textbox" style="width: 200px;" 
+			data-options="validType:['numAndEn','length[0,20]'],prompt:'请输入学号，支持模糊搜索',onChange:function(){$('#a_stuNumber').show()}" 
+			invalidMessage="您好只允许输入20字以内数字或英文">
+		</div>
+		
+		<!--姓名  -->
+		<div style="display:inline;width:200px;margin-right:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓&nbsp;名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input style="width:140px" id="likeName" name="likeName" class="easyui-textbox" style="width: 200px;" 
+			data-options="validType:['chinese','length[0,20]'],prompt:'请输入姓名，支持模糊搜索',onChange:function(){$('#a_nameLike').show()}"
+			 invalidMessage="您好，只能输入4字以内汉字">
+		</div>
+	
+		<!--性别  -->
+		<div style="display:inline;width:200px;margin-right:30px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;性&nbsp;别&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input style="width:140px" id="sexLike"name="sexLike" class="easyui-textbox" 
+			data-options="validType:['numAndEn','length[0,1]'],prompt:'请选择性别',onChange:function(){$('#a_nameLike').show()}"
+			 invalidMessage="您好，只能输入1字以内英文或数字">
+		</div>
+		
+		<div style="display:inline;width:200px;margin-right:10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;班&nbsp;级&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input style="width:140px" id="likeClass" name="likeClass" class="easyui-textbox" style="width: 200px;" 
+			data-options="validType:['chAndEnAndNum','length[0,8]'],prompt:'请选择班级',onChange:function(){$('#a_nameLike').show()}"
+			 invalidMessage="您好，只能输入8字以内中英文或数字">
+		</div>
+		<br>
+		<br>
+		<div style="display:inline;width:200px;margin-right:10px;">&nbsp;&nbsp;&nbsp;&nbsp;身份证号&nbsp;
+			<input style="width:140px" id="idCard" name="idCard" class="easyui-textbox" 
+			data-options="validType:['numAndEn','length[0,18]'],prompt:'请输入身份证，支持模糊搜索',onChange:function(){$('#a_nameLike').show()}"
+			 invalidMessage="您好，请输入正确格式的身份证号码">
+		</div>
+		
+		<!--学生状态  -->	
+		<div style="display:inline;width:200px;margin-right:10px;">&nbsp;&nbsp;&nbsp;学生状态&nbsp;
+			<input style="width:140px" id="studentStatus" name="studentStatus" class="easyui-textbox" 
+			data-options="validType:['chAndEnAndNum','length[0,2]'],prompt:'请选择学生状态',onChange:function(){$('#a_nameLike').show()}"
+			 invalidMessage="您好，只能输入2字以内中英文或数字">
+		</div>
+		
+		<!--创建时间  -->
+		<div style="display:inline;width:200px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;创建时间&nbsp;&nbsp;&nbsp;<input style="width:140px" id="AddDate" name="AddDate" class="easyui-datebox" data-options="prompt:'开始时间'" /> -</div>
+		<div style="display:inline;width:100px;margin-right:10px;">	<input style="width:140px" id="AddDateEnd" name="AddDateEnd" class="easyui-datebox" data-options="prompt:'结束时间'"/></div>
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		<a class="easyui-linkbutton addcls" plain="true" onclick="openAddPage()">新增</a>
+		<a class="easyui-linkbutton manyImport" plain="true" onclick="addInstituteInfo()">批量导入</a>
+	</form>
+	</div>
+	
+	<!-- 更改状态窗口 -->
+	<div id="editStatusWindow" class="easyui-window" title="更改状态" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:333px;height:200px;padding:10px;">
+		<form id="edit_studentStatus_windowForm" action="#">
+			<table  class="blue-table" >
+			<br>
+					<tr>
+						<!--保留用户id，方便修改用  -->
+						<td><input  id="ts_id"  type="text" name="tsId" hidden="true" ></input></td>
+					</tr>	
+					<tr>
+						<td style="text-align: right; font-weight: bold">姓名：</td>
+						<td><input id="ts_name" disabled="disabled" name="ts_name"
+							class="easyui-textbox"
+							style="width: 200px;" >
+						</td>
+						</tr>
+						<tr>
+						<td style="text-align: right; font-weight: bold">学号：</td>
+						<td><input id="ts_number" disabled="disabled" name="ts_number"
+							class="easyui-textbox"
+							style="width: 200px;" >
+						</td>
+						</tr>
+						<!--上面两个禁用，下面这个要是下拉框  -->
+						<tr>
+						<td style="text-align: right; font-weight: bold">状态：</td>
+						<td><input id="ts_student_status" name="tsStudentStatus"
+							class="easyui-combobox"
+							data-options="required:true,validType:['chAndEnAndNum','length[0,2]'],prompt:'请选择学生状态'"
+							style="width: 200px;" invalidMessage="您好，只能输入2字以内的中文和英文，不允许输入特殊字符">
+						</td>
+					</tr>
+			</table>
+			<div class="submit">
+					<div>
+						<input style="width: 70px;" class="btn btn-primary btn-sm"
+							type="button" value="提交" onclick="editStudentStatus()"
+							id="formSubmit_button" />&nbsp;<input style="width: 70px;"
+							class="btn btn-default btn-sm" onclick="cancelEditStatusStudent()" value="取消">
+					</div>
+				</div>
+		</form>
+	</div>
+	
+	<!-- 重置密码窗口 -->
+	<div id="resetPWDWindow" class="easyui-window" title="重置密码" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:333px;height:200px;padding:10px;">
+		<form id="reset_PWD_windowForm" action="#">
+			<table  class="blue-table" >
+			<br>
+					<tr>
+						<!--保留用户id，方便修改用  -->
+						<td><input  id="reid"  type="text" name="reid" hidden="true" ></input></td>
+					</tr>	
+					<tr>
+						<td style="text-align: right; font-weight: bold">姓名：</td>
+						<td><input id="rename" disabled="disabled" name=""rename""
+							class="easyui-textbox"
+							style="width: 200px;" >
+						</td>
+						</tr>
+						<tr>
+						<td style="text-align: right; font-weight: bold">学号：</td>
+						<td><input id="renumber" disabled="disabled" name="renumber"
+							class="easyui-textbox"
+							style="width: 200px;" >
+						</td>
+						</tr>
+						<tr>
+						<td></td><td style="text-align: center; font-weight: bold">是否确认重置密码?</td>
+						</tr>
+						<tr>
+						<td></td><td style="text-align: center; font-weight: bold">注：重置后密码为身份证后六位</td>
+					</tr>
+			</table>
+			<div class="submit">
+					<div>
+						<input style="width: 70px;" class="btn btn-primary btn-sm"
+							type="button" value="提交" onclick="resetPWD()"
+							id="formSubmit_button" />&nbsp;<input style="width: 70px;"
+							class="btn btn-default btn-sm" onclick="cancelRecetPWD()" value="取消">
+					</div>
+				</div>
+		</form>
+	</div>
+</body>
+</html>

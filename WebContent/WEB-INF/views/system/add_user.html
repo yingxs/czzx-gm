@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 1px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+<script type="text/javascript">
+
+	function addUser(){
+		var groupid = $("#add-group").combobox('getValue');
+		if(groupid == "" || groupid == null){groupid = 0;}
+		var groupName = $("#add-group").combobox('getText');
+		var account = $("#add-account").val();
+		var name = $("#add-name").val();
+		var psw = $("#add-psw").val();
+		var psw1 = $("#add-psw1").val();
+		var sex = $('input[name="sex"]:checked').val();
+		var title = $("#add-title").val();
+		var theme = $("#add-theme").val();
+		var email = $("#add-email").val();
+		var remark = $("#add-remark").val();
+		
+		if (psw.indexOf(" ") != -1) {
+			$.messager.alert('提示','密码不能含有空格!','warning');
+		    return false;
+		}
+		
+		if($("#add-form").form('validate') == false){
+			return false;
+		}
+		
+		$.post(ctx+"/user/add",{
+			groupid:groupid,
+			account:account,
+			psw:psw,
+			name:name,
+			sex:sex,
+			title:title,
+			theme:theme,
+			email:email,
+			remark:remark
+			},function(msg){
+		if(msg==0){
+			parent.addTabFun({
+						src : ctx + "/user/index",
+						title : "用户管理"
+					});
+					
+			parent.closeTab("新增用户");
+			
+		}else if(msg==-1){
+			$.messager.alert('提示','提交参数不对!','warning');
+		}else if(msg==-2){
+			$.messager.alert('提示','该用户已存在!','info');
+		}else{
+			$.messager.alert('提示','数据操作失败，请联系开发人员!','warning');
+		}
+		},"text");
+		
+	}
+	
+</script>
+
+</head>
+<body>
+	<div >
+		<div class="panel-header">
+			<div class="panel-title">新增</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;">
+			<form id="add-form" class="formc" action="#">
+				<table>
+					<tr height="30px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">用&nbsp;户&nbsp;名：</td>
+						<td><input type="text" id="add-account" class="easyui-textbox" data-options="required:true,missingMessage:'用户名不能为空!',prompt:'请输入用户名...'" style="width:200px;" maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</td>
+						<td><input type="password" id="add-psw" class="easyui-textbox" data-options="required:true,missingMessage:'密码不能为空!',prompt:'请输入密码...'" style="width:200px;" maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">确认密码：</td>
+						<td><input type="password" id="add-psw1" class="easyui-textbox" data-options="required:true,missingMessage:'确认密码不能为空!',prompt:'请输入确认密码...'" style="width:200px;" validType="equalTo['#add-psw']" invalidMessage="两次输入的密码不匹配" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</td>
+						<td><input type="text" id="add-name" class="easyui-textbox" data-options="prompt:'请输入姓名...'" style="width:200px;" maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</td>
+						<td><input type="radio" id="sex0" name="sex" value="1" class="man" checked="checked"/>男 &nbsp;&nbsp;&nbsp;&nbsp;
+							<input type="radio" id="sex1" name="sex" value="2" class="woman"/>女
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称：</td>
+						<td><input type="text" id="add-title" class="easyui-textbox" data-options="prompt:'请输入职称...'" style="width:200px;" maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">系统主题：</td>
+						<td><input type="text" id="add-theme" class="easyui-textbox" data-options="prompt:'请输入系统主题...'" style="width:200px;" maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</td>
+						<td><input type="text" id="add-email" name="add-email" class="easyui-textbox" data-options="prompt:'请输入邮箱地址...',validType:'email'" style="width:200px;" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">用&nbsp;户&nbsp;组：</td>
+						<td>
+							<input id="add-group" style="width: 200px;height: 25px;"  class="easyui-combobox"
+               	      								url="${ctx}/user/findUserGroup" 
+													valueField="groupid"
+													textField="groupName" 
+													editable="false" 
+													data-options="required:true,missingMessage:'用户组不能为空!',prompt:'请选择用户组...'" />
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr valign="top">
+						<td style="text-align:right;font-weight:bold">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</td>
+						<td>
+						<input id="add-remark" class="easyui-textbox" data-options="multiline:true,prompt:'请输入备注...'" style="width: 200px;height:60px">
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<tr height="8px"></tr>
+					<tr height="8px"></tr>
+					
+				</table>
+				<div
+						style="border-top: 1px solid #000000; display: block; height: 1px; width: 300px"></div>
+					<div class="submit">
+						<div colspan="2"><input style="width: 70px;"
+							class="btn btn-primary btn-sm" type="button" value="提交"
+							onclick="addUser()" />&nbsp;<input style="width: 70px;"
+							class="btn btn-default btn-sm" type="reset" value="重置"></div>
+					</div>
+				
+			</form>
+		</div>
+	</div>
+</body>
+</html>

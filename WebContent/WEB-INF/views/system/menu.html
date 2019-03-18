@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/system/menu.js"></script>
+</head>
+<body>
+<div id="tb">
+	&nbsp;&nbsp;
+	<a class="easyui-linkbutton" plain="true" icon="icon-add" onclick="openAdd();">新增</a>
+	&nbsp;&nbsp;
+	<a class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="openUpdate();">编辑</a>
+	&nbsp;&nbsp;
+	<a class="easyui-linkbutton" plain="true" icon="icon-remove" onclick="delMenu();">删除</a>
+</div>
+<table id="menu-list" title="资源列表"
+            data-options="
+                url: '${ctx}/menu/listTree',
+                method: 'POST',
+                rownumbers: true,
+                idField: 'id',
+                treeField: 'name',
+                toolbar:'#tb',
+                fit:true,
+	    		fitColumns:true
+            ">
+        <thead>
+            <tr>
+                <th data-options="field:'name'" width="220" align="left">名称</th>
+                <th data-options="field:'url'" width="300" align="left">Url</th>
+                <th data-options="field:'sortCode'" width="100" align="center">排序</th>
+                <th data-options="field:'addtime'" width="150" align="center">添加时间</th>
+            </tr>
+        </thead>
+    </table>
+    <!-- 添加弹出框 -->
+    <div id="add-win" class="easyui-window" title="添加菜单" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true" 
+    	style="width:350px;height:290px;">
+    	<div class="m-form">
+		    <form id="add-form" name="" action="#">
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		               <label class="lab">名　　称：</label>
+		                <div class="ipt">
+		                    <input type="text" id="add-name" name="add-name" class="easyui-textbox"  data-options="required:true,missingMessage:'名称不能为空!',prompt:'请输入菜单名称...'" style="width:200px;" maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20"/>	                  
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">上级菜单：</label>
+		                <div class="ipt">
+		                    <input id="add-parentId" name="add-parentId" class="easyui-combobox" data-options="required:true,missingMessage:'上级菜单不能为空!',prompt:'请输入上级菜单名称...'" style="width:200px;"/>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">　  URL：</label>
+		                <div class="ipt">
+		                    <input type="text" id="add-url" name="add-url" class="easyui-textbox"  data-options="required:true,missingMessage:'URL不能为空!',prompt:'请输入URL...'" style="width:200px;" maxlength="100" validtype="length[1,100]" invalidMessage="有效长度为1-100"/>	
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">排　　序：</label>
+		                <div class="ipt">
+		                    <input type="text" id="add-sortcode" name="add-sortcode" class="easyui-numberbox"  data-options="required:true,missingMessage:'排序不能为空!',prompt:'请输入排序...'" style="width:200px;" min="0" maxlength="10" validtype="length[1,10]" invalidMessage="有效长度为1-10"  />
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+		            <!-- <div style="border-top: 2px dashed black; display: block; height: 2px;"></div>
+		            <div style="height: 10px;"></div> -->
+					<div align="right" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="addMenu()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="reset" value="重置">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+    
+    <div id="update-win" class="easyui-window" title="修改菜单" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true" 
+    	style="width:350px;height:290px;">
+    	<div class="m-form">
+		    <form id="update-form" name="" action="#" method="get">
+		        <fieldset style="border:0;">
+		        	<input type="hidden" id="update-id" />
+		            <div class="formitm">
+		               <label class="lab">名　　称：</label>
+		                <div class="ipt">
+		                    <input type="text" id="update-name" name="update-name" class="easyui-textbox"  data-options="required:true,missingMessage:'名称不能为空!',prompt:'请输入菜单名称...'" style="width:200px;" maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20"/>	                  
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">上级菜单：</label>
+		                <div class="ipt">
+		                    <input id="update-parentId" name="update-parentId" class="easyui-combobox" data-options="required:true,missingMessage:'上级菜单不能为空!',prompt:'请输入上级菜单名称...'" style="width:200px;"/>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">　  URL：</label>
+		                <div class="ipt">
+		                    <input type="text" id="update-url" name="update-url" class="easyui-textbox"  data-options="required:true,missingMessage:'URL不能为空!',prompt:'请输入URL...'" style="width:200px;" maxlength="100" validtype="length[1,100]" invalidMessage="有效长度为1-100"/>	
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">排　　序：</label>
+		                <div class="ipt">
+		                    <input type="text" id="update-sortcode" name="update-sortcode" class="easyui-numberbox"  data-options="required:true,missingMessage:'排序不能为空!',prompt:'请输入排序...'" style="width:200px;" min="0" maxlength="10" validtype="length[1,10]" invalidMessage="有效长度为1-10"  />
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+		            <!-- <div style="border-top: 2px dashed black; display: block; height: 2px;"></div>
+		            <div style="height: 10px;"></div> -->
+					<div align="right" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="updateMenu()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="reset" value="重置">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+</body>
+</html>

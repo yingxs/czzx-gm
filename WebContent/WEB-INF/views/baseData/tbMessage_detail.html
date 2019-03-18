@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbMessageDetail.js"></script>
+<style type="text/css">
+	.trWidth{height:40px;width: 50px;font-weight: bolder;font-size: 15px}
+</style>
+</head>
+<body>
+	<table style="margin-left: 20px;">
+		<tr>
+			<td class="trWidth" style="width: 80px">消息标题：</td>
+			<td>${params.tmTitle!''}<input type="hidden" id="tmNumber" value="${params.tmNumber!''}"/></td>
+		</tr>
+		<tr height="10px"></tr>
+		<tr>
+			<td class="trWidth" style="width: 80px">消息内容：</td>
+			<td width="500px">${params.tmContent!''}</td>
+		</tr>
+		<tr height="10px"></tr>
+		<tr>
+			<td class="trWidth" style="width: 80px;vertical-align: top;">接收者：</td>
+			<td>
+			<table id="data-list"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+			</td>
+		</tr>
+	</table>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/graduated/graduated.js"></script>
+</head>
+<body>
+	<table id="channel-list" title="毕业生管理" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+	</table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px 0px 10px 10px;">
+		&nbsp;&nbsp; 
+		毕业年份：<input id="AddDate" name="AddDate" class="easyui-textbox" style="width: 150px"  data-options="prompt:'请输入毕业年份'" />
+		&nbsp;&nbsp;
+		学生姓名： <input class="easyui-textbox"  id="tsName" name ="tsName"  style="width: 150px" data-options="prompt:'请输入学生姓名'" />
+       	&nbsp;
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		&nbsp;
+		<!-- <a href="#" class="easyui-linkbutton" plain="true" icon="icon-add"  onclick="addRow()">新增</a>
+		&nbsp; -->
+	</div>
+</body>
+</html>

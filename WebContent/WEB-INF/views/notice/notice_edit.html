@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title> 
+<@h.easyui />
+
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 1px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/kindeditor.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/notice/notice_add.js"></script>
+<script type="text/javascript">
+	function addContent() {
+		
+		editor.sync();
+		if ($("#add-form").form('validate') == false) {
+			return false;
+		}
+		$.ajax({
+			type : "POST",
+			dataType : 'json',
+			url : ctx + '/notice/edit',
+			data : $("#add-form").serialize(),
+			success : function(data) {
+				if (data == '100') {
+					parent.addTabFun({
+						src : ctx + "/notice/index/list",
+						title : "公告管理"
+					});
+					parent.closeTab("编辑公告");
+				}  else {
+					$.messager.alert('提示', '本次操作出现不明错误，请联系技术人员解决!', 'warning');
+				}
+			}
+		});
+	}
+</script>
+
+	</head>
+	<body>
+		<div>
+			<div class="panel-header" class="easyui-tabs">
+				<div class="panel-title">编辑</div>
+				<div class="panel-tool"></div>
+			</div>
+
+			<div style="margin: 10px;">
+				<form id="add-form" class="formc" method="post" action="#">
+				<table  >
+						<tr >
+							<td width="80" style="text-align:right;font-weight:bold">公告标题：</td>
+							<td>
+								<input type="text" id="tniTitle" name="tniTitle" class="easyui-textbox" value="${notice.tniTitle!''}" 
+								data-options="required:true,missingMessage:'公告标题不能为空!',prompt:'请输入公告标题...'"  style="width:200px" maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />
+								<input type="hidden" id="tniId" name = "tniId" value = "${notice.tniId!''}"/>
+							</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">公告内容:</td>
+				    	<td colspan="3">
+				    	<textarea name="tniContent" id="tniContent" style="width: 700px; height: 500px;" 
+				    	>${notice.tniContent!''}</textarea>
+				    	</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr><td colspan="2">
+						<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px;"></div>
+						</td></tr><tr>
+						<tr class="submit" id="Content">
+							<td colspan="2">
+							<input style="width: 70px;"
+								class="btn btn-primary btn-sm" type="button" value="提交"
+								onclick="addContent()" /> 
+								</td>
+						</tr>
+					</table>
+					</form>
+       			 </div>
+			</div>
+	</body>
+</html>

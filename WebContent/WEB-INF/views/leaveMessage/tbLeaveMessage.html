@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/leaveMessage/tbLeaveMessage.js"></script>
+</head>
+<body>
+		<table id="tbLeaveMessage" title="运营管理  > 留言管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+	    <div id="tb" class="datagrid-toolbar" style="padding:5px;">			
+		<table>
+		        <tr height="10px"></tr>
+				<tr>
+				      <td align="right" width="80px" >留言人：</td>
+                      <td><input id="tlmAskAnswerId" name="tlmAskAnswerId" style="width:100px;" class="easyui-textbox"  data-options="prompt:'请输入留言人'" /></td>
+                      <td align="right" width="60px" >姓名：</td>
+                      <td><input id="ltmName" name="ltmName" style="width:100px;" class="easyui-textbox"  data-options="prompt:'请输入姓名'" /></td>
+                      <td align="right" width="80px">创建时间:</td>
+				      <td>
+				      <input id="AddDate" name="AddDate" class="easyui-datebox" data-options="prompt:'创建开始时间'" style="width: 120px" /> --
+			          <input id="AddDateEnd" name="AddDateEnd" class="easyui-datebox" data-options="prompt:'创建结束时间'" style="width: 120px" />			                 				                 
+				      </td> 
+				      <td align="right" width="80px" >留言栏目：</td>
+                      <td><input id="tlmType" name="tlmType" style="width:100px;" class="easyui-combobox"  data-options="prompt:'请选择'" /></td>
+				      <td width="50px"></td>
+				      <td><a onclick="loadDate()" class="search">查询</a>&nbsp;&nbsp;</td>
+				      <!-- <td><a onclick="addHtml()" class="addcls">新增</a></td>	 -->			                
+	            </tr>	
+	            <tr height="10px"></tr> 	                
+		</table>				     	
+</div>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>晴天文旅后台采编系统</title>
+<@h.easyui />
+<script type="text/javascript">
+	var centerTabs;
+	function addTabFun(opts) {
+		var options = $.extend({
+			title : '',
+			content : '<iframe src="' + opts.src + '" frameborder="0" style="border:0;width:100%;height:99.2%;"></iframe>',
+			closable : true,
+			iconCls : ''
+		}, opts);
+		if (centerTabs.tabs('exists', options.title)) {
+			centerTabs.tabs('close', options.title);
+		}
+		centerTabs.tabs('add', options);
+	};
+
+	function closeTab(title){
+		centerTabs.tabs('close', title);
+	}
+	var tree;
+	$(function() {
+		if(top.location != self.location) {
+			top.location = self.location;
+		}
+		centerTabs = $('#centerTabs').tabs({
+			border : false,
+			fit : true
+		});
+		
+		tree = $('#menuTree').tree({
+			url : '${ctx}/menu/leftmenu',
+			animate : false,
+			lines : true,
+			onClick : function(node) {
+				if (node.attributes && node.attributes.url && node.attributes.url != '' && node.attributes.url!='#') {
+					var href;
+					if (/^\//.test(node.attributes.url)) {/*以"/"符号开头的,说明是本项目地址*/
+						href = node.attributes.url.substr(1);
+						//$.messager.progress({
+						//	text : '请求数据中....',
+						//	interval : 100
+						//});
+					} else {
+						href = node.attributes.url;
+					}
+					addTabFun({
+						src : href,
+						title : node.text
+					});
+				} else {
+					//addTabFun({
+					//	src : 'error/404.jsp',
+					//	title : '工程建设'
+					//});
+				}
+			},
+			onLoadSuccess : function(node, data) {
+				var t = $(this);
+				if (data) {
+					$(data).each(function(index, d) {
+						if (this.state == 'closed') {
+							t.tree('expandAll');
+						}
+					});
+				}
+			}
+		});
+
+	});
+</script>
+
+</head>
+<body class="easyui-layout">
+	<div data-options="region:'north',border:false" style="height:60px;background-image:url('${ctx}/static/images/top.jpg');overflow: hidden;">
+		<div style="width: 85%;height: 100%;float: left;">
+			<img style="margin-left:20px;"src = "${ctx}/static/images/top_logo.png"  height=60>
+		</div>
+		<div style="width:14%;height: 100%;float: left;line-height: 60px;text-align: center;">
+			欢迎：${loginUser.account!''}&nbsp;&nbsp;<a href="${ctx}/logout">退出系统</a>&nbsp;
+		</div>
+	</div>
+    <div data-options="region:'west',title:'系统菜单',split:true,border:false" style="width:250px;padding:5px;">
+    	<ul id="menuTree"></ul>
+    </div>
+    <div data-options="region:'center',border:false" style="">
+    	<div id="centerTabs" class="easyui-tabs" fit="true" border="false" plain="true">
+			<div title="欢迎页" style="margin:auto;margin-top: 250px;margin-left: 350px;">
+				<img src ="${ctx}/static/images/welcome.png"/>
+			</div>
+				
+		</div>
+    </div>
+</body>
+
+</body>
+</html>

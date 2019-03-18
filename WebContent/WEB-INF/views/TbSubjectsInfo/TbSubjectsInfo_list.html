@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/TbSubjectsInfo/TbSubjectsInfo_add.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/TbSubjectsInfo/TbSubjectsInfo_edit.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/TbSubjectsInfo/TbSubjectsInfo_list.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript">
+//该用户对这个菜单的权限按钮
+var btnList=${btnList!'0'};
+
+</script>
+</head>
+<body> 
+	<table id="tb_subject_info"  title="基础数据->科目管理" align="center" data-options="rownumbers:true,singleSelect:true,toolbar:'#div_toobar',fit:true">
+	</table >
+		<div id="div_toobar" class="datagrid-toolbar" style="padding:10px;">
+		<div style="display:inline;width:200px;margin-right:30px;">&nbsp;&nbsp;&nbsp;&nbsp;科目名称&nbsp;<input style="width:140px" id="subjectNameLike" name="subjectNameLike" class="easyui-textbox" data-options="validType:['chinese','length[0,4]'],prompt:'请输入科目名称',onChange:function(){$('#a').show()}" invalidMessage="您好，只能输入4字以内汉字" />
+		<a id="a" href="javascript:void(0);" style="color: red" onclick="clearInputName()" hidden="true">x</a>
+		</div>
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+	</div>
+	
+	<!--添加窗口  -->
+	<div id="addWindow" class="easyui-window" title="科目新增" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:362px;height:164px;padding:10px;">
+		<form id="add_subject_windowForm" action="#">
+			<table class="blue-table">
+			<br>
+					<tr>
+						<td style="text-align: right; font-weight: bold">科目名称：</td>
+					<!-- 跟下面编辑窗口区分开 -->
+						<td><select id="tName" name="tName"
+							class="easyui-textbox"
+							data-options="required:true,validType:['name','length[0,4]'],missingMessage:'请输入4个字以内分类名称',prompt:'请输入分类名称'"
+							style="width: 200px;" invalidMessage="您好，只能输入4字以内的中文和英文，不允许输入特殊字符"></select></td>
+					</tr>
+			</table>
+			<div class="submit">
+					<div>
+						<input style="width: 70px;" class="btn btn-primary btn-sm"
+							type="button" value="提交" onclick="addSubject()"
+							id="formSubmit_button" />&nbsp;<input style="width: 70px;"
+							class="btn btn-default btn-sm" onclick="resetAddSubject()" value="取消">
+					</div>
+				</div>
+		</form>
+	</div>
+	
+	<!-- 编辑窗口 -->
+	<div id="editWindow" class="easyui-window" title="科目编辑" data-options="modal:true,closed:true,iconCls:'icon-save'" style="width:362px;height:164px;padding:10px;">
+		<form id="edit_subject_windowForm" action="#">
+			<table class="blue-table">
+			<br>
+					<tr>
+						<!--保留用户id，方便修改用  -->
+						<td><input  id="tsiId"  type="text" name="tsiId" hidden="true" ></input></td>
+						<td style="text-align: right; font-weight: bold">科目名称：</td>
+						<td><input id="tsiName" name="tsiName"
+							class="easyui-textbox"
+							data-options="required:true,validType:['name','length[0,4]'],missingMessage:'请输入4个字以内分类名称',prompt:'请输入科目名称'"
+							style="width: 200px;" invalidMessage="您好，只能输入4字以内的中文和英文，不允许输入特殊字符">
+							</td>
+					</tr>
+			</table>
+			<div class="submit">
+					<div>
+						<input style="width: 70px;" class="btn btn-primary btn-sm"
+							type="button" value="提交" onclick="editSubject()"
+							id="formSubmit_button" />&nbsp;<input style="width: 70px;"
+							class="btn btn-default btn-sm" onclick="resetEditSubject()" value="取消">
+					</div>
+				</div>
+		</form>
+	</div>
+</body>
+</html>

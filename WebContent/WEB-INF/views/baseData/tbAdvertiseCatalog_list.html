@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<@h.easyui />
+		<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbAdvertiseCatalog.js"></script>
+	</head>
+<body>
+	<table id="advertiseCata-list" title="广告板块列表" nowrap="false" style="height:auto data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+       	&nbsp;&nbsp;
+       	板块名称 : <input type="text" id="tacName" class="easyui-textbox"  data-options="prompt:'请输入板块名称'" style="width: 150px;"/>
+		&nbsp;&nbsp; 
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		&nbsp; 
+		<a class="addcls" onclick="parent.addTabFun({src : '${ctx}/advertiseCata/index/add',title : '新增广告板块'});">新增</a>
+	</div>	
+	
+</body>
+</html>

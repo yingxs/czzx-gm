@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx}/static/css/uploadify.css"/>
+<script type="text/javascript" src="${ctx}/static/js/jquery.uploadify.js?f=${ran!''}"></script> 
+<script type="text/javascript" src="${ctx}/static/js/jquery.uploadify.min.js?f=${ran!''}"></script>
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 70px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript">
+
+$(function(){
+	$("#upload_photo").uploadify({
+		'auto': true,
+		'fileSizeLimit':'100MB',
+		'fileTypeDesc':'选择APP',
+		'fileTypeExts':'*.apk;*.*',
+		'height':'30',
+		'width':'100',
+		'cancelImg' : '/static/image/uploadify-cancel.png',
+		'buttonClass':"edit_touxiang", 
+		'swf':'${ctx}/static/js/uploadify.swf',
+		'uploader':'${ctx}/tbversion/upload',
+		'buttonText':'选择APP',
+		'fileObjName':'file_upload',
+		'queueID':'fileQueue',
+		'onErro':function(event,queueId,fileObj,errorObj){
+			alert("错误信息:"+errorObj.info);
+		},
+		'onSelectError':function(file, errorCode, errorMsg){
+        	switch(errorCode) {
+            	case -100:
+	                alert("上传的文件数量已经超出系统限制的"+$('#file_upload').uploadify('settings','queueSizeLimit')+"个文件！");
+                	break;
+            	case -110:
+	                alert("文件 ["+file.name+"] 大小超出系统限制的"+$('#file_upload').uploadify('settings','fileSizeLimit')+"大小！");
+                	break;
+            	case -120:
+	                alert("文件 ["+file.name+"] 大小异常！");
+                	break;
+            	case -130:
+	                alert("文件 ["+file.name+"] 类型不正确！");
+                	break;
+        	}
+    	},
+		'onUploadSuccess':function(file, data, response){
+			var json = eval('(' + data + ')');
+			$("#tvUrl").attr("value", json.path)
+			$("#upload_photo").next().html("已经上传文件:" + json.filename);
+		}
+	});
+});
+
+	function addBorrowTime(){
+		var tvName = $("#tvName").val();
+		var tvType = $("#tvvType").combobox('getValue');
+		$("#tvType").val(tvType);
+		var tvVersion = $("#tvVersion").val();
+		var tvUrl = $("#tvUrl").val();
+		
+		if(tvType==null || tvType=="") {
+			$("#labtype").html("请选择app类型");
+			isval = false;
+		}
+		
+		var isval = true;
+		
+		if(trim(tvName).length < 1) {
+			$("#labname").html("请输入APP名称");
+			isval = false;
+		} else {
+			$("#labname").html("");
+		}
+		if(trim(tvVersion).length < 1) {
+			$("#labversion").html("请输入版本号");
+			isval = false;
+		}
+		else {
+			$("#labversion").html("");
+		}
+		
+		var reg = /^\d+(?=\.{0,1}\d+$|$)/;
+		if(!reg.test(tvVersion)){
+			$("#labversion").html("版本号必须为数字");
+			isval = false;
+		}
+		
+		
+		if(!isval) return;
+
+		if(trim(tvUrl).length < 1) {
+			$.messager.alert('提示','您没有上传任何客户端文件!','warning');
+			return;
+		}
+		
+		$.ajax({
+			type:"POST",
+			dataType:'json',
+			url:ctx+ '/tbversion/add?date='+new Date(),
+			data:$("#add-form").serialize(),
+			success:function(data){
+				if(data == '0'){
+					parent.addTabFun({
+						src : ctx + "/tbversion/index/list",
+						title : "版本更新"
+					});
+					parent.closeTab("新增APP");
+				}
+			}
+			
+		});
+	}
+
+	$(function(){
+		var datas =  [{id:'1',text:'客户端'},{id:'2',text:'水工端'},{id:'3',text:'经销商端'}];
+		$('#tvvType').combobox({
+			data:datas,
+			valueField:'id',
+			textField:'text'
+		}); 
+	});
+</script>
+
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增APP</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;">
+			<form id="add-form" class="formc" action="#">
+			<input type="hidden" id="tvType" name="tvType"  />
+			<INPUT type=hidden name="tvUrl" id="tvUrl" value="" />
+				<table>
+					<tr ><td height="8px"></td></tr>
+					<tr>
+						<td>APP名称：</td>
+						<td><input class="easyui-textbox" data-options="prompt:'请输入APP名称'" id=tvName name="tvName"  />&nbsp;<label
+							id="labname" class="red">*</label></td>
+					</tr>
+					<tr ><td height="8px"></td></tr>
+					<tr>
+						<td>APP类型：</td>
+						<td><input  class="easyui-textbox" id=tvvType name="tvvType" panelHeight="auto"  data-options="prompt:'请选择'"  />&nbsp;<label
+							id="labtype" class="red">*</label></td>
+					</tr>
+					<tr ><td height="8px"></td></tr>
+					<tr>
+						<td>安卓版本：</td>
+						<td>
+							<dd>
+								<div id="fileQueue"></div>
+								<input type="file" id="upload_photo" class="edit_touxiang" />&nbsp;
+								<label class="red">*</label>
+							</dd>
+						</td>
+					</tr>
+					<tr ><td height="8px"></td></tr>
+					<tr>
+						<td>版本号：</td>
+						<td><input class="easyui-textbox"  data-options="prompt:'请输入版本号'" id=tvVersion name="tvVersion"  />&nbsp;
+						<label id="labversion" class="red">*</label></td>
+					</tr>
+					<tr ><td height="8px"></td></tr>
+					<tr>
+						<td>更新描述：</td>
+						<td><input class="easyui-textbox" id="tvDesp" name="tvDesp" data-options="multiline:true,prompt:'请输入更新描述'" style="height:100px;width:300px">
+						</td>
+					</tr>
+					<tr height="8px"></tr>
+					<div
+						style="border-top: 1px solid #DCDCDC; display: block; height: 1px;"></div>
+					<tr class="submit">
+						<td colspan="2"><input style="width: 70px;"
+							class="btn btn-primary btn-sm" type="button" value="提交"
+							onclick="addBorrowTime()" /> </td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

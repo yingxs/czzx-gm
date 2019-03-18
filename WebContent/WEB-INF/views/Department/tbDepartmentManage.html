@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/Department/tbDepartmentManage.js"></script>
+</head>
+<body>
+       <!-- 	<input type="hidden" id="status" name="status" value="${status!''}"/> -->
+		<table id="tbDepartmentManage" title="运营管理  > 部门管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+	    <div id="tb" class="datagrid-toolbar" style="padding:5px;">			
+		<table>
+		        <tr height="10px"></tr>
+				<tr>
+				      <td align="right" width="80px">部门名称：</td>
+                      <td><input id="tdName" name="tdName" style="width:100px;" class="easyui-textbox"  data-options="prompt:'请输入部门名称'" />&nbsp;&nbsp;</td>
+				      <td><a class="searchcls" onclick="loadDate()">查询</a>&nbsp;</td>
+				      <td><a class="addcls" onclick="addHtml()" >新增</a></td>				                
+	            </tr>	
+	            <tr height="10px"></tr> 	                
+		</table>				     	
+</div>
+</body>
+</html>

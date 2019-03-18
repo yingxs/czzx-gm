@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/system/user.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+</head>
+<script type="text/javascript">
+function searchMeet(){
+	var account = $("#account").val();
+	var groupName = $("#group").combobox("getText");
+	if("请选择用户组" == groupName){
+		groupName = "";
+	}
+	$("#user-list").datagrid('load',{groupName:groupName,account:account});
+}
+</script>
+<body class="easyui-layout">
+	
+	<table id="user-list" title="用户列表"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+		&nbsp;&nbsp;
+		用户名 : <input class="easyui-textbox" data-options="prompt:'请输入用户名...'" id='account' name='account'>　 
+		&nbsp;
+		用户组 : <input id="group" class="easyui-combobox" data-options="prompt:'请选择用户组...'"/>　　
+		&nbsp;&nbsp;
+		<a class="easyui-linkbutton" plain="true" icon="icon-search" onclick="searchMeet()" href="javascript:void(0)">查询</a>  
+		&nbsp;
+		<a class="easyui-linkbutton" plain="true" icon="icon-add" onclick="parent.addTabFun({src : '${ctx}/user/paper/add',title : '新增用户'});">新增</a>
+		&nbsp;
+		<a class="easyui-linkbutton" plain="true" icon="icon-edit" onclick="openModify();">修改密码</a>
+	</div>
+	
+	<div id="modify-win" class="easyui-window" title="修改密码" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true" 
+    	style="width:300px;height:240px;">
+    	<div class="m-form">
+		    <form id="modify-form" name="" action="#" >
+		    <input type="hidden" id="userid" />
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		                <label class="lab">用户名：</label>
+		                <div class="ipt">
+		                	<div class="u-ipt" id="modify-account"></div>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">新密码：</label>
+		                <div class="ipt">
+		                    <input type="password" id="psw1" name="psw1" class="easyui-textbox"  data-options="required:true,missingMessage:'新密码不能为空!',prompt:'请输入新密码...'" style="width:140px;" maxlength="20" validtype="length[1,20]" invalidMessage="有效长度为1-20" />
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">确认密码：</label>
+		                <div class="ipt">
+		                    <input type="password" id="psw2" name="psw2" class="easyui-textbox"  data-options="required:true,missingMessage:'确认密码不能为空!',prompt:'请输入确认密码...'" style="width:140px;" validType="equalTo['#psw1']" invalidMessage="两次输入的密码不匹配" />
+		                </div>
+		            </div>
+		            <div style="height: 30px;"></div>
+		            <div align="right" style="margin-right: 10px;">
+						<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="onModify()" />
+						<input style="width: 70px;" class="btn btn-default btn-sm" type="reset" value="重置">
+					</div>
+		        </fieldset>
+		    </form>
+		</div>
+    </div>
+</body>
+</html>

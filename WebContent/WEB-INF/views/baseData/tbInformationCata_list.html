@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbInformationCata.js"></script>
+</head>
+<body>
+<table id="data-list" title="文章分类列表" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+
+<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+	分类名称: <input   id="ticName"  style="width:120px;" class="easyui-textbox" data-options="prompt:'请输入分类名称'" />
+	&nbsp;
+	创建时间: <input id="tmAddDate"  class="easyui-datebox" data-options="prompt:'请选择开始时间'" style="width: 120px" /> --
+		   <input id="tmAddDateEnd"  class="easyui-datebox" data-options="prompt:'请选择结束时间'" style="width: 120px" />
+	&nbsp;&nbsp;
+	<a class="searchcls" onclick="loadData()"  href="javascript:void(0)">查询</a>
+	&nbsp;
+	<a class="addcls" onclick="addRow()"  href="javascript:void(0)">新增</a>
+</div>
+</body>
+</html>

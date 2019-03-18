@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbMessage.js"></script>
+</head>
+<body>
+<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+				消息标题：<input id="tmTitle"  style="width:100px;"  class="easyui-textbox" data-options="prompt:'请输入消息标题'"/>&nbsp;&nbsp;
+				发送时间：
+					<input id="tmAddDate"  class="easyui-datebox"
+						data-options="prompt:'请选择开始时间'" style="width: 120px" />
+					--
+					<input id="tmAddDateEnd"  class="easyui-datebox" 
+						data-options="prompt:'请选择结束时间'" style="width: 120px" />
+				<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+				<a class="addcls" onclick="send()"  href="javascript:void(0)">发送消息</a>
+</div>
+<table id="data-list" title="消息列表" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+</body>
+</html>

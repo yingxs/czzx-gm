@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/tbInstituteInfo/tbInstituteInfo_list.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript">
+//该用户对这个菜单的权限按钮
+var btnList=${btnList!'0'};
+</script>
+
+<style type="text/css">
+.datagrid-btable .datagrid-cell{padding:6px 4px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}  
+</style>
+
+</head>
+<body>
+	<table id="tb_institute_info"  title="基础数据->学院管理" data-options="rownumbers:true,singleSelect:true,toolbar:'#div_toobar',fit:true">
+	</table >
+		<div id="div_toobar" class="datagrid-toolbar" style="padding:10px;">
+		<div style="display:inline;width:200px;margin-right:30px;">&nbsp;&nbsp;&nbsp;&nbsp;学院名称&nbsp;<input style="width:140px" id="InstituteNameLike" name="InstituteNameLike" class="easyui-textbox" data-options="validType:['chinese'],prompt:'请输入学院名称',onChange:function(){$('#a').show()}" invalidMessage="您好，只允许输入汉字" />
+		<a id="a" href="javascript:void(0);" style="color: red" onclick="clearInputName()" hidden="true">x</a>
+		</div>
+		<div style="display:inline;width:140px;">创建时间&nbsp;<input style="width:140px" id="AddDate" name="AddDate" class="easyui-datebox" data-options="prompt:'开始时间'"  /> -</div>
+		<div style="display:inline;width:140px;margin-right:20px;">	<input style="width:140px" id="AddDateEnd" name="AddDateEnd" class="easyui-datebox" data-options="prompt:'结束时间'"  /></div>
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+	</div>
+</body>
+</html>

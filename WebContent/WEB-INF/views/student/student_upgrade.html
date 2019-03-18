@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/userjs/student_index.js"></script>
+</head>
+<body>
+	<div class="panel-header">
+		<div class="panel-title">学生升级管理</div>
+		<div class="panel-tool"></div>
+	</div>
+	<table id="tbStudent-list" title="学生管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding-left:10px;padding-top: 30px">
+		&nbsp;&nbsp;
+       	年级：<input id="tbGrade" name="tbGrade" class="easyui-combobox" style="width:120px;" editable="false" data-options="prompt:'请选择所属年级'"/>
+		&nbsp;
+		班级：<input id="tbClass" class="easyui-combobox" name="tbClass" style="width:120px;" editable="false" data-options="prompt:'请选择所属班级'"/>
+		&nbsp;&nbsp;
+		升级至→
+		&nbsp;&nbsp;
+       	年级：<input id="tbGrade1" name="tbGrade" class="easyui-combobox" style="width:120px;" editable="false" data-options="prompt:'请选择所属年级'"/>
+		&nbsp;
+		班级：<input id="tbClass1" class="easyui-combobox" name="tbClass" style="width:120px;" editable="false" data-options="prompt:'请选择所属班级'"/>
+	</div>	
+	<script type="text/javascript">
+		$('#tbGrade').combobox({
+	        valueField:'id', //值字段
+	        textField:'name', //显示的字段
+	        url:'${ctx}/admin/students/all/grade.json',
+	        width : "120px",
+	        editable:false,//不可编辑，只能选择
+	        panelHeight:"auto",
+	        onChange:function(gId){
+	        	//$('#city').combobox('clear');
+	         $('#tbClass').combobox({
+	          valueField:'id', //值字段
+	          textField:'name', //显示的字段
+	          url : '${ctx}/admin/teacher/getClass/'+gId+'.json',
+	          editable:false,//不可编辑，只能选择
+	     	  });
+	        }
+	     });
+		
+		$('#tbGrade1').combobox({
+	        valueField:'id', //值字段
+	        textField:'name', //显示的字段
+	        url:'${ctx}/admin/students/all/grade.json',
+	        width : "120px",
+	        editable:false,//不可编辑，只能选择
+	        panelHeight:"auto",
+	        onChange:function(gId){
+	        	//$('#city').combobox('clear');
+	         $('#tbClass1').combobox({
+	          valueField:'id', //值字段
+	          textField:'name', //显示的字段
+	          url : '${ctx}/admin/teacher/getClass/'+gId+'.json',
+	          editable:false,//不可编辑，只能选择
+	     	  });
+	        }
+	     });
+	</script>
+</body>
+</html>

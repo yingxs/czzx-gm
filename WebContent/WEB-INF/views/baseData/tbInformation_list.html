@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbInformation.js"></script>
+</head>
+<body>
+<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+		&nbsp;&nbsp;
+		资讯标题：<input   id="tiTitle"  style="width:150px;" class="easyui-textbox"  data-options="prompt:'请输入文章标题'" />
+		&nbsp;
+		所属分类：<input type="text" id="ticName" name="ticName" class="easyui-combobox" panelHeight="auto" data-options="prompt:'请选择文章分类'" style="width:150px;" />
+		&nbsp;
+		创建时间：<input id="tiAddDate"  class="easyui-datebox" data-options="prompt:'选择开始时间'" style="width: 120px" /> --
+			   <input id="tiAddDateEnd"  class="easyui-datebox" data-options="prompt:'选择结束时间'" style="width: 120px" />
+		&nbsp;&nbsp;
+		<a class="searchcls" onclick="loadData()"  href="javascript:void(0)">查询</a>
+		&nbsp;
+		<a class="addcls" onclick="addRow()"  href="javascript:void(0)">新增</a>
+</div>
+<table id="data-list" title="资讯内容列表" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+</body>
+</html>

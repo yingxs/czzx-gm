@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+.submit-btn {
+	display: inline-block;
+	width: 52px;
+	height:28px;
+	text-decoration: none;
+	background-color: green;
+	text-align: center;
+	color: white;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+</head>
+<body>
+	<div >
+		<div class="panel-header">
+			<div class="panel-title">新增</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin:10px;">
+		<form id="addfm" method="post">
+			<div class="fitem">
+				<label> 部门名称:</label>
+				<input name="name" id="addName" class="easyui-textbox" data-options="prompt:'请输入部门名称'"/><span style="color: red">*</span>
+			</div>
+			<div class="fitem">
+				<label> 部门职能:</label> 
+				<input name="desp" id="addDesp" class="easyui-textbox" data-options="multiline:true,prompt:'请输入部门职能'" style="width: 170px; height: 90px" />
+			</div>
+			<input type="hidden" name="action" id="hidtype" />
+		</form>
+		<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+		<div id="dlg-buttons">
+			<a href="javascript:void(0)" class="submit-btn"
+				onclick="saveDepa()">保存</a> <!-- <a
+				href="javascript:void(0)" class="cancel"
+				onclick="javascript:parent.closeTab('新增部门');">取消</a> -->
+		</div>
+		</div>
+	</div>
+<script type="text/javascript">
+
+//新增保存
+function saveDepa() {
+	var addName = $("#addName").textbox('getValue');
+	var addDesp = $("#addDesp").textbox('getValue');
+	if (addName == null || addName == "") {
+		$.messager.alert("提示信息", "请输入部门名称");
+		return false;
+	} else {
+		if (addName.length > 10) {
+			$.messager.alert("提示信息", "请输入小于10字的部门名称");
+			return false;
+		}
+		if (addDesp.length > 100) {
+			$.messager.alert("提示信息", "请输入小于100字的部门职能");
+			return false;
+		} else {
+			alert("1");
+			$("#addfm").form("submit", {
+				url : '${ctx}/admin/department/save.htm',
+				onsubmit : function() {
+					return $(this).form("validate");
+				},
+				success : function(result) {
+					if (result == "1") {
+						$.messager.alert("提示信息", "操作成功");
+						parent.addTabFun({
+							src : ctx + "/admin/department/list",
+							title : "部门管理"
+						});
+						parent.closeTab("新增部门");
+					} else {
+						$.messager.alert("提示信息", "操作失败");
+					}
+				}
+			});
+		}
+	}
+}
+</script>
+</body>
+</html>

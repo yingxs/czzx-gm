@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/baseData/tbWords.js"></script>
+</head>
+<body>
+	<table id="words-list" title="数据字典列表" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+	</table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+		&nbsp;&nbsp;
+		编码：<input type="text" id="twCode" class="easyui-textbox"  data-options="prompt:'请输入编码...'"/> 
+		&nbsp;&nbsp;
+		项目名称 : <input class="easyui-textbox"  id="twName" name ="twName" class="easyui-textbox" data-options="prompt:'请输入项目名称'" /> 
+		&nbsp;&nbsp;
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		&nbsp;
+		<a class="addcls" onclick="addRow()" href="javascript:void(0)">新增</a>
+	</div>
+</body>
+</html>

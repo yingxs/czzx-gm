@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+.submit-btn {
+	display: inline-block;
+	width: 76px;
+	height:28px;
+	text-decoration: none;
+	background-color: #458BCE;
+	text-align: center;
+	color: white;
+	border-radius: 3px;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">详情</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin:15px;width: 900px;">
+			<form id="add-form" method="post">
+			     <div style="float: left;font-weight: bold;">基础资料</div>
+			    <br/>
+				<hr style="border: 1px #eee solid;margin: 5px 0; clear:both;"/>
+				<div style="float: left;">
+				   <div class="fitem">
+						<label>学号：</label>
+						${student.tsNumber!''}
+					</div>
+					<div class="fitem">
+						<label>姓名：</label>
+						${student.tsName!''}
+					</div>
+					<div class="fitem">
+						<label>性别：</label>
+						${sex!''}
+					</div>
+					<div class="fitem">
+						<label>所属年级：</label>
+						${grade!''}
+					</div>
+					<div class="fitem">
+						<label>所属班级：</label>
+						${class!''}
+					</div>
+					<div class="fitem">
+						<label>身份证号码：</label>
+						${student.tsCardNum!''}
+					</div>
+					<div class="fitem">
+						<label>出生日期：</label>
+						${student.tsBirthday!''}
+					</div>
+					<div class="fitem">
+						<label>政治面貌：</label>
+						${student.tsPolitical!''}
+					</div>
+					<div class="fitem">
+						<label>民族：</label>
+						${student.tsNation!''}
+					</div>
+					<div class="fitem">
+						<label>籍贯：</label>
+						${student.tsJiguan!''}
+					</div>
+					<div class="fitem">
+						<label>联系地址：</label>
+						${pName!''}${cName!''}${oName!''}${student.tsAddress!''}
+					</div>
+				</div>
+				
+			</form>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/kindeditor.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/notice/notice_detail.js"></script>
+
+<script type="text/javascript">
+	$(function(){
+	 	if('${notice.tniType!''}' == 1){
+			$("#tniType").html("内部公告");
+		}else if('${notice.tniType!''}' == 2){
+			$("#tniType").html("外部公告");
+		}
+		
+		if('${notice.tniRecvType!''}' == 0){
+			$("#tniRecvType").html("全部");
+		}else if('${notice.tniRecvType!''}' == 2){
+			$("#tniRecvType").html("教职工");
+			document.getElementById("channel").style.display="none";
+			document.getElementById("teacher").style.display="";
+		}else if('${notice.tniRecvType!''}' == 3){
+			$("#tniRecvType").html("家长");
+			document.getElementById("channel").style.display="";
+			document.getElementById("teacher").style.display="none";
+		}else if('${notice.tniRecvType!''}' == "" ){
+			$("#tniRecvType").html("无");
+			document.getElementById("channel").style.display="none";
+			document.getElementById("teacher").style.display="none";
+		}
+		
+		
+		var tpPics = "${notice.tniLogo!''}";
+		var picture = tpPics.split(",");
+		var htm = '';
+		for(var i = 0;i<picture.length;i++){
+			htm += '<img src="'+picture[i]+'" width="120px" height="120px">&nbsp;&nbsp;';
+		}
+		$("#tniLogo").html(htm);
+	}) 
+</script>
+
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">求助管理</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;">
+			<form id="add-form" class="formc" enctype="multipart/form-data">
+				<table cellspacing="12" width="1000px" >
+				
+					<tr>
+						<td align="right"  style="font-weight: bold;width: 80px;">公告标题：</td>
+						<td>${notice.tniTitle!''}</td>
+						<td><input type="hidden" id = "tniCode" name = "tniCode" value = "${notice.tniCode!''}"/></td>
+					</tr>
+					<tr height="10px"></tr>
+					<tr>
+						<td align="right"  style="font-weight: bold;width: 80px;">类型：</td>
+						<td id="tniType"></td>
+					</tr>
+					<tr height="10px"></tr>
+					<tr>
+						<td align="right"  style="font-weight: bold;width: 80px;">接收类型：</td>
+						<td id="tniRecvType"></td>
+					</tr>
+					<tr height="10px"></tr>
+					<tr>
+						<td align="right"  style="font-weight: bold;width: 80px;">公告图片：</td>
+						<td id="tniLogo"></td>
+					</tr>
+					<tr height="10px"></tr>
+					<tr >
+						<td align="right"  style="font-weight: bold;width: 80px;">公告内容：</td>
+						<td>${notice.tniContent!''}</td>
+					</tr>
+				</table>
+	<div id="channel" style="width: 100%; height: 300px; display: none;" >
+		<table id="channel-list" title="家长选择" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+		</table>
+	</div>
+		<div id="teacher" style="width: 100%; height: 300px; display: none;" >
+		<table id="teacher-list" title="教职工选择" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+		</table>
+		</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

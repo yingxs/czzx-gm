@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript">
+
+/* 
+ * 状态是待审核的详情页面  
+ * tlm_status=1
+ */
+
+$(function(){
+	var tlmType=$("#tlmType").text();
+
+	if(tlmType==1){
+		$("#tlmType").text("校长信箱");
+	}
+	if(tlmType==2){
+		$("#tlmType").text("家校留言");
+	}
+	if(tlmType==3){
+		$("#tlmType").text("心理咨询");
+	}
+	
+});
+
+
+
+//通过方法
+function toDelete(status){
+	//alert(status);
+	var text="";
+	var tlmId="${tbLeaveMessage.tlmId!''}";
+	var taiName="${tbLeaveMessage.ltmName!''}";
+	if(status==2){
+		text="确定通过姓名为 "+taiName+" 吗？";
+	}
+	$.messager.confirm("提示",text,function(r){
+		if(r){
+			
+			$.ajax({
+				type: 'POST',
+				url: ctx+"/tbLeaveMessage/delete",
+				data:{tlmId:tlmId,status:status},
+				dataType: 'text',
+				success: function (msg) {
+					if(msg == "100"){
+						parent.addTabFun({
+							src : ctx + "/tbLeaveMessage/index/tbLeaveMessage",
+							title : "留言管理"
+						});
+					}else if(msg == "101"){
+						$.messager.alert('提示','失败！','error');
+					}
+				}
+			});
+		}
+	});
+ }
+
+	
+	//拒绝方法
+	function toRefuse(tlmId,c,status){
+	$.messager.prompt('提示信息', '确认拒绝'+c+'吗?  拒绝原因：', function(r){
+		if (r){
+			$.ajax({
+				type: 'POST',
+				url: ctx+"/tbLeaveMessage/refuse",
+				data:{tlmId:tlmId,status:status,r:r},
+				dataType: 'text',
+				success: function (msg) {
+					if(msg == "100"){
+						parent.addTabFun({
+							src : ctx + "/tbLeaveMessage/index/tbLeaveMessage",
+							title : "留言管理"
+						});
+					}else if(msg == "101"){
+						$.messager.alert('提示','拒绝失败！','error');
+					}
+				}
+			});
+		}
+	});
+}
+</script>
+</head>
+<body>
+	       <div class="panel-header" class="easyui-tabs">
+				<div class="panel-title">运营管理 > 留言管理 > 详情</div>
+				<div class="panel-tool"></div>
+		   </div>
+	    <form id="add-form" class="formc" method="post" action="#">
+		<table>
+		        <tr height="15px"></tr>
+				<tr>
+				      <td style="font-weight: bold;" align="right" width="80px">留言类型：</td>
+                      <td width="100px" id="tlmType">${tbLeaveMessage.tlmType!''}</td>
+	            </tr>	
+	            <tr height="15px"></tr>
+	             <tr>
+				      <td style="font-weight: bold;" align="right" width="80px">留言人：</td>
+                      <td width="100px">${answerName!''}</td>
+                      
+	            </tr>	
+	            <tr height="15px"></tr>
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">姓名：</td>
+	                  <td width="100px">${tbLeaveMessage.ltmName!''}</td>
+	            </tr>
+	        
+	            <tr height="15px"></tr> 
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">联系电话：</td>
+	                  <td width="100px">${tbLeaveMessage.tlmPhone!''}</td>
+	            </tr>
+	            <tr height="15px"></tr> 
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">邮箱：</td>
+	                  <td width="100px">${tbLeaveMessage.tlmMail!''}</td>
+	            </tr>
+	            <tr height="15px"></tr> 
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">留言内容：</td>
+	                  <td width="800px">${tbLeaveMessage.tlmContent!''}</td>
+	            </tr>
+	            <tr height="15px"></tr> 
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">留言时间：</td>
+	                  <td width="100px">${tbLeaveMessage.tlmAddDate!''}</td>
+	            </tr>
+	            <tr height="15px"></tr> 
+	            </table>
+	            	
+				<div style="border-bottom: solid 1px #E3E3E3;height:10px;width:300px;"></div>
+				<div class="submit">	
+						<div><input style="width: 70px;"
+									class="btn btn-primary btn-sm" type="button" value="审核通过"
+									onclick="toDelete(2)" />
+									<input style="width: 70px;"
+									class="btn btn-primary btn-sm" type="button" value="审核失败"
+									onclick="toRefuse('${tbLeaveMessage.tlmId!''}','${tbLeaveMessage.ltmName!''}',3)"/>
+								
+						</div>
+				</div>
+	           
+	</form>	
+</body>
+</html>

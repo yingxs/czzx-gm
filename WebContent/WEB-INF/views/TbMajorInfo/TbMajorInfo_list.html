@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<@h.easyui />
+	<script type="text/javascript" src="${ctx}/static/js/views/TbMajorInfo/TbMajorInfo_list.js"></script>
+	<script type="text/javascript" src="${ctx}/static/easyui-1.4/jquery.validatebox.js"></script>
+	<style type="text/css">
+		.datagrid-cell {
+		    font-size: 13px;
+		}
+		
+		td{
+			height:30px;
+		}
+		
+		 .datagrid-toolbar{
+			margin:10px;
+			border:1px solid #eee;
+		}
+		.datagrid-view{
+			margin-top:10px;
+			margin-left:10px;
+			border:1px solid #eee;
+			display:block;
+		}
+		
+		.pagination{
+			position:absolute ;
+			display: block;
+		    width: 100%;
+		    bottom: 0px;
+		}
+		
+		.panel-body-noheader{
+			max-height: 210px;
+		} 
+		
+		#button_search,#button_add{
+			width:58px;
+			height:32px;
+			background:#169BD5;
+			border:0px;
+			color:#FFFFFF;
+		}
+		.l-btn-text{
+			line-height:32px;
+		}
+		
+	</style>
+</head>
+<body>
+
+	<!-- 表格工具栏 -->
+	<div id="div_datagrid_toolbar" class="datagrid-toolbar" >
+		<form id="search_form">
+			<table cellspacing="10">
+				<tr id="tbtr">
+					<td>
+						专业名称：<input id="textbox_major_name" style="width: 200px;height:30px">
+					</td>
+					<td>
+						所属系别：<input id="combobox_departmen_id" style="width: 200px;height:30px">
+					</td>
+					<td>
+					创建时间：<input id="date_start" style="width:150px;height:30px" >&nbsp;-&nbsp;
+							<input id="date_end"  style="width:150px;height:30px" >
+					</td>
+					<td>
+						<a id="button_search" >查询</a> 
+						<a id="button_add" href="javascript:void(0)" >新增</a>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<!-- 数据表格 -->
+	<table id="table_TbMajorInfo_list" > </table>
+
+</body>
+</html>

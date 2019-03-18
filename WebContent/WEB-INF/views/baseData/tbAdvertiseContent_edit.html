@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>新增广告</title> 
+<@h.easyui />
+
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 1px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+		<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+		<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+$(function(){
+	$("#tacCataId").combobox("setValue","${advertise.tacCataId!'' }");
+	$("#tacCataId").combobox("setText", "${advertise.tacCataName!'' }");
+})
+
+/**
+ * 手机版图片上传
+ */
+ function ajaxFileUpload(type){
+	    //执行上传文件操作的函数
+	    if(type==1){
+	    	/**
+	    	 * phone版图片上传
+	    	 */
+		    $.ajaxFileUpload({
+		        //处理文件上传操作的服务器端地址(可以传参数)
+		        url:ctx + '/publicUploadTwo/fileUpload',
+		        secureuri:false,                       //是否启用安全提交,默认为false
+		        fileElementId:'phone',                 //文件选择框的id属性
+		        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+		        data:{"folder":"phone"},		   //上传文件传到后台参数
+		        success:function(data, status){        //服务器响应成功时的处理函数	
+		        	data = data.split(">")[1];
+		            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+		            data = data.replace("</PRE>", '');
+		            data = data.replace("<pre>", '');
+		            data = data.replace("</pre", ''); //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+		            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+		            	$("img[id='phoneImage']").attr("src", ctx+data.substring(2));
+		            	$("#tacPhoneImage").val(data.substring(2));//要上传的路径
+		                //document.getElementById("tacPhoneImage").value = "${ctx}"+data.substring(2);
+		                $('#result').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+		            }else{
+		                $('#result').html(data.substring(2));
+		            }
+		        },
+		        error:function(data, status, e){ //服务器响应失败时的处理函数
+		            $('#result').html(data);
+		        }
+		    });
+	    }else{
+	    	/**
+	    	 * web版图片上传
+	    	 */
+	    	$.ajaxFileUpload({
+		        //处理文件上传操作的服务器端地址(可以传参数,已亲测可用)
+		        url:ctx + '/publicUploadTwo/fileUpload',
+		        secureuri:false,                       //是否启用安全提交,默认为false
+		        fileElementId:'web',           //文件选择框的id属性
+		        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+		        data:{"folder":"web"},		   //上传文件传到后台参数
+		        success:function(data, status){        //服务器响应成功时的处理函数	 
+		        	data = data.split(">")[1];
+		            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+		            data = data.replace("</PRE>", '');
+		            data = data.replace("<pre>", '');
+		            data = data.replace("</pre", ''); //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+		            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+		            	$("img[id='webImage']").attr("src",  ctx+data.substring(2));
+		            	$("#tacWebImage").val(data.substring(2));
+		                $('#result1').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+		            }else{
+		                $('#result1').html(data.substring(2));
+		            }
+		        },
+		        error:function(data, status, e){ //服务器响应失败时的处理函数
+		            $('#result1').html(data);
+		        }
+		    });
+	    }
+	}
+	
+	function addContent(){
+	
+		var tacCataId =$('#tacCataId').combobox("getValue");
+		var tacCataName =$('#tacCataId').combobox("getText");
+		var tacContent = $("#tacContent").val();
+		var tacLink = $("#tacLink").val();
+		var tacPhoneImage = $("#tacPhoneImage").val();
+		var tacWebImage = $("#tacWebImage").val();
+		
+		if($("#edit-form").form('validate') == false){
+			return false;
+		}
+		
+		$.ajax({
+ 			type:"POST",
+ 			dataType:'json',
+ 			url:ctx+ '/advertise/edit',
+ 			data:$("#edit-form").serialize(),
+ 			success:function(data){
+ 				if(data == '100')
+ 				{
+ 					parent.addTabFun({
+ 						src : ctx + "/advertise/index/list",
+ 						title : "广告内容"
+ 					});
+ 					parent.closeTab("编辑广告内容");
+ 				}
+ 				if(data=='101'){
+ 					$.messager.alert('提示','本次操作出现不明错误，请联系技术人员解决!','warning');
+				}
+ 				if(data=='105'){
+					$.messager.alert('提示','该分类名称已存在,请核查!');
+				}
+ 			}
+ 		});
+}
+
+	
+</script>
+
+	</head>
+	<body>
+		<div>
+			<div class="panel-header" class="easyui-tabs">
+				<div class="panel-title">编辑</div>
+				<div class="panel-tool"></div>
+			</div>
+
+			<div style="margin: 10px;">
+				<form id="edit-form" class="formc" method="post" action="#">
+					<input id="tacId" name="tacId" type="hidden" value="${advertise.tacId!''}"/>
+					<table cellspacing="12" width="600px" >
+						<tr ></tr>
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">板块名称：</td>
+							<td>
+								<input id="tacCataId" name="tacCataId" class="easyui-combobox" 
+													url="${ctx}/advertise/findCatalogName" 
+													valueField="tacCataId"
+													textField="tacCataName" 
+													style="width: 180px;height: 25px" 
+													Editable="false"
+													data-options="required:true,missingMessage:'板块名称不能为空!',prompt:'请选择板块名称...'"/>
+							</td>
+						</tr>
+						
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">广告名称：</td>
+							<td>
+								<input value="${advertise.tacContent!'' }" type="text" id="tacContent" name="tacContent" class="easyui-textbox" data-options="prompt:'请输入内容名称...'" style="width:400px;" maxlength="256" validtype="length[1,256]" invalidMessage="有效长度为1-256" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td align="right"></td>
+							<td>
+								<label class="red">上传建议：格式"jpg、png、gif"；大小"小于2M"</label>
+							</td>
+						</tr>
+						
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">手&nbsp; 机&nbsp; 版：</td>
+							<td>
+								<input type="file" id="phone" name="myfiles" onchange="ajaxFileUpload(1)" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td align="right"></td>
+							<td>
+								<div id="result" style="color: red"></div>
+								<input type="hidden" id="tacPhoneImage" name="tacPhoneImage" value="${advertise.tacPhoneImage!'' }"/>
+								<img src="${ctx}${advertise.tacPhoneImage!'' }" id="phoneImage" height="220px" width="400px" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">web&nbsp;&nbsp;版：</td>
+							<td>
+								<input type="file" id="web" name="myfiles" onchange="ajaxFileUpload(2)" /> &nbsp;&nbsp;
+								<label class="red"></label>
+							</td>
+						</tr>
+					
+						<tr>
+							<td align="right"></td>
+							<td>
+								<div id="result1" style="color: red"></div>
+								<input type="hidden" id="tacWebImage" name="tacWebImage"  value="${advertise.tacWebImage!'' }"/>
+								<img src="${ctx}${advertise.tacWebImage!'' }" id="webImage" name="webImage" height="220px" width="400px" />
+							</td>
+						</tr>
+						
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">广告链接：</td>
+							<td>
+								<input value="${advertise.tacLink!'' }" type="text" id="tacLink" name="tacLink" class="easyui-textbox" data-options="prompt:'请输入广告链接...'" style="width:400px;" maxlength="256" validtype="length[1,256]" invalidMessage="有效长度为1-256" />
+								<label class="red"></label>
+							</td>
+						</tr>
+						<tr><td colspan="2">
+						<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px;"></div>
+						</td></tr>
+						<tr class="submit">
+							<td colspan="2"><input style="width: 70px;"
+								class="btn btn-primary btn-sm" type="button" value="提交"
+								onclick="addContent()" /></td>
+						</tr>
+					</table>
+					
+				</form>
+			</div>
+
+		</div>
+	</body>
+</html>

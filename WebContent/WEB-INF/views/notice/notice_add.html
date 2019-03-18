@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title> 
+<@h.easyui />
+
+<style type="text/css">
+.btn {
+	border: 1px solid #3b9808;
+	display: inline-block;
+	padding: 1px
+}
+
+.btn input {
+	cursor: pointer;
+	width: 80px;
+	background: transparent;
+	padding-bottom: 2px;
+	border: 0;
+	height: 20px;
+	line-height: 20px;
+	font-size: 14px;
+	color: #fff;
+	font-weight: bold;
+}
+
+.btn input:hover {
+	background-position: bottom
+}
+
+a img {
+	border: none
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+* {
+	font-family: "微软雅黑";
+	font-size: 13px;
+	margin: 0;
+	padding: 0;
+	-webkit-margin: 0;
+	-webkit-padding-after: 0;
+	-webkit-padding-before: 0;
+	-webkit-padding-end: 0;
+	-webkit-padding-start: 0;
+}
+
+.formc {
+	padding: 0;
+	margin: 0;
+	font-family: "微软雅黑";
+	font-size: 13px;
+}
+
+.form-field input {
+	width: 160px;
+	height: 22px;
+	outline: none;
+	padding-left: 5px;
+}
+
+.form-field {
+	display: block;
+	margin: 5px 0;
+}
+
+.form-field .title {
+	display: inline-block;
+	width: 70px;
+	text-align: right;
+}
+
+.form-item {
+	display: inline-block;
+}
+
+.red {
+	color: red;
+}
+
+.submit {
+	padding: 10px 0 0 1px;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.428571429;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+.btn:hover,.btn:focus {
+	color: #333;
+	text-decoration: none;
+}
+
+.btn-default:hover,.btn-default:focus,.btn-default:active,.btn-default.active,.open .dropdown-toggle.btn-default
+	{
+	color: #333;
+	background-color: #ebebeb;
+	border-color: #adadad;
+}
+
+.btn-primary {
+	color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+}
+
+.btn-default {
+	color: #333;
+	background-color: #fff;
+	border-color: #ccc;
+}
+
+.btn-sm {
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 3px;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/kindeditor.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/notice/notice_add.js"></script>
+<script charset="utf-8"  src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+
+
+$(function(){
+	
+	$("#recvType").combobox({
+		data:[{id:0,text:"全部"},
+		      {id:2,text:"教职工"},
+		      {id:3,text:"家长"}
+		      ],
+		valueField:'id',
+		textField:'text',
+		});
+	
+	qiehuan();
+	
+});
+
+function qiehuan(){
+	$("#recvType").combobox({
+		onChange : function(){
+			var tcType = $("#recvType").textbox("getValue");
+			if(tcType == 2){
+				document.getElementById("channel").style.display="none";
+				document.getElementById("teacher").style.display="";
+				//document.getElementById("Content").style.display="none";
+				document.getElementById("Btn").style.display="";
+				load();
+			}else if(tcType == 3){
+				document.getElementById("channel").style.display="";
+				document.getElementById("teacher").style.display="none";
+				//document.getElementById("Content").style.display="none";
+				document.getElementById("Btn").style.display="";
+				loadData();
+			}else if(tcType == 0){
+				document.getElementById("channel").style.display="none";
+				document.getElementById("teacher").style.display="none";
+				//document.getElementById("Content").style.display="";
+				//document.getElementById("Btn").style.display="none";
+			}
+		}
+	});
+}
+
+	function shio(r) {//1内部公告；2外部公告
+		if(r==1){
+			/*document.getElementById("channel").style.display="";
+			document.getElementById("teacher").style.display="";
+			 */
+			 document.getElementById("recvtype").style.display="";
+			qiehuan();
+		}else{
+			document.getElementById("channel").style.display="none";
+			document.getElementById("teacher").style.display="none";
+			document.getElementById("recvtype").style.display="none";
+		}
+	}
+	
+	/**
+	 * 添加
+	 */
+	 /* function addContent() {
+
+		
+		editor.sync();
+		if ($("#add-form").form('validate') == false) {
+			return false;
+		}
+		alert($("#tniContent").val());
+		$.ajax({
+			type : "POST",
+			dataType : 'json',
+			url : ctx + '/notice/add',
+			data : $("#add-form").serialize(),
+			success : function(data) {
+				if (data == '100') {
+					parent.addTabFun({
+						src : ctx + "/notice/index/list",
+						title : "公告管理"
+					});
+					parent.closeTab("新增公告");
+				} else if (data == '101') {
+					$.messager.alert('提示', '该广告板块名称已存在!', 'warning');
+				} else if (data == '500') {
+					$.messager.alert('提示', '提交参数不对!', 'warning');
+				} else {
+					$.messager.alert('提示', '本次操作出现不明错误，请联系技术人员解决!', 'warning');
+				}
+			}
+		});
+	}  */
+	
+	function ajaxFileUpload(){
+		   
+ 	    //开始上传文件时显示一个图片,文件上传完成将图片隐藏
+ 	    $("#loading").ajaxStart(function(){$(this).show();}).ajaxComplete(function(){$(this).hide();});
+ 	    //执行上传文件操作的函数
+ 	    $.ajaxFileUpload({
+ 	        //处理文件上传操作的服务器端地址(可以传参数)
+ 	        url:ctx + '/publicUploadTwo/fileUpload',
+ 	        secureuri:false,                       //是否启用安全提交,默认为false
+ 	        fileElementId:'productImage',                 //文件选择框的id属性
+ 	        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+ 	       data:{folder:"image"},
+ 	        success:function(data, status){        //服务器响应成功时的处理函数
+ 	        	data = data.split(">")[1];
+ 	            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+ 	            data = data.replace("</PRE>", '');
+ 	            data = data.replace("<pre>", '');
+ 	            data = data.replace("</pre", '');  //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+ 	            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+ 	            	$("#photoimage").attr("src", data.substring(2));
+ 	            //	$("tpImage").val= data.substring(2);
+ 	            	
+ 	            	document.getElementById("taPicture").value = data.substring(2);
+ 	               // $('#result').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+ 	            }else{
+ 	                alert(data.substring(2));
+ 	            }
+ 	        },
+ 	        error:function(data, status, e){ //服务器响应失败时的处理函数
+ 	            alert("aaaa->" +data);
+ 	        }
+ 	    });
+ 	}
+</script>
+
+	</head>
+	<body>
+		<div>
+			<div class="panel-header" class="easyui-tabs">
+				<div class="panel-title">新增</div>
+				<div class="panel-tool"></div>
+			</div>
+
+			<div style="margin: 10px;">
+				<form id="add-form" class="formc" method="post" action="#">
+				<table  >
+						<tr >
+							<td width="80" style="text-align:right;font-weight:bold">公告标题：</td>
+							<td>
+								<input type="text" id="tniTitle" name="tniTitle" class="easyui-textbox" data-options="required:true,missingMessage:'公告标题不能为空!',prompt:'请输入公告标题...'"  style="width:200px" maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50" />
+							</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">公告类型：</td>
+							<td>
+								<input type="radio" class="changg_ra" name="tniType" value="1" checked onclick="shio(1)"/><span>内部公告</span> 
+                        		<input type="radio" class="changg_ra" name="tniType" value="2" onclick="shio(2)"/><span>外部公告</span>
+							</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr id="recvtype">
+							<td width="80" style="text-align:right;font-weight:bold">接收类型：</td>
+							<td >
+								<input type="text" id="recvType" name="tniRecvType" class="easyui-combobox"  data-options="required:true,missingMessage:'接收人不能为空!',prompt:'请输入接收人...'" style="width:200px" 
+								/> 
+							</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">封面图片:</td>
+							<td >
+								<div id="preview1" style="width:600px;height:130px;display: inline-block;vertical-align: bottom;">
+									<div style="width:130px;float:left" >
+			            			 	<img src="" id="photoimage" height="100px" width="100px" />
+										<input type="hidden"  id="taPicture"  name="tniLogo" />
+									</div>
+									<div >
+										<input id="productImage" name ="myfiles"  type="file"  data-options="prompt:'请选择产品图片文件'" style="width:70px;" >
+			            			 	<input type="button" style="width:70px;" value="上传" onclick="ajaxFileUpload()"/> &nbsp;&nbsp;
+									</div>
+									
+								</div>
+							</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td width="80" style="text-align:right;font-weight:bold">公告内容:</td>
+				    	<td colspan="3">
+				    	<textarea name="tniContent" id="tniContent" style="width: 700px; height: 500px;"></textarea>
+				    	</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr><td colspan="2">
+						<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px;"></div>
+						</td></tr><tr>
+					</table>
+			</form>
+				<div id="channel" style="width: 800px; height: 300px;display: none;">
+		<table id="channel-list" title="家长选择" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+		</table>
+					
+		<div id="tb" class="datagrid-toolbar" style="padding:10px 0px 10px 10px; display: none;" >
+		&nbsp;&nbsp; 
+		姓名： <input class="easyui-textbox"  id="tsfName" name ="tsfName"  style="width: 150px" data-options="prompt:'请输入链接名称'" />
+		<span id="companySpan">
+		&nbsp;&nbsp; 
+		年级：<input type="text" id="tgId" name="tgId" class="easyui-combobox"  data-options="prompt:'请选择'" style="width: 150px;" editable="false"/>
+		</span>
+		&nbsp;&nbsp;
+		班级：<input type="text" id="classId" name="classId" class="easyui-combobox"  data-options="prompt:'请选择'" style="width: 150px;" editable="false"/>
+		&nbsp;&nbsp;
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		&nbsp;
+	</div>
+	
+	</div>
+		<div id="teacher" style="width: 800px; height: 300px; display: none;" >
+		<table id="teacher-list" title="教职工选择" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb'">
+		</table>
+		<div id="tc" class="datagrid-toolbar" style="padding:10px 0px 10px 10px;">
+		&nbsp;&nbsp; 
+		姓名： <input class="easyui-textbox"  id="tsfName" name ="tsfName"  style="width: 150px" data-options="prompt:'请输入链接名称'" />
+		<span id="companySpan">
+		&nbsp;&nbsp; 
+		年级：<input type="text" id="tgId" name="tgId" class="easyui-combobox"  data-options="prompt:'请选择'" style="width: 150px;" editable="false"/>
+		</span>
+		&nbsp;&nbsp;
+		<a class="searchcls" onclick="load()" href="javascript:void(0)">查询</a>
+		&nbsp;
+	</div>
+					</div>
+			<div class="submit" id="Btn" >
+				<input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交"
+							onclick="addBtn()" /> 
+			</div>
+       			 </div>
+			</div>
+	</body>
+</html>

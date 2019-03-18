@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<@h.easyui />
+<script type="text/javascript">
+	$(function(){
+		 $("#parent").combobox({   
+	  		url:ctx+'/tbInformationCata/listAllParent',
+	  		valueField:'ticId',   
+	  		textField:'ticName',
+	  		/*onChange : function(n,o){
+	  			$("#tcCityid").combobox({   
+	    	  		url:ctx+'/words/getCity?id='+n,
+	    	  		valueField:'cid',   
+	    	  		textField:'cname'
+	    		});  
+	  		}  */
+		}); 
+	}); 
+	
+	function addparent(){
+			if($("#add-form").form('validate') == false){
+				return false;
+			}
+			$.ajax({
+				type:"post",
+				dataType:"json",
+				url:ctx + "/tbInformationCata/add",
+				data:$("#add-form").serializeArray(),
+				success:function(data){
+					if(data=='100'){
+						parent.addTabFun({
+							src : ctx + "/tbInformationCata/index/list",
+							title : "文章分类"
+						});
+						parent.closeTab("新增文章分类");
+					}
+					if(data=='101'){
+						$.messager.alert('提示','本次操作出现不明错误，请联系技术人员解决!','warning');
+						return false;
+					}
+					
+					if(data=='105'){
+						$.messager.alert('提示','该分类名称已存在,请核查!','info');
+						return false;
+					}
+				
+				}
+			});
+	
+	
+		}
+</script>
+</head>
+<body>
+	<div style="padding: 30px">
+		<form id="add-form" class="formc" action="#">
+			<table>
+				<tr >
+					<td style="text-align:right;font-weight:bold">上级分类：</td>
+					<td>
+						<input type="text" id="parent" name="ticParentId" class="easyui-combobox" panelHeight="auto" data-options="prompt:'请选择上级分类，不选择默认为根目录'" style="width:250px;he"/>
+						<label class="red">*</label>
+					</td>
+				</tr>
+				<tr style="height: 5px"></tr>
+				<tr>
+					<td style="text-align:right;font-weight:bold">分类名称：</td>
+					<td>
+						<input type="text" id="ticName" name="ticName" class="easyui-textbox" validtype="length[1,20]" missingMessage="分类名称不能为空!" data-options="required:true,prompt:'请输入分类名称'"  style="width:250px"/>
+						<label class="red">*</label>
+					</td>
+				</tr>
+				<tr style="height: 5px"></tr>
+				<tr>
+					<td style="text-align:right;font-weight:bold">分类描述：</td>
+					<td>
+						<input  type="text" id="ticMean" name="ticMean" class="easyui-textbox" data-options="multiline:true,prompt:'请输入分类描述'" style="width:400px;height:100px" validtype="length[1,255]" missingMessage="分类名称不能为空!" invalidMessage="有效长度为1-255" />
+					</td>
+				</tr>
+				<tr style="height: 5px"></tr>
+				<tr class="submit">
+					<td colspan="2">
+						<input style="width: 70px;"  class="btn btn-primary btn-sm" type="button" value="提交" onclick="addparent()" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+</body>
+</html>

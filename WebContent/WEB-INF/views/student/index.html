@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/userjs/student_index.js"></script>
+</head>
+<body>
+	<table id="tbStudent-list" title="学生管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+		&nbsp;
+       	年级：<input type="text" id="tbGrade" class="easyui-combobox"  data-options="prompt:'请选择年级'" style="width: 120px;"/>
+		&nbsp;&nbsp;
+		班级：<input type="text" id="tbClass" class="easyui-combobox"  data-options="prompt:'请选择班级'" style="width: 120px;"/>
+		&nbsp;&nbsp;
+		姓名：<input type="text" id="tsName" class="easyui-textbox"  data-options="prompt:'请输入学生姓名'" style="width: 120px;"/>
+		&nbsp;&nbsp;
+		创建时间：<input id="AddDate" name="AddDate" style="width: 100px" class="easyui-datebox" data-options="prompt:'选择开始时间'" /> -
+		       <input id="AddDateEnd" name="AddDateEnd" style="width: 100px" class="easyui-datebox" data-options="prompt:'选择结束时间'" />
+		&nbsp;
+		<a class="easyui-linkbutton" plain="true" icon="icon-search" onclick="loadDate()">查询</a>
+		&nbsp;
+		<a class="easyui-linkbutton" plain="true" icon="icon-add" onclick="addStudent()">新增</a>
+	</div>	
+	<script type="text/javascript">
+	$('#tbGrade').combobox({
+        valueField:'id', //值字段
+        textField:'name', //显示的字段
+        url:'${ctx}/admin/students/all/grade.json',
+        width : "120px",
+        panelHeight:"auto",
+        onChange:function(gId){
+        	//$('#city').combobox('clear');
+         $('#tbClass').combobox({
+          valueField:'id', //值字段
+          textField:'name', //显示的字段
+          url : '${ctx}/admin/teacher/getClass/'+gId+'.json',
+     	  });
+        }
+     });
+</script>
+</body>

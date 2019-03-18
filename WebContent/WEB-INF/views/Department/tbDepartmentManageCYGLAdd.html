@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/Department/tbDepartmentManageCYGLAdd.js"></script>
+<style>
+
+
+/*长征中学选择列表*/
+
+*   {
+		text-decoration: none;
+	}
+	
+.clearfix {
+	clear: both;
+    }
+.xuanzeliebiaobox{
+	width: 250px;
+	height: 300px;
+	border: 1px solid #D4D4D4;
+	overflow: auto;
+	position: absolute;
+	right: 40px;
+	top: 120px;
+	background-color: rgba(255,255,255,0.5);
+}
+
+.title h1{
+	font-size: 14px;
+	font-family: "微软雅黑";
+	float: left;
+	margin-left: 10px;
+	line-height: 50px;
+}
+
+.tianjia{
+	border: none;
+	width: 50px;
+	height: 25px;
+	background: #2B98D2;
+	color: #FFFFFF;
+	outline: none;
+	cursor: pointer;
+	float: right;
+	margin: 10px;
+	border-radius: 4px;
+}
+
+.xuanzeliebiao{
+	width: 230px;
+	height: 238px;
+	border: 1px solid #D4D4D4;
+	margin: auto;
+	overflow: auto;
+	background-color: #ffffff;
+}
+
+.xuanzeliebiao ul{
+	width: 160px;
+	margin: 0 auto;
+}
+
+.xuanzeliebiao ul li{
+	list-style: none;
+	border-bottom: 1px dashed #EFEFEF;
+	/* margin-left: -35px; */
+	padding-bottom: 5px;
+	padding-top: 5px;
+	cursor: pointer;
+}
+
+.name0000001{
+	float: left;
+	
+}
+
+.no0000001{
+	float: right;
+}
+/*长征中学选择列表*/
+</style>
+</head>
+<body>
+		<table id="tbDepartmentManageCYGLAdd" title="运营管理  > 部门管理  > 成员管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+	    
+		<!--长征选择列表-->
+		<div class="xuanzeliebiaobox">
+			<div class="title">
+				<h1>选择列表</h1>
+				<!-- <input style="width: 60px; height: 30px;" class="btn btn-primary btn-sm" type="button"  value="添加" onclick="" /> -->
+				<a class="addcls" onclick="add()" style="float: right;margin-right: 10px;margin-top: 10px">添加</a>
+				<div class="clearfix"></div>
+			</div>
+			<div class="xuanzeliebiao">
+				<ul id="one">
+				     <!--  <li>
+						<span id="" class="name0000001">姓名</span>
+						<span id="" class="no0000001">工号</span>
+						<div class="clearfix"></div>
+					  </li> -->
+				</ul>
+			</div>
+		</div>
+		<!--长征选择列表-->
+		
+	    <div id="tb" class="datagrid-toolbar" style="padding:5px;">			
+		<table>
+		        <tr height="5px"></tr>
+				<tr>
+				      <td align="right" width="80px">姓名：</td>
+                      <td><input id="ttName" name="ttName" style="width:100px;" class="easyui-textbox"  data-options="prompt:'请输入姓名'" /></td>
+				      <td align="right" width="80px">性别：</td>
+				      <td><input id="ttSex" name="ttSex" style="width:100px;" class="easyui-combobox"  data-options="prompt:'请选择性别'"/>&nbsp;&nbsp;</td>
+				      <td><a class="searchcls" onclick="loadDate()" >查询</a>&nbsp;&nbsp;</td>
+	            </tr>	
+	            <tr height="5px"></tr> 	                
+		</table>				     	
+</div>
+ <input type="hidden" id="tdId" value="${tbDepartment.tdId!''}">	 
+</body>
+</html>

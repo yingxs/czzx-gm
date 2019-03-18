@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<@h.easyui />
+		<script type="text/javascript" src="${ctx}/static/js/views/userjs/teacher_list.js"></script>
+	</head>
+<body>
+	<table id="teacher-list" title="教师管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+
+	<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+		<table style="width: 800px;">
+	    		<tr>
+		    		
+					<td>姓名:<input type="text" id="ttName" class="easyui-textbox"   data-options="prompt:'请输入教师姓名'"/></td>
+					
+					<td>性别:<input id="ttSex"  name="ttSex" class="easyui-combobox"  data-options="prompt:'请选择教师性别'" style="width: 120px;"/></td>
+						
+					
+					<td>所属部门:<input id="department"  name="department" class="easyui-combobox"  data-options="prompt:'请选择部门'" style="width: 120px;"/></td>
+						
+					<td><a class="searchcls" onclick="loadDate()" >查询</a></td>
+					<td><a class="addcls" onclick="addHtml()" >新增</a></td>
+				</tr>
+	    	</table>
+	</div>
+	
+	<script type="text/javascript">
+	$('#department').combobox({
+       valueField:'tdId', //值字段
+       textField:'tdName', //显示的字段
+       url:'${ctx}/admin/teacher/getDepartment',
+	});
+	</script>
+</body>
+</html>

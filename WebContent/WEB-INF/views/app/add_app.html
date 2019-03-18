@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<link rel="stylesheet"
+	href="${ctx}/static/kindeditor/themes/default/default.css" />
+<link rel="stylesheet"
+	href="${ctx}/static/kindeditor/plugins/code/prettify.css" />
+<script charset="utf-8" src="${ctx}/static/kindeditor/kindeditor.js"></script>
+<script charset="utf-8" src="${ctx}/static/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8"
+	src="${ctx}/static/kindeditor/plugins/code/prettify.js"></script>
+<script>
+KindEditor.ready(function(K) {
+	var editor1 = K.create('textarea[name="taContent"]', {
+		cssPath : '${ctx}/static/kindeditor/plugins/code/prettify.css',
+		uploadJson : '${ctx}/static/kindeditor/jsp/upload_json.jsp',
+		allowFileManager : true,
+		afterBlur : function() {
+			var self = this;
+			self.sync();
+		}
+	});
+	prettyPrint();
+});
+</script>
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+	vertical-align: top;
+}
+
+.adBtn {
+	width: 56px;
+	height: 30px;
+	border: 1px solid #ccc;
+	background: green;
+	color: #fff;
+}
+
+.box .myfiles {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+
+.aptitude {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+.submit-btn {
+	display: inline-block;
+	width: 52px;
+	height:28px;
+	text-decoration: none;
+	background-color: green;
+	text-align: center;
+	color: white;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin:10px;">
+			<form id="addfm" method="post" enctype="multipart/form-data">
+				<div class="fitem">
+					<label>应用名称:</label> 
+					<input name="taiName" id="taiName"class="easyui-textbox" style="width: 171px;" data-options="prompt:'请输入应用名称'" /><span style="color: red">*</span>
+				</div>
+				<div class="fitem">
+					<label>应用地址:</label> 
+					<input name="taiWebAddr" id="taiWebAddr"class="easyui-textbox" style="width: 171px;" data-options="prompt:'请输入应用地址'" /><span style="color: red">*</span>
+				</div>
+				<div class="fitem">
+					<label>应用小图标:</label> <div id="preview1" style="width:120px;display: inline-block;vertical-align: bottom;">
+						<img src="" id="apImg" width="120" height="120" class="border apImg" />
+					</div>
+					<button class="adBtn">浏览</button>
+					<input type="file" onchange="previewImage(this,1)" class="aptitude" name="fileUrl" id="fileUrl" accept="image/*" data-required="true" data-descriptions="detail_drawing" /> 
+					<input type="hidden" id="taPicture" class="diUrl" value="" />
+					<span style="color: red">(图标尺寸:120*120)</span>
+				</div>
+	
+				<div class="fitem">
+					<label>应用介绍:</label><br/><br/>
+					<textarea name="taContent" id="taContent" cols="100" rows="8" style="width: 100%; height: 300px; visibility: hidden;"></textarea>
+				</div>
+	
+				<input type="hidden" name="action" id="hidtype" />
+			</form>
+			<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+			<div id="dlg-buttons">
+				<a href="javascript:void(0)" class="submit-btn"
+					onclick="save()">提交</a> <!-- <a
+					href="javascript:void(0)" class="cancel"
+					onclick="javascript:parent.closeTab('新增应用');">取消</a> -->
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+
+	//新增保存
+	function save() {
+		var taiName = $("#taiName").textbox('getValue');
+		var filename = $("#fileUrl").val();
+		if(isEmpty(taiName)){
+			$.messager.alert("提示信息", "请输入应用名称");
+			return false;
+		}
+		if(taiName.length>20){
+			$.messager.alert("提示信息", "请输入少于20字的应用名称");
+			return false;
+		}
+		alert("filename:"+filename);
+		if(isEmpty(filename)){
+			$.messager.alert("提示信息", "请选择图标");
+			return false;
+		}
+		$("#addfm").form("submit", {
+			url : '${ctx}/admin/applicaton/save.htm',
+			onsubmit : function() {
+				return $(this).form("validate");
+			},
+			success : function(result) {
+				if (result == "1") {
+					$.messager.alert("提示信息", "操作成功");
+					parent.addTabFun({
+						src : ctx + "/admin/applicaton/list",
+						title : "应用管理"
+					});
+					parent.closeTab("新增应用");
+				} else {
+					$.messager.alert("提示信息", "操作失败");
+				}
+			}
+		});
+	}
+	/**
+	 * 判断是否为空
+	 * 
+	 * @param str
+	 * @returns {Boolean}
+	 */
+	function isEmpty(str) {
+		if (str.length <= 0 || str == null) {
+			return true;
+		}
+		return false;
+	}
+	//图片上传预览，IE用了滤镜
+	 function previewImage(file,indexs){
+		 var MAXWIDTH  = 120;
+		 var MAXHEIGHT = 120;
+		 var div = document.getElementById('preview'+indexs);
+		 if (file.files && file.files[0])
+		 {
+		     div.innerHTML ='<img id=imghead'+indexs+'>';
+		     var img = document.getElementById('imghead'+indexs);
+		     img.onload = function(){
+		       var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		       img.width  =  rect.width;
+		       img.height =  rect.height;
+		       img.style.marginTop = rect.top+'px';
+		     }
+		     var reader = new FileReader();
+		     reader.onload = function(evt){img.src = evt.target.result;}
+		     reader.readAsDataURL(file.files[0]);
+		 }
+		 else //兼容IE
+		 {
+		   var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+		   file.select();
+		   //file.blur();
+		   $('#preview1').focus();
+		   var src = document.selection.createRange().text;
+		   div.innerHTML = '<img id=imghead'+indexs+' style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);"/>';
+		   var img = document.getElementById('imghead'+indexs);
+		   img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+		   var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		   status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+		   div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+		 }
+	 }
+	 function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+		  var param = {top:0, left:0, width:width, height:height};
+		  if( width>maxWidth || height>maxHeight )
+		  {
+		      rateWidth = width / maxWidth;
+		      rateHeight = height / maxHeight;
+		      if( rateWidth > rateHeight )
+		      {
+		          param.width =  maxWidth;
+		          param.height = Math.round(height / rateWidth);
+		      }else
+		      {
+		          param.width = Math.round(width / rateHeight);
+		          param.height = maxHeight;
+		      }
+		  }
+		  param.left = Math.round((maxWidth - param.width) / 2);
+		  param.top = Math.round((maxHeight - param.height) / 2);
+		  return param;
+		}
+	</script>
+</body>
+</html>

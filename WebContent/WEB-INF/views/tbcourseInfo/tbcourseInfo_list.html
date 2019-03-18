@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <@h.easyui />
+    <!--课程管理列表-->
+    <script type="text/javascript" src="${ctx}/static/js/views/tbcourseInfo/tbcourseInfo_list.js"></script>
+    <!--     <script type="text/javascript">
+            //该用户对这个菜单的权限按钮
+            var btnList=${btnList!'0'};
+            $(function(){
+                $("#AddDateEnd").datebox({
+                    onSelect:function(date){
+                        var startDate = $("#AddDate").datebox("getValue");
+                        var endDate = $("#AddDateEnd").datebox("getValue");
+                        if(startDate>endDate){
+                            $.messager.alert("提示","结束时间不能小于开始时间","info");
+                            $("#AddDateEnd").datebox('setText','');
+                            $("#AddDateEnd").datebox('setValue','');
+                            return false;
+                        }
+                    }
+                });
+
+              //设置按钮
+                if(btnList){
+                    for(var i=0;i<btnList.length;i++){
+                        if(btnList[i].name=="导出"){
+                            $('#tb').append('<a style="margin-left:4px;" data-path="'+btnList[i].url+'" data-menuId="'+btnList[i].menuId+'" href="javascript:void(0);"  class="exportcls" onclick="expoerAction(this);" >导出</a>&nbsp;');
+                        }
+                    }
+                }
+
+            });
+
+        </script> -->
+</head>
+<body>
+<table id="tbcourseInfo_Datagrid" title="课程管理列表"  style="height:auto;width: auto" data-options="nowrap:true,rownumbers:true,singleSelect:true,toolbar:'#tb',fitColumns:false">
+
+</table>
+<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+    <div style="display:inline;width:140px;margin-right:10px;">科目名称 &nbsp;<input type="text" id="tiiName" name="tsiName" class="easyui-combobox" data-options="validType:'length[1,10]' " data-options="prompt:'科目名称'" /></div>
+    <div style="display:inline;width:140px;margin-right:10px;">课程名称&nbsp;<input type="text" id="tidiName" name="tciName" class="easyui-combobox"  data-options="validType:'length[1,10]' " data-options="prompt:'课程名称'" /></div>
+    <div style="display:inline;width:140px;margin-right:10px;">创建时间 &nbsp;<input id="AddDate" name="AddDate"  class="easyui-datebox" data-options="prompt:'开始时间'" /> 至</div>
+    <div style="display:inline;width:140px;margin-right:10px;"><input id="AddDateEnd" name="AddDateEnd"  class="easyui-datebox" data-options="prompt:'结束时间'" /></div>
+    <a class="searchcls" onclick="findDetail()" href="javascript:void(0)" >查询</a>
+     <a class="easyui-linkbutton addcls"  plain="true" onclick="addRow()">新增</a>
+
+</div>
+</body>
+</html>

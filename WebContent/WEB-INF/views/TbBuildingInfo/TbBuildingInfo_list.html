@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<@h.easyui />
+	<script type="text/javascript" src="${ctx}/static/js/views/TbBuildingInfo/TbBuildingInfo_list.js"></script>
+	<script type="text/javascript" src="${ctx}/static/easyui-1.4/jquery.validatebox.js"></script>
+	<style type="text/css">
+		.room-cell{
+			border:1px solid #ddd;
+			width:150px;
+			height:50px;
+			margin:5px;
+			display:inline-block;
+		}
+		#room-cell-list{
+			padding:20px;
+			
+		}
+		#room-cell-list font{
+			display:inline-block;
+			line-height:50px;
+			font-weight:normal;
+		}
+		#room-cell-list h5{
+			text-align:center;
+		}
+		
+		.room-use{
+			background:#7ab2e4;
+			border:1px solid #95a4ad;
+		}
+		
+		.room-select{
+			border:2px solid #green;
+		}
+		
+		.roomA{
+			/* width: 160px; */
+			min-width: 160px;
+			padding:0 10px;
+			height: 30px;
+			text-align: center;
+			line-height: 30px;
+			display: inline-block;
+			float: left;
+			margin-left: 5px;
+			margin-top:5px;
+			border: solid 1px #ddd;
+			font-size: 10px;
+			color: black;
+		}
+		.roomA:HOVER {
+		    border: solid 1px #199ed8 !important;
+		    color: white !important;
+		    background-color: #199ed8 !important;
+		}
+		
+		.roomHavaA{
+		    /* width: 160px; */
+		    min-width: 160px;
+		    padding:0 10px;
+		    height: 30px;
+		    text-align: center;
+		    line-height: 30px;
+		    display: inline-block;
+		    float: left;
+		    margin-left: 5px;
+		    margin-top:5px;
+		    background:#88C4ED;
+		    border: solid 1px #ddd;
+		    font-size: 10px;
+		    color: black;
+		}
+		.roomHavaA:HOVER {
+		    border: solid 1px #199ed8 !important;
+		    color: white !important;
+		    background-color: #199ed8 !important;
+		}
+		 .layout-panel {
+		    border: none;
+		} 
+		
+		.layout-split-east {
+			margin-left: 20px;
+		}
+		.layout-panel-center{
+			margin-left: 10px;
+		}
+		.datagrid-wrap{
+			border-top:none;
+		}
+		.layout-panel-west{
+			border:none;
+		}
+	</style>
+</head>
+<body style="background:#fff">
+	<!-- 楼宇管理 -->
+    <div id="div_panel_left" data-options="region:'west',title:'楼宇管理',split:true,collapsible:false" style="width:10%;">
+	    <!-- 表格工具栏 -->
+		<div id="div_left_datagrid_toolbar" class="datagrid-toolbar" >
+			<form id="search_form">
+							<a id="button_add_build" style="margin-left:10px;" ></a> 
+							<a id="button_remove_build" ></a>
+							<a id="button_edit_build" ></a>
+							<div style=" text-align: center; margin: 10px 0px 10px 0;">
+								<input id="input-button-search" class="easyui-searchbox easyui-validatebox"  data-options="validType:['Special','length[0,20]']" style="width:130px"></input>
+							</div>
+			</form>
+		</div>
+		<!-- 数据表格 -->
+		<table id="table_BuildingInfo_list" > </table>
+    </div>
+    
+	<!-- 楼层管理 -->
+    <div id="div_panel_center" data-options="region:'center',title:'楼层管理'" style="width:8%;padding:0px;border:0px;">
+    <!-- 表格工具栏 -->
+		<div id="div_center_datagrid_toolbar" class="datagrid-toolbar"  >
+						<a id="button_add_floor" style="margin-left:10px;" ></a> 
+						<a id="button_remove_floor" ></a>
+			<h5 style="border: 1px solid #ddd;font-weight: normal;text-align: center;width: 80px;margin-left: 10px;margin-top: 10px;margin-bottom: 12px;">楼层名称</h5>
+		</div>
+		<!-- 数据表格 -->
+		<table id="table_floorInfo_list" > </table>
+		
+	
+    </div>
+	<!-- 教室管理 -->
+    <div id="div_panel_right" data-options="region:'east',title:'教室管理',split:true,collapsible:false" style="width:78%;">
+    	 <div class="datagrid-toolbar" >
+            <a id="button-add-classRoom"     href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true"/></a>
+            <a id="button-remove-classRoom"  href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-delete',plain:true"></a>
+            <a id="button-relieve-classRoom"  href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true" style="background:#169BD5;border:1px solid #ddd;color:#fff">解除绑定</a>
+        </div>
+    	<div id="room-cell-list">
+    		
+    	</div>
+    </div>
+    
+    
+     <!-- 新增楼宇 -->
+    <div id="addBuild_window" class="easyui-window" title="新增楼宇"  
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:400px;height:170px;">
+    	<form id="add_build_form">
+	    	<div style="text-align:center;margin-top:30px;">
+	    		楼宇名称：<input class="easyui-validatebox"  id="inputText-add-buildName" 
+	    		style="width: 150px"  data-options="validType:['Special','length[0,20]']" >
+	    		<font color="red" >*</font>
+	    	</div>
+	    	<h5 id="addBuild_message" style="height:20px;line-height:20px;color:red;font-weight:normal;text-align:center;margin-top:10px;"></h5>
+	    	<div style="text-align:center;margin-top:10px;">
+	    		<input id="button-addBuild-submit" type="button" value="提交" style="width:80px;height:30px;border:1px solid #ddd;background:#169BD5;color:#fff;cursor:pointer" >
+	    		<input id="button-addBuild-clear" type="button" value="取消" style="width:80px;height:30px;border:1px solid #ddd;background:#f2f2f2;color:#000;cursor:pointer" >
+	    	</div>
+    	</form>
+    </div>
+    
+    <!-- 新增楼层 -->
+    <div id="addFloor_window" class="easyui-window" title="新增楼层"  
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:400px;height:200px;">
+    	<form id="add_floor_form">
+    		<table style="margin-top:30px;margin-left:70px;">
+	  			<tr>
+					<td align="right" width="70px;">所属楼宇：</td>
+					<td align="left">
+					<input id="combobox-addFoor-buildID" class="easyui-validatebox"
+						data-options="required:true,validType:['Special','length[0,20]']"
+						style="width: 150px;">
+						<span style="color: red">*</span>
+					</td>
+				</tr>
+	  			<tr>
+					<td align="right">楼层名称：</td>
+					<td align="left">
+						<input id="combobox-addFoor-FoorName" class="easyui-textbox" 
+							data-options="prompt:'请选择楼层名称' ,required:true,validType:['Special','length[0,20]'],missingMessage:'请输入楼层名称'"
+							style="width: 150px; "> 
+						<span style="color: red">*</span>
+					</td>
+				</tr>
+    		</table>
+	    	<h5 id="addFloor_message" style="height:20px;line-height:20px;color:red;font-weight:normal;text-align:center;margin-top:10px;"></h5>
+	    	<div style="text-align:center;margin-top:10px;">
+	    		<input id="button-addFloor-submit" type="button" value="提交" style="width:80px;height:30px;border:1px solid #ddd;background:#f2f2f2;color:#000;cursor:pointer" >
+	    		<input id="button-addFloor-clear" type="button" value="取消" style="width:80px;height:30px;border:1px solid #ddd;background:#f2f2f2;color:#000;cursor:pointer" >
+	    	</div>
+    	</form>
+    </div>
+    
+    <!-- 编辑楼宇 -->
+    <div id="editBuild_window" class="easyui-window" title="编辑楼宇"  
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:400px;height:170px;">
+    	<form id="edit_build_form">
+	    	<div style="text-align:center;margin-top:30px;">
+	    		楼宇名称：<input class="easyui-validatebox"  id="inputText-edit-buildName" 
+	    		style="width: 150px"  data-options="validType:['Special','length[0,20]']" >
+	    		<font color="red" >*</font>
+	    	</div>
+	    	<h5 id="editBuild_message" style="height:20px;line-height:20px;color:red;font-weight:normal;text-align:center;margin-top:10px;"></h5>
+	    	<div style="text-align:center;margin-top:10px;">
+	    		<input id="button-editBuild-submit" type="button" class="easyui-linkbutton"  value="提交" style="width:80px;height:30px;border:1px solid #ddd;background:#169BD5;color:#fff;cursor:pointer" >
+	    		<input id="button-editBuild-clear" type="button" class="easyui-linkbutton" value="取消" style="width:80px;height:30px;border:1px solid #ddd;background:#ddd;color:#000;overflow:hidden;cursor:pointer" >
+	    	</div>
+    	</form>
+    </div>
+    
+</body>
+</html>

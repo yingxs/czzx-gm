@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<@h.easyui />
+	<title>Title</title>
+	<script type="text/javascript" src="${ctx}/static/easyui-1.4/jquery.validatebox.js"></script>
+	<script type="text/javascript" src="${ctx}/static/js/views/TbMajorInfo/TbMajorInfo_edit.js"></script>
+	<style type="text/css">
+		.panel-body-noheader{
+			max-height: 210px;
+		}
+		
+		td[align="right"] {
+			color: #000;
+			font-weight:bold;
+		}
+	</style>
+</head>
+<body>
+	<!-- 导航栏 -->
+	<div class="panel-header">
+		<div class="panel-title">基础数据  > 专业管理 > 编辑</div>
+		<div class="panel-tool"></div>
+	</div>
+
+	<!-- 新增门店表单 -->
+	<form id="form_add">
+		<div style="margin-left:50px;margin-top:15px;">
+			<table id="table_add_form" cellspacing="12" width="700px" style="float: left; display: inline-block; font-size: 14px">
+				
+				<tr>
+					<input type="hidden" id="hidden_tmiId" value="${(entity.tmiId)!}" /> 
+					<input type="hidden" id="hidden_tmiDepartmentId" value="${(entity.tmiDepartmentId)!}" />
+					<input type="hidden" id="hidden_tmiInstituteId" value="${(entity.tmiInstituteId)!}" />
+					<input type="hidden" id="hidden_tmiMajorYear" value="${(entity.tmiMajorYear)!}" />
+				</tr>
+				<tr>
+					<td align="right">学院选择:</td>
+					<td align="left">
+						<input id="combobox_institute_list" 
+							data-options="prompt:'请选择所属学院',validType:['Special','length[0,10]']"
+							class="easyui-combobox easyui-validatebox"
+							style="width: 200px; height: 30px;">
+					</td>
+				</tr>
+				<tr>
+					<td align="right">所属系别:</td>
+					<td align="left">
+						<input id="combobox_department_list" 
+						data-options="prompt:'请选择所属系别',validType:['Special','length[0,10]']"
+						class="easyui-combobox easyui-validatebox"
+						style="width: 200px; height: 30px;">
+						<span style="color: red">*</span>
+					</td>
+				</tr>
+				<tr>
+					<td align="right">专业名称:</td>
+					<td align="left">
+						<input id="textbox_major_name" value="${(entity.tmiName)!}" class="easyui-textbox easyui-validatebox" 
+							data-options="prompt:'请输入20个字以内的专业名称',required:true,validType:['Special','length[0,20]'],missingMessage:'请输入专业名称'"
+							style="width: 200px; height: 30px;"> 
+						<span style="color: red">*</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td align="right">专业年限:</td>
+					<td align="left">
+						<input id="combobox_major_year" class="easyui-validatebox"
+						style="width: 200px; height: 30px;">
+						<span style="color: red">*</span>
+					</td>
+				</tr>
+				
+				<tr>
+					<td align="right">专业代码:</td>
+					<td align="left">
+						<input id="textbox_major_code"  value="${(entity.tmiCode)!}"  class="easyui-textbox easyui-validatebox" 
+							data-options="prompt:'请输入20个字以内的专业代码',validType:['Special','length[0,20]']"
+							style="width: 200px; height: 30px;"> 
+					</td>
+				</tr>
+				
+				
+				
+			</table>
+			<div style="position: absolute; top: 300px; left: 130px;">
+				<a id="button_save" class="easyui-linkbutton"
+					style="width: 80px; height: 30px; font-size: 13px; color: #666;background:#169BD5;border:0px;color:#fff"
+					>保存
+				</a>
+				&nbsp;&nbsp;
+				<a class="easyui-linkbutton" href="${ctx}/TbMajorInfo/index/list"
+					style="width: 80px; height: 30px; font-size: 13px; background:#DFDFDF;border:0px;color:#fff"
+					>取消
+				</a>
+			</div>
+		</div>
+	</form>
+
+
+</body>
+</html>

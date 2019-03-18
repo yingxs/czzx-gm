@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/Department/tbDepartmentManageCYGL.js"></script>
+</head>
+<body>
+		<table id="tbDepartmentManageCYGL" title="运营管理  > 部门管理  > 成员管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+		<div id="tb" class="datagrid-toolbar" style="padding:5px;">	
+		<table>
+		        <tr height="10px"></tr>
+				<tr>
+				      <td align="right" width="80px" style="font-weight: bold;">部门名称：</td>
+                      <td>${tbDepartment.tdName!''} &nbsp;&nbsp;</td>
+	                  <td><a class="addcls" onclick="addHtml(${tbDepartment.tdId!''})" >添加成员</a></td>
+				    				                
+	            </tr>	
+	            <tr height="10px"></tr>
+	            
+	            <tr>
+	                  <td align="right" width="80px" style="font-weight: bold;">成员列表：</td>
+	                
+	            </tr>
+	            <tr height="10px"></tr> 	                
+		</table>	
+		</div>		
+		<input type="hidden" id="tdId" value="${tbDepartment.tdId!''}">	  
+		<input type="hidden" id="tdtId" >	  
+		
+		
+		<!-- 编辑简历窗口  -->
+	    <div id="updateResume-win" class="easyui-window" title="编辑简历" 
+    	data-options="collapsible:false,minimizable:false,maximizable:false,modal:true,closed:true,resizable:false" 
+    	style="width:330px;height:250px;">
+    	<div class="m-form" style="margin-top: -5px">
+		   <form id="updateResume-form" name="" action="#" method="post">
+		        <fieldset style="border:0;">
+		            <div class="formitm">
+		                <label class="lab">部门名称：</label>
+		                <div class="ipt">
+		               	<label>${tbDepartment.tdName!''}</label>
+		                </div>
+		            </div>
+		            <div class="formitm">
+		                <label class="lab">教师名称：</label>
+		                <div class="ipt">
+		                    <label id="ttNames"></label>
+		                </div>
+		            </div>
+		              <div class="formitm">
+		                <label class="lab">教师介绍：</label>
+		                <div class="ipt">
+		                    <input type="text" id="tdtTeacherDesp" name="tdtTeacherDesp" class="easyui-textbox" data-options="prompt:'请输入教师介绍',multiline:true" style="width:150px;height:50px"
+						    		maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50"/>
+		                </div>
+		            </div>
+		            <div style="height: 20px;"></div>
+		            <div align="center" style="margin-right: 10px;">
+						<input style="width: 50px;" class="btn btn-primary btn-sm" type="button" value="保存" onclick="addtend()" />
+						<input style="width: 50px;" class="btn btn-default btn-sm" type="button" onclick="return1()" value="返回">
+					</div>
+		        </fieldset>
+		    </form>   
+		</div>
+    </div>
+	 
+	 
+</body>
+</html>

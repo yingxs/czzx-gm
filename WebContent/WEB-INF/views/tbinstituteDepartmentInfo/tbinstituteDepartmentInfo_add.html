@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/tbinstituteDepartmentInfo/tbinstituteDepartmentInfo_add.js"></script>
+
+ 
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增系别管理</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div class="blue-panel">
+			<form id="add-form" class="formc" action="#">
+				<table class="blue-table"><br>
+					
+					<tr>
+						<td style="text-align:right;font-weight:bold">所属&nbsp;&nbsp;&nbsp;&nbsp;学院：</td>
+						<td><label id="superCode" style="width: 40px;height: 10px"></label>
+                         <input type="text" id="tiiName" name="tidiInstituteId"  class="easyui-combobox" data-options="required:true,prompt:'请输入学院...',missingMessage:'学院不能为空!'" style="width:200px;" />
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">系&nbsp;&nbsp;名&nbsp;&nbsp;称：</td>
+						<td>
+						   <input type="text" id="tidiName" name="tidiName" class="easyui-textbox" data-options="required:true,missingMessage:'系名称不能为空!',prompt:'请输入系名称...',validType:['length[1,40]']" style="width:200px;" /><label class="red"></label>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">系&nbsp;&nbsp;编&nbsp;&nbsp;码：</td>
+						<td>
+					 <input type="text" id="tidiCode" name="tidiCode" class="easyui-textbox easyui-validatebox" data-options="required:true,missingMessage:'系名称不能为空!',prompt:'请输入系编码...',validType:['integer[1,40]']" style="width:200px;" /><label class="red"></label>
+						</td>
+					</tr>
+					
+						<tr>
+						<td style="text-align:right;font-weight:bold">显示&nbsp;&nbsp;&nbsp;&nbsp;排序：</td>
+						<td>
+					 <input type="text" id="tidiOrder" name="tidiOrder" class="easyui-textbox easyui-validatebox" data-options="required:true,missingMessage:'系名称不能为空!',prompt:'请输入排序...',validType:['integer[1,40]']" style="width:200px;" /><label class="red"></label>
+						</td>
+					</tr>
+					
+					
+					<!-- <tr>
+						<td style="text-align:right;font-weight:bold">显示&nbsp;&nbsp;&nbsp;&nbsp;图片：</td>
+						<td>
+					 		<input type="text" id="tidiIcon" name="tidiIcon"  class="easyui-textbox" data-options="required:true,missingMessage:'系名称不能为空!',prompt:'请输入图片...',validType:['length[1,40]']" style="width:200px;" /><label class="red"></label>
+						</td>
+					</tr> -->
+					<tr>
+	                <td style="font-weight: bold; text-align:right;">显示&nbsp;&nbsp;&nbsp;&nbsp;图片：</td>
+		                <td style="width:300px;">
+		                    <div class="item">
+		                        <input type="hidden" id="tpLogo" name="tidiIcon"/>
+		                        <img class="addImg" onclick="clickImg(this);" src="${ctx}/static/images/addImg.png" width="100" height="100" />
+		                        <div onclick="clickImg(this);"></div>
+		                        <input name="myfiles" type="file" class="upload_input" id="photo" onchange="ajaxFileUpload('photo')" />
+		                        <div class="preBlock">
+		                            <img class="preview" id="mImage" src="${ctx}/static/images/blank_.png" alt="" name="pic" width="100" height="100" />
+		                        </div>
+		                        <img class="delete" onclick="deleteImg('photo')" src="${ctx}/static/images/delete.png" style="height: 15px; width: 15px;" />
+		                    </div><span class="blue-required">文件大小限制为50M</span>
+		                </td>
+		            </tr>
+					
+				</table>
+					<div class="submit">
+						<div><input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="addUser()" />&nbsp;
+						<!-- <input style="width: 70px;" class="btn btn-default btn-sm" href="/czzx-gm/TbMajorInfo/index/list" type="reset" value="取消"> -->
+						
+							<a class="easyui-linkbutton" href="#" style="width: 80px; height: 30px; font-size: 13px; background:#DFDFDF;border:0px;color:#fff" >取消  </a>
+						</div>
+					</div>
+				
+			</form>
+		</div>
+	</div>
+</body>
+</html>

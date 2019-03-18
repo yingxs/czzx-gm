@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/kindeditor.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/kindeditor-4.1.10/lang/zh_CN.js"></script>
+<script type="text/javascript">
+
+//给内容添加富文本框
+KindEditor.ready(function(K) {
+	editor = K.create('textarea[name="tiContent"]', {
+        resizeType : 1,
+        allowPreviewEmoticons : false,
+        allowImageUpload : true,
+        uploadJson : ctx+'/tbInformation/imageUpload',
+        filePostName:'file',
+       	items : [
+       	 		'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'template', 'code', '|', 'justifyleft', 'justifycenter', 'justifyright',
+       	 		'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+       	 		'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+       	 		'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+       	 		'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+       	 		'anchor', 'link', 'unlink', '|', 'about'
+       	 	],
+	});
+
+});
+
+$(function(){
+	 $("#parent").combobox({   
+ 		url:ctx+'/tbInformationCata/findChildCata',
+ 		valueField:'ticId',   
+ 		textField:'ticName',
+ 		/*onChange : function(n,o){
+ 			$("#tcCityid").combobox({   
+   	  		url:ctx+'/words/getCity?id='+n,
+   	  		valueField:'cid',   
+   	  		textField:'cname'
+   		});  
+ 		}  */
+	}); 
+}); 
+
+function addparent(){
+	editor.sync();
+	if($("#add-form").form('validate') == false){
+		return false;
+	}
+	$.ajax({
+	type:"post",
+	dataType:"json",
+	url:ctx + "/tbInformation/add",
+	data:$("#add-form").serializeArray(),
+	success:function(data){
+		if(data=='100'){
+			parent.addTabFun({
+				src : ctx + "/tbInformation/index/list",
+				title : "资讯内容"
+			});
+			parent.closeTab("编辑资讯内容");
+		}
+		if(data=='101'){
+			$.messager.alert('提示',"数据有误，请联系技术人员核查-101!");
+		}
+		
+		if(data=='105'){
+			$.messager.alert('提示','该分类名称已存在,请核查!');
+		}
+	
+	}
+});
+
+}
+
+
+//function doReset(){
+//	parent.addTabFun({
+//		src : ctx + "/tbInformation/update?id=${tbInformation.tiId!''}",
+//		title : "编辑资讯内容"
+//	});
+//}
+</script>
+
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">编辑</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;">
+			<form id="add-form" class="formc" action="#">
+				<table cellspacing="12" width="800px" >
+					<tr>
+						<td width="80" style="text-align:right;font-weight:bold">文章标题：</td>
+						<td><input type="hidden" id="tiId" name="tiId" value="${tbInformation.tiId!''}"><input type="text" id="tiTitle" name="tiTitle" 
+							class="easyui-textbox"  data-options="required:true,missingMessage:'内容标题不能为空!',prompt:'请输入文章标题...'" 
+							value="${tbInformation.tiTitle!''}"  style="width:250px" 
+							maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50"/><label
+							class="red"></label></td>
+					</tr>
+					<tr >
+						<td width="80" style="text-align:right;font-weight:bold">所属分类：</td>
+						<td><input type="text" id="parent" name="tiCataId" value="${tbInformation.tiCataId!''}" panelHeight="auto" class="easyui-combobox"  style="width:250px" /><label class="red"></label></td>
+					</tr>
+					<tr>
+	                    <td style="text-align:right;font-weight:bold">详细内容：</td>
+	                    <td style="widht:400px; ">
+	                        <textarea id="editor_id" name="tiContent" style="width:380px;height:300px;">
+	                    		${tbInformation.tiContent!''}
+							</textarea>
+	                    	<!-- <textarea style="text-align: left: ;" name="tiContent" id="tiContent" cols="40" rows="10" name="teDesp" id="teDesp" class="easyui-validatebox" data-options="required:true,missingMessage:'内容不能为空!'">${tbInformation.tiContent!''}</textarea> -->
+	                    </td>
+                	</tr>
+					<tr>
+						<td colspan="2">
+							<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px;"></div>
+						</td>
+					</tr>
+					<tr class="submit">
+						<td colspan="2"><input style="width: 70px;"
+							class="btn btn-primary btn-sm" type="button" value="提交"
+							onclick="addparent()" /></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

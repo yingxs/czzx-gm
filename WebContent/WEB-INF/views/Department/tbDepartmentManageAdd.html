@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/Department/tbDepartmentManage.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+</head>
+<script type="text/javascript">
+
+//文件上传
+function ajaxFileUpload(){
+    //执行上传文件操作的函数
+    
+    	/**
+    	 * web版图片上传
+    	 */
+    	$.ajaxFileUpload({
+	        //处理文件上传操作的服务器端地址(可以传参数,已亲测可用)
+	        url:ctx + '/publicUploadTwo/fileUpload',
+	        secureuri:false,                       //是否启用安全提交,默认为false
+	        fileElementId:'tbIcon',          		   //文件选择框的id属性
+	        dataType:'text',                       //服务器返回的格式,可以是json或xml等
+	        data:{"folder":"tbIcon"},		   		//上传文件传到后台参数
+	        success:function(data, status){        //服务器响应成功时的处理函数	 
+	        	data = data.split(">")[1];
+	            data = data.replace("<pre>", '');  //ajaxFileUpload会对服务器响应回来的text内容加上<pre>text</pre>前后缀
+	            data = data.replace("</PRE>", '');
+	            data = data.replace("<pre>", '');
+	            data = data.replace("</pre", ''); //本例中设定上传文件完毕后,服务端会返回给前台[0`filepath]
+	            if(data.substring(0, 1) == 0){     //0表示上传成功(后跟上传后的文件路径),1表示失败(后跟失败描述)
+	            	//alert(data.substring(2));
+	            	$("img[id='webImage']").attr("src",  data.substring(2));
+	            	$("#tacWebImage").val(data.substring(2));
+	                $('#result1').html("图片上传成功! 图片名称："+data.substring(data.lastIndexOf("/")+1,data.length)+"<br/>");
+	            }else{
+	                $('#result1').html(data.substring(2));
+	            } 
+	        },
+	        error:function(data, status, e){ //服务器响应失败时的处理函数
+	            $('#result1').html(data);
+	        }
+	    });
+    }
+
+/**
+ * 添加
+ */
+function addContent(){
+		var tdName = $("#tdName").val(); //部门名称
+	//	var tgLogo = $("#tgLogo").val(); //头像
+		var tdDesp = $("#tdDesp").val(); //部门介绍
+		var tgLogo = $("#tacWebImage").val();//部门图标
+
+		var obj=document.getElementsByName('test'); //选择所有name="'test'"的对象，返回数组 
+		//取到对象数组后，我们来循环检测它是不是被选中 
+		var s=''; 
+		for(var i=0; i<obj.length; i++){ 
+			if(obj[i].checked){
+				s+=obj[i].value+','; //如果选中，将value添加到变量s中 
+			} 
+			
+		} 
+		//那么现在来检测s的值就知道选中的复选框的值了 
+		if(s==''){
+			$.messager.alert('提示','你还没有选择部门权限！','warning');
+			return false;
+		}
+		
+		if($("#add-form").form('validate') == false){
+			return false;
+		}
+		
+		$.ajax({
+ 			url:ctx+ '/departmentManage/add',
+ 			data:{tdName:tdName,tgLogo:tgLogo,tdDesp:tdDesp,s:s},
+ 			type:"post",
+ 			success:function(data){
+ 				//alert(data);
+ 				if(data == '100')
+ 				{
+ 					parent.addTabFun({
+ 						src : ctx + "/departmentManage/index/tbDepartmentManage",
+ 						title : "部门管理"
+ 					});
+ 					parent.closeTab("新增部门");
+ 				}else{
+ 					$.messager.alert('提示','新增失败','warning');
+ 				}
+ 			}
+ 		});
+
+}
+
+
+
+</script>
+<body>
+		<table id="tbDepartmentManageAdd" title="运营管理  > 部门管理   > 新增部门"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+	   	
+	    <form id="add-form" class="formc" method="post" action="#">
+		<table>
+		        <tr height="15px"></tr>
+				<tr>
+				      <td style="font-weight: bold;" align="right" width="80px">部门名称：</td>
+                      <td><input id="tdName" name="tdName" style="width:150px;" class="easyui-textbox"  data-options="required:true,missingMessage:'部门名称不能为空!',prompt:'请输入部门名称(必填)'"
+                            maxlength="50" validtype="length[1,50]" invalidMessage="有效长度为1-50"  /><font color="red">&nbsp;*</font>
+                      </td>
+	            </tr>	
+	            <tr height="15px"></tr>
+	            <tr>
+	                  <td style="font-weight: bold;" width="80px" align="right">部门图标：</td>
+	                  <td><input type="file" id="tbIcon" name="myfiles" onchange="ajaxFileUpload()"/></td>
+	            </tr>
+	            				
+				<tr>
+					<td align="right"></td>
+					<td>
+						<div id="result1" style="color: red"></div>
+						<input type="hidden" id="tacWebImage" name="tacWebImage" />
+						<img src="" id="webImage" name="webImage" height="150px" width="150px" /><font color="red">(建议:150*150)</font>
+					</td>
+				</tr>
+				
+	            <tr height="15px"></tr>
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">部门介绍：</td>
+	                  <td><input type="text" id="tdDesp" name="tdDesp" class="easyui-textbox"  data-options="prompt:'请输入部门介绍',multiline:true"  style="width: 260px; height: 120px;"/>&nbsp;&nbsp;</td>
+	            </tr>
+	            <tr height="15px"></tr> 
+	            
+	            <tr>
+	                  <td style="font-weight: bold;" align="right" width="80px">部门权限：</td>
+	                  <td>
+	                       <input type="checkbox" name="test" value="1" />校长信箱
+                           <input type="checkbox" name="test" value="2" />家校留言
+                           <input type="checkbox" name="test" value="3" />心理咨询
+                      </td>
+	            </tr>
+	            <tr height="15px"></tr> 
+	            
+		</table>
+			<div style="width: 158px;">
+			<div align="right">
+			     <input style="width: 60px; height: 30px;" class="btn btn-primary btn-sm" type="button" value="确定"  onclick="addContent()" />&nbsp;
+			    <!--  <input style="width: 60px; height: 30px;" class="btn btn-primary btn-sm" type="button"  value="取消"  onclick="quexiao()" />		                 -->
+			</div>
+			</div>
+		</form>		
+</body>
+</html>

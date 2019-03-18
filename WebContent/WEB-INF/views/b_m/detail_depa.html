@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title> 
+<@h.easyui />
+<link rel="stylesheet" media="screen" href="${ctx}/static/css/otherStyle.css">
+<script type="text/javascript" src="${ctx}/static/js/views/userjs/depa_detail.js"></script>
+</head>
+	<body>
+		<div>
+			<div class="panel-header" class="easyui-tabs">
+				<div class="panel-title">成员管理</div>
+				<div class="panel-tool"></div>
+			</div>
+			<input type="hidden" id="tdId" name="tdId" value="${department.id!''}">
+			<div style="margin: 10px;">
+				<form id="add-form" class="formc" method="post" action="#">
+					<table>
+						<tr height="10px"></tr>
+						<tr>
+							<td align="left"  style="font-weight: bold;width: 80px;">部门名称：</td>
+							<td>${department.name!''}</td>
+						</tr>
+						<tr height="15px"></tr>
+						<tr>
+							<td align="left" style="font-weight: bold;">成员列表</td>
+						</tr>
+						<tr height="10px"></tr>
+						<tr>
+							<td colspan="2">
+							<div style="border-top: 1px solid #C0C0C0; display: block; height: 1px; width: 600px"></div>
+							</td>
+						</tr>
+					</table>
+					<table id="teacher-list"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

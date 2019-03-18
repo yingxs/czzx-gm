@@ -1,0 +1,465 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+* {
+	font-size: 13px;
+}
+
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+
+.chk_1, .chk_2, .chk_3, .chk_4 {
+	display: none;
+}
+
+/*******STYLE 1*******/
+.chk_1+label {
+	background-color: #FFF;
+	border: 1px solid #C1CACA;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px
+		rgba(0, 0, 0, 0.05);
+	padding: 9px;
+	border-radius: 5px;
+	display: inline-block;
+	position: relative;
+	margin-right: 30px;
+}
+
+.chk_1+label:active {
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px 1px 3px
+		rgba(0, 0, 0, 0.1);
+}
+
+.chk_1:checked+label {
+	background-color: #ECF2F7;
+	border: 1px solid #92A1AC;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px
+		rgba(0, 0, 0, 0.05), inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+	color: #243441;
+}
+
+.chk_1:checked+label:after {
+	content: '\2714';
+	position: absolute;
+	top: -10px;
+	left: 0px;
+	color: #758794;
+	width: 100%;
+	text-align: center;
+	font-size: 1.4em;
+	padding: 1px 0 0 0;
+	vertical-align: text-top;
+}
+
+.btn {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.btn-cor {
+	background: #028A39;
+	color: #fff;
+}
+
+#preview {
+	width: 260px;
+	height: 190px;
+	border: 1px solid #000;
+	overflow: hidden;
+}
+
+#imghead {
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
+}
+
+input {
+	border: solid 1px #ccc;
+}
+</style>
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/album/tbPhotoAlbum.js"></script>
+</head>
+<body>
+	<br />
+	<table id="tb" style="padding: 2px 5px; font-size: 13px">
+	<tr>
+		<td>
+		<td><button class="btn btn-cor" onclick="newDepas()" iconcls="icon-save">上传文件</button></td>
+		<td><button class="btn btn-cor" onclick="newDepa()" iconcls="icon-save">创建文件夹</button></td>
+		<td><button class="btn btn-cor" onclick="dels()" iconcls="icon-save">删除文件夹</button></td>
+		<td><button class="btn btn-cor" onclick="checkeds()" iconcls="icon-save">全选</button></td>
+		</tr>
+	</table>
+	<hr style="border: solid 1px #ccc" />
+	<div style="height: 93%;">
+	<table id="album-list" title="文件夹列表"  data-options="rownumbers:true,fit:true"></table>
+	</div>
+
+	<!-- 添加弹出层 -->
+	<div id="dlg" class="easyui-dialog" top="200px" left="200px"
+		style="width: 350px; height: 150px; padding: 10px 20px;" closed="true"
+		modal="true">
+		<form id="addfm" method="post" action="${ctx}/admin/photo/save.htm">
+			<div class="fitem">
+				<label>文件夹类型:</label> 
+					<input type="radio" name="tpaType" id="tpaType" value="1" />图片文件 
+					<input type="radio" name="tpaType" id="tpaType" value="2" />视频文件
+					<span style="color: red">*</span>
+			</div>
+			<div class="fitem">
+				<label>文件夹名称:</label> 
+				<input name="tpaName" id="addName" class="easyui-textbox" data-options="required:true,missingMessage:'文件夹不能为空!',prompt:'请输入文件夹名称'" maxlength="20" validtype="chinese" invalidMessage="文件夹名称必能为空且长度不超过20个字符10个汉字" style="width: 200px" />
+				<span style="color: red">*</span>
+			</div>
+			<input type="hidden" name="action" id="hidtype" />
+			<div style="padding-left: 60%; padding-top: 10px">
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="addPhotos()" iconcls="icon-save">保存</a> 
+				<a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#dlg').dialog('close')" iconcls="icon-cancel">取消</a>
+			</div>
+		</form>
+	</div>
+	
+	<!-- 添加弹出层 -->
+	<div id="dlgImgs" class="easyui-dialog"
+		style="width: 920px; height: 640px; padding: 10px 20px;" closed="true"
+		buttons="#dlg-buttons" modal="true">
+		<form id="nns" method="post" enctype="multipart/form-data" action="${ctx}/admin/photo/save_photo">
+			<div class="fitem">
+				文件夹类型: <input type="radio" name="tpaTypeSave" style="width: 35px;" value="1"/>图片文件
+						  <input type="radio" name="tpaTypeSave" style="width: 35px;" value="2"/>视频文件
+				<b style="color: red">*</b>
+			</div>
+			<div class="fitem">
+				选择文件夹: <input name="tpaColumnId_photo" id="tpaColumnId_photo" class="easyui-combobox" data-options="required:true,missingMessage:'文件夹不能为空!',prompt:'请选择文件夹'" style="width: 200px;" /> 
+				<b style="color: red">*</b>
+			</div>
+			<br /> <a href="javascript:void(0)" class="btn btn-cor"
+				onclick="addTo()" iconcls="icon-save">添加</a> 请选择要上传的图片或视频 <input
+				type="hidden" name="action" id="hidtypes" />
+			<hr style="border: solid 1px #ccc" />
+			<br />
+			<!--  -->
+			<div id="htmlss">
+				<div style="float: left; margin-right: 10px; margin-top:8px; width: 260px;height: 230px	" id="divs1">
+					<div id="preview1">
+						<img id="imghead1" width="260" height="180"
+							src='${ctx}/static/images/czzxdefault.jpg' />
+							
+					</div>
+					<input type="file" name="fileUrl" id="fileUrl1"
+						onchange="previewImage(this,1)" style="width: 230px;height: 20px" /><button onclick="yichu('divs1')" style="width: 30px;height: 20px">删除</button>
+					<br /> <input type="text" style="height: 30px; width: 260px;"
+						name="photoName" placeholder="请输入文件名称" /><br />
+				</div>
+			</div>
+			<!--  -->
+		</form>
+	</div>
+	<div id="dlg-buttons">
+		<button class="btn btn-cor" iconcls="icon-save" onclick="tj()">开始上传</button>
+		<button class="btn btn-cor" iconcls="icon-save"
+			onclick="javascript:$('#dlgImgs').dialog('close')">取消</button>
+	</div>
+<script type="text/javascript">
+		$(function() {
+			//获取栏目
+			$('#tpaColumnId').combobox({
+				valueField : 'tcId', //值字段
+				textField : 'tcName', //显示的字段
+				url : '${ctx}/admin/photo/getColumn?tcType=4',
+			});
+			//获取文件夹
+			$('#tpaColumnId_photo').combobox({
+				valueField : 'tpaId', //值字段
+				textField : 'tpaName', //显示的字段
+				url : '${ctx}/admin/photo/getAlbumAll',
+			});
+			
+			$("input[name=tpaTypeSave]").click(function(){
+				var type = $("input[name=tpaTypeSave]:checked").val();
+				//获取文件夹
+				$('#tpaColumnId_photo').combobox({
+					valueField : 'tpaId', //值字段
+					textField : 'tpaName', //显示的字段
+					url : '${ctx}/admin/photo/getAlbumAll?type='+type,
+				});
+			});
+		});
+
+		//弹出新增层
+		function newDepa() {
+			$("#dlg").dialog("open").dialog('setTitle', '添加文件夹');
+			$("#fm").form("clear");
+			$("#hidtype").val("submit");
+		}
+
+		//弹出新增层
+		function newDepas() {
+			$("#dlgImgs").dialog("open").dialog('setTitle', '上传图片或视频');
+			$("#fms").form("clear");
+			$("#hidtypes").value = "submit";
+		}
+		var tt = 1;
+		function addTo() {
+			tt++;
+			var htmls = ' <div style="float: left; margin-right: 10px;margin-top:8px; width:260px;height: 230px" id="divs'+tt+'"><div id="preview'+tt+'"><img id="imghead'+tt+'" width="260" height="180"  src="${ctx}/static/images/czzxdefault.jpg"/></div><input type="file" name="fileUrl" onchange="previewImage(this,'
+					+ tt
+					+ ')" style="width: 230px;height: 20px"/><button onclick="yichu(\'divs'
+					+ tt
+					+ '\')" style="width: 30px;height: 20px">删除</button><br/><input type="text" style="height: 30px; width: 260px;" name="photoName" placeholder="请输入文件名称"/></div>';
+			$("#htmlss").append(htmls);
+		}
+		function yichu(ids){
+			$("#"+ids).remove();
+		}
+		
+		var isChek = false;
+		function checkeds(){
+			if(isChek==false){
+				isChek = true;
+				$(":checkbox").each(function(){
+					   $(this).prop("checked",true);
+					}); 
+			}else{
+				isChek = false;
+				$(":checkbox").each(function(){
+					   $(this).prop("checked",false);
+					});
+				
+			}
+			
+		}
+		
+		function tj(){
+			var sel_photoId = $("#tpaColumnId_photo").combobox('getValue');
+			var tpaTypeSave = $("input[name=tpaTypeSave]:checked").val();
+			if(isEmpty(tpaTypeSave)){
+				$.messager.alert("提示信息", "请选择文件夹类型");
+				return false;
+			}
+			if(isEmpty(sel_photoId)){
+				$.messager.alert("提示信息", "请选择文件夹");
+				return false;
+			}
+			var flag = eachFile();
+			
+			if(flag==false){
+				$.messager.alert("提示信息", "请选择要上传的文件");
+				return false;
+			}
+			$("#nns").submit();
+		}
+		
+		function addPhotos(){
+			var addName = $("#addName").textbox('getValue');
+			var tpaType = $("#tpaType").val();
+			
+			if(isEmpty(tpaType)){
+				$.messager.alert("提示信息", "请选择文件夹类型");
+				return false;
+			}
+			
+			if(isEmpty(addName)){
+				$.messager.alert("提示信息", "请输入文件夹名称");
+				return false;
+			}
+			
+			var htmlobj=$.ajax({url:"${ctx}/admin/photo/checks.htm?photoName="+addName,async:false});
+			if(htmlobj.responseText!='0'){
+				$.messager.alert("提示信息", "该文件夹已经存在!");
+				return false;
+			}
+			
+			$("#addfm").submit();
+		}
+		
+		function eachFile(){
+			var flag = true;
+			$(":input[name='fileUrl']").each(function(){
+				if(isEmpty($(this).val())){
+					flag = false; 
+				}
+			})
+			return flag;
+		}
+		
+		function dels(){
+			var chk_value="";
+			var selections= $('#album-list').datagrid('getSelections');
+			for(var i=0;i<selections.length;i++){
+				 if(i == selections.length-1){
+					 chk_value+=selections[i].tpa_id;
+				 }else{
+					 chk_value+=selections[i].tpa_id+",";
+				 }
+			}
+			if(chk_value.length==0){
+        		$.messager.alert("提示信息", "请选择文件夹!");
+        		return false;
+        	}else{
+			 $.messager.confirm("确认", "确认删除吗?", function (r) {  
+			        if (r) {  
+			        	$.messager.progress({
+			                title:'请等待..',
+			                msg:'正在删除文件夹' 
+			            });
+						
+						$.ajax({
+							type:"POST",
+							dataType:'text',
+							url:ctx+"/admin/photo/removeAlbums",
+							data:{
+								chk_value:chk_value
+							},
+							success:function(msg){
+								$.messager.progress('close');
+								if(msg == "0"){
+									$.messager.alert("提示",'删除成功！','info');
+									$('#album-list').datagrid('reload');
+								}else if($.trim(msg)=='unauthorized'){
+									$.messager.alert('提示','您没有权限!','warning');
+								}else if(msg == "112"){
+									$.messager.alert('提示','该文件夹下还有文件，暂时不能删除!','warning');
+								}else{
+									$.messager.alert('提示','设置失败，请稍候再试!','error');
+								}
+							}
+						});
+			        }  
+			    }); 
+        	}
+			
+		}
+		/**
+		 * 判断是否为空
+		 * 
+		 * @param str
+		 * @returns {Boolean}
+		 */
+		function isEmpty(str){
+			if(str == null || str.length<=0 ){
+				return true ;
+			}
+			return false ;
+		}
+	</script>
+	<script type="text/javascript">
+//图片上传预览，IE用了滤镜
+function previewImage(file,indexs){
+	var MAXWIDTH  = 260;
+	var MAXHEIGHT = 180;
+	var div = document.getElementById('preview'+indexs);
+	var type = $("input[name=tpaTypeSave]:checked").val();
+	if(type == null || type == ""){
+		$.messager.alert("提示信息", "请先选择文件夹类型:");
+	}
+	if (file.files && file.files[0]){
+		//获取文件名进行判断
+		var fileName = file.files[0].name;
+	    var extName = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();//（把路径中的所有字母全部转换为小写）        
+	    
+		if(type == 1){//图片文件
+			var AllImgExt=".jpg|.png|.jpeg|.bmp|.gif|";//图片文件后缀名判别
+		    if(AllImgExt.indexOf(extName+"|")==-1){
+		        $.messager.alert("提示信息", "该文件类型不允许上传。请上传"+AllImgExt+" 类型的文件，当前文件类型为"+extName);
+		        return false;
+		    }
+			
+		    div.innerHTML ='<img id=imghead'+indexs+'>';
+		    var img = document.getElementById('imghead'+indexs);
+		    img.onload = function(){
+		      var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+		      img.width  =  rect.width;
+		      img.height =  rect.height;
+		      img.style.marginTop = rect.top+'px';
+		    }
+		    var reader = new FileReader();
+		    reader.onload = function(evt){img.src = evt.target.result;}
+		    reader.readAsDataURL(file.files[0]);
+		}
+		if(type == 2){//视频文件
+			var AllImgExt=".mp4|";//图片文件后缀名判别
+		    if(AllImgExt.indexOf(extName+"|")==-1){
+		        $.messager.alert("提示信息", "该文件类型不允许上传。请上传"+AllImgExt+" 类型的文件，当前文件类型为"+extName);
+		        return false;
+		    }
+			
+			div.innerHTML ='<video width="250px;" height="250px" style="border: solid 1px #ccc" controls><source id=imghead'+indexs+' type="video/mp4"></video>';
+		    var videoFile = file.files[0];
+	        var url = URL.createObjectURL(videoFile);
+	        document.getElementById('imghead'+indexs).src=url;
+		}
+	}else{//兼容IE
+	  var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+	  file.select();
+	  var src = document.selection.createRange().text;
+	  div.innerHTML = '<img id=imghead'+indexs+'>';
+	  var img = document.getElementById('imghead'+indexs);
+	  img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
+	  var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
+	  status =('rect:'+rect.top+','+rect.left+','+rect.width+','+rect.height);
+	  div.innerHTML = "<div id=divhead style='width:"+rect.width+"px;height:"+rect.height+"px;margin-top:"+rect.top+"px;"+sFilter+src+"\"'></div>";
+	}
+}
+function clacImgZoomParam( maxWidth, maxHeight, width, height ){
+  var param = {top:0, left:0, width:width, height:height};
+  if( width>maxWidth || height>maxHeight )
+  {
+      rateWidth = width / maxWidth;
+      rateHeight = height / maxHeight;
+      if( rateWidth > rateHeight )
+      {
+          param.width =  maxWidth;
+          param.height = Math.round(height / rateWidth);
+      }else
+      {
+          param.width = Math.round(width / rateHeight);
+          param.height = maxHeight;
+      }
+  }
+  param.left = Math.round((maxWidth - param.width) / 2);
+  param.top = Math.round((maxHeight - param.height) / 2);
+  return param;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+function closeTab(){
+	parent.addTabFun({
+			src : ctx + "/tbInformation/index/list",
+			title : "资讯内容"
+		});
+	parent.closeTab('资讯内容详情');
+}
+</script>
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">详情</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin: 10px;">
+			<form id="add-form" class="formc" action="#">
+				<table cellspacing="12" width="800px" >
+					<tr>
+						<td width="80" style="text-align:right;font-weight:bold">文章标题：</td>
+						<td>${tbInformation.tiTitle!''}</td>
+					</tr>
+					<tr>
+						<td style="text-align:right;font-weight:bold">所属分类：</td>
+						<td>${tbInformationCata.ticName!''}</td>
+					</tr>
+					 <tr valign="top">
+	                    <td style="text-align:right;font-weight:bold">内　　容：</td>
+	                    <td style="widht:400px; ">
+	                    	${tbInformation.tiContent!''}
+	                    </td>
+                	</tr>
+				</table>
+				
+				<div class="submit">
+					<div align="left">
+					<input style="width: 70px;" class="btn btn-default btn-sm" type="reset" onclick='closeTab();' value="返回"></div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

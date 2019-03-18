@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/application/application.js"></script>
+</head>
+<body>
+	<table id="channel-list" title="资源管理" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+	</table>
+	
+	<div id="tb" class="datagrid-toolbar" style="padding:10px 0px 10px 10px;">
+		&nbsp;&nbsp; 
+		资源所属： <input class="easyui-textbox"  id="ttName" name ="ttName"  style="width: 150px" data-options="prompt:'请输入资源所属'" />
+		&nbsp;&nbsp;
+		创建时间：<input id="AddDate" name="AddDate" style="width: 100px" class="easyui-datebox" data-options="prompt:'选择开始时间'" editable="false"/> -
+       	<input id="AddDateEnd" name="AddDateEnd" style="width: 100px" class="easyui-datebox" data-options="prompt:'选择结束时间'" editable="false"/>
+       	&nbsp;
+		<a class="searchcls" onclick="loadData()" href="javascript:void(0)">查询</a>
+		&nbsp;
+		<!-- <a class="searchcls" onclick="addRow()" href="javascript:void(0)">新增</a> -->
+		<a href="#" class="easyui-linkbutton" plain="true" icon="icon-add"  onclick="addRow()">新增</a>
+		&nbsp;
+	</div>
+</body>
+</html>

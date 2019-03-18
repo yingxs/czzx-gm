@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+.submit-btn {
+	display: inline-block;
+	width: 76px;
+	height:28px;
+	text-decoration: none;
+	background-color: #458BCE;
+	text-align: center;
+	color: white;
+	border-radius: 3px;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/TbTeacherInfo/TbTeacherInfo_add.js"></script>
+
+</head>
+
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">新增</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin:15px;width: 900px;">
+			<form id="add-form" method="post">
+			     <div style="float: left;font-weight: bold;">基础资料</div>
+			    <div style="float: right;margin-right: 216px;font-weight: bold;"></div>
+			    <br/>
+				<hr style="border: 1px #eee solid;margin: 5px 0; clear:both;"/>
+				<div style="float: left;">
+				
+				   <div class="fitem">
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>教师照片：</label>
+						<!-- 上传图片出问题时候的提示框 -->
+						<div id="result1" style="color: red; float: left"></div>
+						<input type="hidden" id="ttiPhoto" name="ttiPhoto" /> <label
+							id="superCode" style="width: 0px; height: 10px"></label> <input
+							type="file" id="web" name="myfiles" onchange="ajaxFileUpload(2)" />
+						&nbsp;&nbsp; <label class="red"></label> <br>
+					</div>
+				
+				   <div class="fitem">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>人员编码：</label>
+					<input name="ttiNumber" id="ttiNumber" class="easyui-textbox" style="width:170px;" 
+					data-options="required:true,missingMessage:'不能为空!',prompt:'请输入人员编码'"
+					validType="length[1,20]" invalidMessage="长度不能超过10位，请检查!"/>
+					<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>姓名：</label>
+						<input name="ttiName" id="ttiName" class="easyui-textbox" style="width:170px;" 
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请输入老师姓名'"
+						validType="length[1,4]" invalidMessage="长度不能超过4位，请检查!"/>
+						<span style="color: red"> *</span>
+					</div>
+				
+					
+					<div class="fitem">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>性别：</label>
+						&nbsp;&nbsp;&nbsp;&nbsp; <input type="radio" name="ttiSex" checked="checked" value=0 />男
+						 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						  <input type="radio"  name="ttiSex" value=1 />女
+						   <span style="color: red"> *</span>
+					</div>
+					
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>身份证号码：</label>
+						<input name="ttiCardNum" id="ttiCardNum" maxlength="18" onclick="run()" class="easyui-textbox" style="width:170px;" data-options="missingMessage:'身份证号码不能为空!',prompt:'请输入身份证号码'"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>生日：</label>
+						<input id="ttiBirthday" name="ttiBirthday_add" style="width: 170px" class="easyui-textbox" data-options="prompt:'请输入身份证号(根据身份证回显xx月xx日)'"/>
+					</div>
+				
+				
+				
+					
+				</div>
+				
+				<div id="addform" style="float: right;">
+				   	<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>手机号码：</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input name="ttiPhone" id="ttiPhone" class="easyui-textbox" onblur="chkvalue()" style="width:170px;" 
+						data-options="prompt:'请输入手机号码'"
+						validType="length[0,11]" invalidMessage="长度不能超过11位，请检查!"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>民族：</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input name="ttiNation" id="ttiNation" class="easyui-textbox" style="width:170px;"  />
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>政治面貌:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="ttiPolitical" class="easyui-textbox" name="ttiPolitical" style="width:170px;" />
+					<!-- 	<a href="javascript:void(0)" class="submit-btn" style="width: 50px;margin-left: 20px;height: 25px" onclick="addFamily()">新增</a> -->
+					</div>
+					
+					
+					
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>学历层次:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="ttiInDegree" class="easyui-textbox" name="ttiInDegree" style="width:170px;"
+						data-options="prompt:'请输入学历层次'" />
+					<!-- 	<a href="javascript:void(0)" class="submit-btn" style="width: 50px;margin-left: 20px;height: 25px" onclick="addFamily()">新增</a> -->
+					</div>
+					
+					
+						<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>毕业学校:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="ttiSchool" class="easyui-textbox" name="ttiSchool" style="width:170px;"
+						data-options="prompt:'请输入毕业学校'"
+						validType="length[1,20]" invalidMessage="长度不能超过20位，请检查!"/>
+						<!-- <a href="javascript:void(0)" class="submit-btn" style="width: 50px;margin-left: 20px;height: 25px" onclick="addFamily()">新增</a> -->
+					</div>
+					
+					
+						<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>所属专业:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="ttiMajor" class="easyui-textbox" name="ttiMajor" style="width:170px;"
+						data-options="prompt:'请输入所属专业'"
+						validType="length[1,20]" invalidMessage="长度不能超过20位，请检查!"/>
+				<!-- 		<a href="javascript:void(0)" class="submit-btn" style="width: 50px;margin-left: 20px;height: 25px" onclick="addFamily()">新增</a> -->
+					</div>
+					
+					<!-- <div class="fitem" style="margin-top: 50px;">
+						<hr style="border: 1px #000 solid;width: 400px"/>
+					</div> -->
+				<!-- 	<div class="fitem">
+						<div style="font-weight: bold;font-size: 15px;float: left;width: 120px">家长关系</div>
+						<div style="font-weight: bold;font-size: 15px;float: left;width: 120px">家长姓名</div>
+						<div style="font-weight: bold;font-size: 15px;float: left;width: 120px">联系电话</div>
+					</div> -->
+				<!-- 	<div class="fitem" >
+						<hr style="border: 1px #000 solid;width: 400px;"/>
+					</div> -->
+					<div class="fitem" id="familyList"></div>
+				</div>
+				<div style="clear: both;padding-top: 10px">
+					<label style="font-weight: bold;">职务信息</label>
+					<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>职务职称:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input name="ttiPosition" id="ttiPosition" class="easyui-textbox" 
+						data-options="prompt:'请输入职务职称'" />
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>教职工类别:</label>
+						<input  name="ttiPositionType" id="ttiPositionType" class="easyui-textbox" 
+						data-options="prompt:'请输入教职工类别'" />
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>教授课程:</label>
+						<a href="#" id="ttiCoursesId" name="ttiCoursesId">添加课程</a>
+					</div>
+						<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>现任工作:</label>
+						<input name="ttiPost" id="ttiPost" class="easyui-textbox" 
+						data-options="prompt:'请输入现任工作'" />
+					</div>
+					
+				</div>
+				<div style="clear: both;padding-top: 10px">
+					<label style="font-weight: bold;">账号信息</label>
+					<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>登录账号:</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input name="ttiLoginUser" id="ttiLoginUser" class="easyui-textbox" 
+						data-options="prompt:'请输入登录账号'"
+						validType="length[1,20]" invalidMessage="长度不能超过20位，请检查!"/>
+						<span style="color: red"> *</span>
+						<span style="color: red"> 
+						<marquee width="300" direction="right" behavior="alternate" scrollamount="3" scrolldelay="88">默认使用手机号为登陆账号,密码是身份证后六位</marquee>
+						</span>
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>登录密码:</label>
+						<input type="password" name="ttLoginPass" id="ttLoginPass" class="easyui-textbox" 
+						data-options="prompt:'请输入登录密码'"
+						validType="length[6,15]" invalidMessage="请输入6-15位的字符"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label>重复密码:</label>
+						<input type="password" name="ttiLoginAganpass" id="ttiLoginAganpass" class="easyui-textbox" 
+						data-options="prompt:'请重复登录密码'"
+					"/>
+						<span style="color: red"> *</span>
+					</div>
+				</div>
+				<input type="hidden" id="names" name="names">
+				<input type="hidden" id="phones" name="phones">
+				<input type="hidden" id="relations" name="relations">
+			</form>
+			<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+			   <div class="submit">
+                <div><input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="addUsers()" />
+
+                    <a class="easyui-linkbutton" href="#" style="width: 80px; height: 30px; font-size: 13px; background:#DFDFDF;border:0px;color:#fff" >取消  </a>
+                </div>
+            </div>
+		</div>
+	</div>
+	
+</body>
+</html>

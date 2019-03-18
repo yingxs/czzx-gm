@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title></title>
+<@h.easyui />
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+.submit-btn {
+	display: inline-block;
+	width: 76px;
+	height:28px;
+	text-decoration: none;
+	background-color: #458BCE;
+	text-align: center;
+	color: white;
+	border-radius: 3px;
+	line-height: 28px;
+}
+.cancel {
+	display: inline-block;
+	width: 52px;
+	height:26px;
+	text-decoration: none;
+	background-color: white;
+	border:1px #a9a9a9 solid;
+	text-align: center;
+	color: #333;
+	line-height: 26px;
+}
+.submit-btn:hover {
+	color : white;
+}
+.cancel:hover {
+	color: #333;
+}
+</style>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#tbGrade").combobox('setValue','${gradeId!''}');
+		$("#tbClass").combobox('setValue','${classId!''}');
+	})
+</script>
+</head>
+<body>
+	<div>
+		<div class="panel-header">
+			<div class="panel-title">编辑</div>
+			<div class="panel-tool"></div>
+		</div>
+		<div style="margin:15px;width: 900px;">
+			<form id="add-form" method="post">
+				<input type="hidden" id="tsId" name="tsId" value="${student.tsId!''}">
+			    <div style="float: left;font-weight: bold;">基础资料</div>
+			    <br/>
+				<hr style="border: 1px #eee solid;margin: 5px 0; clear:both;"/>
+				<div style="float: left;">
+				   <div class="fitem">
+					<label>学号：</label>
+					<input name="tsNumber" id="tsNumber" class="easyui-textbox" style="width:170px;" value="${student.tsNumber!''}"
+					data-options="required:true,missingMessage:'不能为空!',prompt:'请输入学号'"
+					validType="length[1,20]" invalidMessage="长度不能超过20位，请检查!"/>
+					<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>姓名：</label>
+						<input name="tsName" id="tsName" class="easyui-textbox" style="width:170px;" value="${student.tsName!''}"
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请输入姓名'"
+						validType="length[1,10]" invalidMessage="长度不能超过10位，请检查!"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>性别：</label>
+						<input id="tsSex" class="easyui-combobox" name="tsSex" style="width:120px;" value="${student.tsSex!''}"
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请选择性别'"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>所属年级：</label><!-- required:true,missingMessage:'不能为空!', -->
+						<input id="tbGrade" name="tbGrade" class="easyui-combobox" style="width:120px;" editable="false" 
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请选择所属年级'"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>所属班级：</label>
+						<input id="tbClass" class="easyui-combobox" name="tbClass" style="width:120px;" editable="false"
+						data-options="required:true,missingMessage:'不能为空!',prompt:'请选择所属班级'"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>身份证号码：</label>
+						<input name="tsCardNum" id="tsCardNum" class="easyui-textbox" value="${student.tsCardNum!''}" style="width:170px;" data-options="required:true,missingMessage:'身份证号码不能为空!',prompt:'请输入身份证号码'"
+						validType="idcard" invalidMessage="身份证格式不正确，请检查!"/>
+						<span style="color: red"> *</span>
+					</div>
+					<div class="fitem">
+						<label>出生日期：</label>
+						<input id="tsBirthday" name="tsBirthday" style="width: 120px" value="${student.tsBirthday!''}" class="easyui-datebox" data-options="prompt:'请选择出生日期'" editable="false"/>
+					</div>
+					<div class="fitem">
+						<label>政治面貌：</label>
+						<input name="tsPolitical" id=""tsPolitical"" class="easyui-textbox" style="width:170px;" data-options="prompt:'请输入政治面貌'" value="${student.tsPolitical!''}"
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+					</div>
+					<div class="fitem">
+						<label>民族：</label>
+						<input name="tsNation" id="tsNation" class="easyui-textbox" style="width:170px;" data-options="prompt:'请输入民族'" value="${student.tsNation!''}"
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+					</div>
+					<div class="fitem">
+						<label>籍贯：</label>
+						<input name="tsJiguan" id="tsJiguan" class="easyui-textbox" style="width:170px;" data-options="prompt:'请输入籍贯'" value="${student.tsJiguan!''}"
+						validType="length[0,20]" invalidMessage="长度不能超过20位，请检查!"/>
+					</div>
+					<div class="fitem">
+						<label>联系地址：</label>
+						<input id="province" class="easyui-combobox" name="province" value="${student.tsProvinceId!''}" style="width:120px;" data-options="prompt:'请选择省份'" editable="false"/>
+						<input id="city" class="easyui-combobox" name="city" style="width:120px;" data-options="prompt:'请选择城市'" editable="false"/>
+						<input id="county" class="easyui-combobox" name="county"  style="width:120px;" data-options="prompt:'请选择县区'" editable="false"/>
+						<br/>
+					</div>
+					<div class="fitem">
+						<label></label>
+						<input name="tsAddress" id="tsAddress" class="easyui-textbox" style="width:373px;" value="${student.tsAddress!''}"
+						data-options="prompt:'请输入详细地址（如街道，门牌号等）'"
+						validType="length[0,50]" invalidMessage="长度不能超过50位，请检查!"/>
+						<br/>
+					</div>
+					<div class="fitem">
+						<hr style="border: 1px #eee solid;margin: 5px 0;"/>
+						<div id="dlg-buttons">
+							<a href="javascript:void(0)" class="submit-btn" onclick="saveOpen()">提交</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<script type="text/javascript">
+        function saveOpen(){
+ 	 		if($("#add-form").form('validate') == false){
+    			return false;
+    		}
+        	
+        	var tsNumber = $("#tsNumber").val();
+        	if(tsNumber != "${student.tsNumber!''}"){
+		       	if(userCheck(tsNumber,'stuNum')==false){
+					$.messager.alert("提示", "该学号已存在，请核对后重新输入");
+					return false;
+				}
+        	}
+			
+			$.ajax({
+	 			type:"POST",
+	 			dataType:'json',
+	 			url:ctx+ '/admin/students/update_info',
+	 			data:$("#add-form").serialize(),
+	 			success:function(data){
+	 				if(data == '100')
+	 				{
+	 					parent.addTabFun({
+	 						src : ctx + "/admin/students/init_page.htm",
+	 						title : "学生管理"
+	 					});
+	 					parent.closeTab("编辑学生");
+	 				}
+	 			}
+	 		});
+        	
+         }
+        
+    	$("#tsSex").combobox({
+    		data:[
+    		      {id:1,text:"男"},
+    		      {id:2,text:"女"}],
+    		      valueField:'id',
+    		      textField:'text',
+    		      editable:false,
+    		      panelHeight:"auto",
+    	});
+		$('#tbGrade').combobox({
+	        valueField:'id', //值字段
+	        textField:'name', //显示的字段
+	        url:'${ctx}/admin/students/all/grade.json',
+	        width : "120px",
+	        editable:false,//不可编辑，只能选择
+	        panelHeight:"auto",
+	        onChange:function(gId){
+	        	//$('#city').combobox('clear');
+	         $('#tbClass').combobox({
+	          valueField:'id', //值字段
+	          textField:'name', //显示的字段
+	          url : '${ctx}/admin/teacher/getClass/'+gId+'.json',
+	          editable:false,//不可编辑，只能选择
+	     	  });
+	        }
+	     });
+		
+		//地址联动
+		$(function () {
+			$('#province').combobox({
+				url:ctx+ '/AcquisitionArea/chinaCityService',
+				method:'POST',
+				valueField:'pid',
+				textField:'pname',
+				mode : 'remote',
+				editable : false,
+				onChange: function (n,o) {
+					$('#city').combobox({
+					url:ctx+ '/AcquisitionArea/chinaCityServiceByCity?id='+n,
+					method:'POST',
+					valueField:'cid',
+					textField:'cname',
+					mode : 'remote',
+					editable : false});
+				}
+			});
+			
+			var provinceId = $('#province').combobox('getValue'); 
+			$('#city').combobox({
+				url:ctx+ '/AcquisitionArea/chinaCityServiceByCity?id='+provinceId,
+				method:'POST',
+				valueField:'cid',
+				textField:'cname',
+				mode : 'remote',
+				editable : false,
+				onChange: function (n,o) {
+						$('#county').combobox({
+									url:ctx+ '/AcquisitionArea/chinaCityServiceByCountTy?id='+n,
+									method:'POST',
+									valueField:'oid',
+									textField:'oname',
+									mode : 'remote',
+									editable : false,
+						});
+				}/*--*/
+			});
+			
+			var cityId = "${student.tsCityId!''}";
+			$('#city').combobox('setValue',cityId);
+			
+			var regionId ="${student.tsCountyId!''}";
+			$('#county').combobox('setValue',regionId);
+			
+		});
+		//登录名校验
+		function userCheck(val,op){
+			var fals = false;
+			var url = '';
+			if(op=='stuNum'){
+				url += '${ctx}/admin/students/list_check_student.json?stuNum='+val;
+			}else if(op=='student'){
+				url += '${ctx}/admin/students/list_check_student.json?loginUser='+val;
+			}
+			jQuery.ajax({
+        		cache : true,
+        		type : "get",
+        		dataType : "text",
+        		url : url,
+        		async : false,
+        		error : function(request) {
+        			alert("服务器繁忙，请刷新重试!");
+        		},
+        		success : function(data) {
+        			if(data!=null){
+        				if(data!=0){
+        					fals = false;
+        					return;
+            			}
+        				fals = true;
+        			}
+        			
+        		}
+        	});
+			return fals;
+		}
+	</script>
+</body>
+</html>

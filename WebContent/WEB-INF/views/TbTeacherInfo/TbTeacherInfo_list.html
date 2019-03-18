@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <@h.easyui />
+    <script type="text/javascript" src="${ctx}/static/js/views/TbTeacherInfo/TbTeacherInfo_list.js"></script>
+</head>
+<body>
+<table id="TbTeacherInfoDatagrid" title="教师管理列表"  data-options="nowrap:true,rownumbers:true,singleSelect:true,toolbar:'#tb',fitColumns:false">
+</table>
+<div id="tb" class="datagrid-toolbar" style="padding:10px;">
+    <div style="display:inline;width:140px;margin-right:10px;">教师名称 &nbsp;<input type="text" id="ttiName" name="ttiName" class="easyui-textbox" data-options="prompt:'请输入教师名称'" /></div>
+    <div style="display:inline;width:140px;margin-right:10px;">性别 &nbsp;<input type="text" id="ttiSex" name="ttiSex" class="easyui-combobox" data-options="prompt:'请选择性别'" /></div>
+    <div style="display:inline;width:140px;margin-right:10px;">手机号码&nbsp;<input type="text" id="ttiPhone" name="ttiPhone" class="easyui-textbox" data-options="prompt:'输入手机号码'" /></div>
+    <div style="display:inline;width:140px;margin-right:10px;"><input id="put" onkeyup="fun()">  </div>
+    <div style="display:inline;width:140px;margin-right:10px;">时间&nbsp;<input id="AddDate" name="AddDate"  class="easyui-datebox" data-options="prompt:'选择开始时间'" /> 至</div>
+    <div style="display:inline;width:140px;margin-right:10px;"><input id="AddDateEnd" name="AddDateEnd"  class="easyui-datebox" data-options="prompt:'选择结束时间'" /></div>
+    <a class="easyui-searchcls"  href="javascript:void(0)" plain="true" onclick="findDetail()" >查询</a>
+       <a class="easyui-linkbutton addcls" plain="true" onclick="addRow()">新增</a>
+</div>
+</body>
+</html>

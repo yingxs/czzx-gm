@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <@h.easyui />
+    <script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+    <script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+    <script type="text/javascript" src="${ctx}/static/js/views/tbcourseInfo/tbcourseInfo_edit.js"></script>
+    <script type="text/javascript" src="${ctx}/static/js/views/tbcourseInfo/tbcourseInfo_lists.js"></script>
+
+
+</head>
+<body>
+<div>
+    <div class="panel-header">
+        <div class="panel-title">修改课程管理</div>
+        <div class="panel-tool"></div>
+    </div>
+    <div class="blue-panel">
+        <form id="add-form" class="formc" action="#">
+            <table class="blue-table" style="width: 500px;height: 100px" ><br>
+
+                <input type="hidden" id="id" name="tciId" value="${entity.tciId!''}" class="easyui-textbox"></label>
+
+                <tr style="height: 40px">
+                    <td style="text-align:right;font-weight:bold">所属&nbsp;&nbsp;&nbsp;&nbsp;科目：</td>
+                    <td><label id="superCode" style="width: 40px;height: 10px"></label>
+                        <input type="text" id="tciSubjectsId" name="tciSubjectsId" value="${entity.tciSubjectsId!''}" class="easyui-textbox" data-options="required:true,missingMessage:'课程不能为空!',prompt:'请输入系课程...',validType:['length[1,40]']" style="width:200px;" /><label class="red"></label>
+                    </td>
+                </tr>
+
+                <tr style="height: 40px">
+                    <td style="text-align:right;font-weight:bold">课程&nbsp;&nbsp;&nbsp;&nbsp;名称：</td>
+                    <td>
+                        <input type="text" id="tidiName" name="tciName" value="${entity.tciName!''}" class="easyui-textbox" data-options="required:true,missingMessage:'课程不能为空!',prompt:'请输入系课程...',validType:['length[1,40]']" style="width:200px;" /><label class="red"></label>
+                    </td>
+                </tr>
+                <tr style="height: 40px">
+                    <td style="text-align:right;font-weight:bold">课程&nbsp;&nbsp;&nbsp;&nbsp;代码：</td>
+                    <td>
+                        <input type="text" id="tidiCode" name="tciCode" value="${entity.tciCode!''}" class= data-options="required:true,missingMessage:'代码不能为空!',prompt:'请输入代码...',validType:['integer[1,40]']" style="width:200px;" /><label class="red"></label>
+                    </td>
+                </tr>
+
+                <tr style="height: 40px">
+                    <td style="text-align:right;font-weight:bold">学 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分：</td>
+                    <td>
+                        <input type="text" id="score" name="tciScore" value="${entity.tciScore!''}" class="easyui-textbox easyui-validatebox" data-options="required:true,missingMessage:'学分不能为空!',prompt:'请输入学分...',validType:['integer[1,40]']" style="width:200px;" /><label class="red"></label>
+                    </td>
+                </tr>
+
+                <tr style="height: 40px">
+                    <td style="text-align:right;font-weight:bold">所属&nbsp;&nbsp;&nbsp;&nbsp;专业：</td>
+                    <td>
+                        <a href="#" id="#" onclick="addzhaunye()">添加专业</a>
+                        <div id="testDiv"></div>
+                    </td>
+                </tr>
+
+                <tr style="height: 70px">
+                    <td style="text-align:right;font-weight:bold">课程 &nbsp;&nbsp;&nbsp;&nbsp;目标：</td>
+                    <td>
+                        <input class="easyui-textbox" id="taget" name="tciTaget" value="${entity.tciTaget!''}" labelPosition="top"  multiline="true" data-options= " required:true,missingMessage:'课程目标不能为空!',prompt:'这里是50字以内的课程目标……………',validType:'length[1,50]' " style="width:200px;height:50px">
+                    </td>
+                </tr>
+
+                <tr style="height: 70px">
+                    <td style="text-align:right;font-weight:bold">课程 &nbsp;&nbsp;&nbsp;&nbsp;内容：</td>
+                    <td>
+                        <input class="easyui-textbox" id="content" name="tciContent" value="${entity.tciContent!''}"  labelPosition="top"  multiline="true" data-options="required:true,missingMessage:'课程内容不能为空!',prompt:'这里是100以内的课程内容……………',validType:'length[1,100]'" style="width:200px;height:50px">
+                    </td>
+                </tr>
+
+                <tr style="height: 70px">
+                    <td style="text-align:right;font-weight:bold">课程 &nbsp;&nbsp;&nbsp;&nbsp;计划：</td>
+                    <td>
+                        <input class="easyui-textbox" id="plan" name="tciPlan" value="${entity.tciPlan!''}" labelPosition="top"  multiline="true" data-options="required:true,missingMessage:'课程计划不能为空!',prompt:'这里是50字以内的课程计划……………',validType:'length[1,50]'" style="width:200px;height:50px">
+                    </td>
+                </tr>
+
+
+                <tr style="height: 70px">
+                    <td style="text-align:right;font-weight:bold">课程 &nbsp;&nbsp;&nbsp;&nbsp;要求：</td>
+                    <td>
+                        <input class="easyui-textbox" id="need" name="tciNeed" value="${entity.tciNeed!''}"  labelPosition="top"  multiline="true" data-options="required:true,missingMessage:'课程要求不能为空!',prompt:'这里是50字以内的课程要求……………',validType:'length[1,50]'" style="width:200px;height:50px">
+                    </td>
+                </tr>
+
+            </table>
+            <div class="submit">
+                <div><input style="width: 70px;" class="btn btn-primary btn-sm" type="button" value="提交" onclick="addUser()" />&nbsp;
+                    <!-- <input style="width: 70px;" class="btn btn-default btn-sm" href="/czzx-gm/TbMajorInfo/index/list" type="reset" value="取消"> -->
+
+                    <a class="easyui-linkbutton" href="${ctx}/tbcourseInfo/index/list" style="width: 80px; height: 30px; font-size: 13px; background:#DFDFDF;border:0px;color:#fff" >取消  </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="testId" style="width:800px; height: 600px;" hidden="true">
+    <table id="tbcourseInfo_Datagrids"   style="height:auto;width: auto" data-options="nowrap:true,rownumbers:true,singleSelect:true,toolbar:'#testTb',fitColumns:false">
+
+    </table>
+    <div id="testTb" class="datagrid-toolbar" style="padding:10px;" hidden="true">
+        <div style="display:inline;width:140px;margin-right:10px;">学院名称&nbsp;<input type="text" style="width: 120px;" id="tiiName" name="tiiName" class="easyui-textbox"   data-options="prompt:'学院名称'" /></div>
+        <div style="display:inline;width:140px;margin-right:10px;">系名称 &nbsp;<input type="text" style="width: 120px;"  id="tidiNames"  name="tidiNames" class="easyui-textbox"  data-options="prompt:'系名称'" /></div>
+        <div style="display:inline;width:140px;margin-right:10px;">专业名称 &nbsp;<input type="text" style="width: 120px;"  id="tmiName" name="tmiName" class="easyui-textbox"  data-options="prompt:'专业名称'" /></div>
+
+        <a class="searchcls" onclick="findDetail()" href="javascript:void(0)" >查询</a>
+        <a class="addcls"  onclick="insertDetai()" href="javascript:void(0)">添加</a>
+    </div>
+</div>
+</body>
+</html>

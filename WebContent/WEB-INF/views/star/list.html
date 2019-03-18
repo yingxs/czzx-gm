@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>校园之星</title>
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/easyui1.4.2/jquery.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/easyui1.4.2/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="${ctx}/static/easyui1.4.2/locale/easyui-lang-zh_CN.js"></script>
+	
+<link rel="stylesheet" href="${ctx}static/kindeditor/themes/default/default.css" />
+<link rel="stylesheet" href="${ctx}static/kindeditor/plugins/code/prettify.css" />
+<script charset="utf-8" src="${ctx}static/kindeditor/lang/zh_CN.js"></script>
+<script charset="utf-8" src="${ctx}static/kindeditor/plugins/code/prettify.js"></script>
+<style type="text/css">
+#fm {
+	margin: 0;
+	padding: 10px 30px;
+}
+
+.ftitle {
+	font-size: 14px;
+	font-weight: bold;
+	padding: 5px 0;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #ccc;
+}
+
+.fitem {
+	margin-bottom: 5px;
+}
+
+.fitem label {
+	display: inline-block;
+	width: 80px;
+}
+.adBtn {
+	width: 56px;
+	height: 30px;
+	border: 1px solid #ccc;
+	background: green;
+	color: #fff;
+}
+
+.box .myfiles {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+
+.aptitude {
+	width: 69px;
+	height: 28px;
+	margin-left: -74px;
+	opacity: 0;
+}
+</style>
+
+</head>
+<body>
+<br/>
+	<div id="tb" style="padding: 2px 5px; font-size: 13px">
+		姓名: <input class="easyui-textbox" name="tsUserName" id="tsUserName" style="width: 110px;height: 30px" data-options="prompt:'请输入姓名'"/>
+		创建时间: <input class="easyui-datetimebox" style="width: 110px;height: 30px" id="startDate" data-options="prompt:'开始时间'"/> —<input class="easyui-datetimebox" style="width: 110px;height: 30px" id="endDate" data-options="prompt:'结束时间'"/>
+		类型: <select id="tsType" class="easyui-combobox" name="tsType" style="width:100px;height: 30px">
+				<option value="">选择类型</option>
+				<option value="1">学生</option>
+				<option value="2">老师</option>
+			</select>
+		<a href="#" class="easyui-linkbutton" icon="icon-search" plain="true"
+			onclick="cha()">查询</a> <a href="#" class="easyui-linkbutton"
+			icon="icon-add" plain="true" onclick="newTeacher()">新增</a>
+	</div>
+	<br/>
+	<table class="easyui-datagrid" id="dg" title="校园之星"
+		data-options="singleSelect:true,fit:true,pagination:true,collapsible:false,url:'${ctx}/admin/star/list_json.json',method:'get'"
+		pagination="true" rownumbers="true" fitColumns="true"
+		singleSelect="true">
+		<thead>
+			<tr>
+				<th data-options="field:'tsPhoto',width:150,align:'center',formatter:formatImg">头像</th>
+				<th data-options="field:'tsUserName',width:150,align:'center'">姓名</th>
+				<th data-options="field:'tsType',width:150,align:'center',formatter:formatOper1">类型</th>
+				<th data-options="field:'tsAddTime',width:180,align:'center',formatter:formatDateFull">创建时间</th>
+				<th data-options="field:'_operate',width:150,align:'center',formatter:formatOper">操作</th>
+			</tr>
+
+		</thead>
+	</table>
+
+
+	<script type="text/javascript">
+	     
+		function formatOper1(value,rec) {
+			if(value=="1"){
+				return "学生";
+			}else{
+				return "老师";
+			}
+			return null;
+		}
+		
+		$('#dg').datagrid({
+			onLoadSuccess:function(data){  
+			       $('.editcls').linkbutton({text:'编  辑',plain:true,iconCls:'icon-edit'});  
+			       $('.delcls').linkbutton({text:'删  除',plain:true,iconCls:'icon-remove'});  
+			}
+		});
+		
+		function formatDateFull(val){
+			if (val != null) {
+			var date = new Date(val);
+			return date.getFullYear() + '-' + (date.getMonth() + 1) + '-'
+			+ date.getDate();
+			}
+		}
+		
+		function formatImg(val, rows, index) {
+			//var htm ='<img src="${ctx}/upload/'+rows.tsPhoto+'" id="appImg" width="80" height="80" class="border appImg"  alt="'+rows.tsPhoto+'" />'
+			var htm ='<img src="'+rows.tsPhoto+'" id="appImg" width="80" height="80" class="border appImg"  alt="'+rows.tsPhoto+'" />'
+			return htm;
+		}
+		
+		function formatOper(val, rows, index) {
+			return '<a href="#" class="editcls" onclick="initUpdate(' + rows.tsId
+					+ ')">编辑</a><a href="#" class="delcls" onclick="delteById('
+					+ rows.tsId + ',\''+ rows.tsUserName +'\')">删除</a>';
+		}
+
+		//弹出新增层
+		function newTeacher() {
+			/* $("#dlg").dialog("open").dialog('setTitle', '添加校园之星');
+			$('#add_tsType').combobox('setValues','');
+			$('#add_tsUserName').combobox('setValues','');
+			$("#tsDesc").textbox('setValue','');
+			KindEditor.instances[0].html('');
+			$("#fm").form("clear");
+			$("#hidtype").value = "submit"; */
+			parent.addTabFun({
+				src : "${ctx}/admin/star/paper/add",
+				title : "新增校星"
+			}); 
+		}
+
+		
+
+		//条件查询
+		function cha() {
+			$("#dg").datagrid('load', {
+				"keywords" : $("#tsUserName").val(),
+				"tsType" : $('#tsType').combobox('getValue'),
+				"startDate" : $("#startDate").datebox('getValue'),
+				"endDate" : $("#endDate").datebox('getValue')
+			});
+		}
+
+		
+		//根据Id删除
+		function delteById(id,name) {
+			if (id != "" || id != null) {
+				$.messager.confirm("操作提示", "确定要删除\"  "+name+"  \"么？删除后不可恢复。", function(data) {
+					if (data) {
+						$.ajax({
+							type : "POST",
+							url : '${ctx}/admin/star/del.htm',
+							dataType : 'json',
+							data : {
+								"id" : id
+							},
+							success : function(data) {
+								if (data == "1") {
+									$.messager.alert('系统提示', '删除成功');
+									$("#dg").datagrid("load");
+								} else {
+									$.messager.alert('系统提示', '删除失败');
+								}
+							},
+							error : function() {
+								alert("系统错误");
+							}
+						})
+					} else {
+						$('#messageTips').window('close');
+					}
+				});
+			} else {
+				$.messager.alert("提示信息", "删除选中数据不能为空");
+			}
+		}
+
+		/**
+		 * 初始化修改信息
+		 */
+		function initUpdate(id) {
+			//location.href="${ctx}/admin/star/initUpdate/"+id+".htm";
+			parent.addTabFun({
+				src : "${ctx}/admin/star/initUpdate/"+id+".htm",
+				title : "编辑"
+			});
+		}
+		
+		//关闭编辑页刷新数据
+		$('#editdlg').dialog({  
+		    onClose:function(){  
+		    	$("#dg").datagrid("load");  
+		    },  
+		});
+		
+		/**
+		 * 判断是否为空
+		 * 
+		 * @param str
+		 * @returns {Boolean}
+		 */
+		function isEmpty(str){
+			if(str.length<=0 || str == null){
+				return true ;
+			}
+			return false ;
+		}
+		
+	</script>
+</body>
+</html>

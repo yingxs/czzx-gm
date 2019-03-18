@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/ajaxfileupload.js"></script>
+</head>
+<body>
+	<div class="panel-header">
+		<div class="panel-title">学生升级管理</div>
+		<div class="panel-tool"></div>
+	</div>
+
+	<div id="tb" class="datagrid-toolbar"
+		style="padding-left: 10px; padding-top: 10px;padding-bottom: 10px">
+		<table>
+			<tr>
+				<td>年级：<input id="tbGrade" name="tbGrade"
+					class="easyui-combobox" style="width: 120px;" editable="false"
+					data-options="prompt:'请选择所属年级'" />
+				</td>
+				<td>班级：<input id="tbClass" class="easyui-combobox"
+					name="tbClass" style="width: 120px;" editable="false"
+					data-options="prompt:'请选择所属班级'" />
+				</td>
+				<td>升级至→</td>
+				<td>年级：<input id="tbGrade1" name="tbGrade"
+					class="easyui-combobox" style="width: 120px;" editable="false"
+					data-options="prompt:'请选择所属年级'" />
+				</td>
+				<td>班级：<input id="tbClass1" class="easyui-combobox"
+					name="tbClass" style="width: 120px;" editable="false"
+					data-options="prompt:'请选择所属班级'" />
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="p" style="width: 400px; z-index: 3; left: 35%; top: 40%;"></div>
+	<div id="cc" class="easyui-layout" style="height: 400px;" fit="true">
+		<div id="left_td"
+			data-options="region:'west',split:false,collapsible:false"
+			style="width: 45%;">
+			<table id="tbStudent-list" title="学生列表" fit="true"></table>
+		</div>
+		<div id="center" data-options="region:'center',"
+			style="padding: 5px; background: #eee; width: 10%; padding: 40% 10%;">
+			<a id="btn" href="#" class="easyui-linkbutton"
+				data-options="iconCls:'icon-search'" onclick="upGrade()">一键升级>></a><br />
+			<br /> <br /> <a id="btn" href="#" class="easyui-linkbutton"
+				data-options="iconCls:'icon-redo'" onclick="addRow()"> 升&nbsp;级
+				></a>
+		</div>
+		<div id="right_td"
+			data-options="region:'east',iconCls:'icon-reload',split:false,collapsible:false"
+			style="width: 45%;">
+			<form id="up-student" action="" style="height: 100%">
+				<table id="upStudent-list" title="学生列表" fit="true"></table>
+			</form>
+			<input id="cStudent-count" type="hidden" />
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$('#tbGrade').combobox({
+			valueField : 'id', //值字段
+			textField : 'name', //显示的字段
+			url : '${ctx}/upgrade/students/all/grade',
+			width : "120px",
+			editable : false,//不可编辑，只能选择
+			panelHeight : "auto",
+			onChange : function(gId) {
+				$('#tbClass').combobox({
+					valueField : 'id', //值字段
+					textField : 'name', //显示的字段
+					url : '${ctx}/upgrade/students/get_class?gId='+ gId,
+					editable : false,//不可编辑，只能选择
+					onChange : function(cId) {
+						loadDate($('#tbGrade').combobox('getValue'),cId);
+					}
+				});
+
+				$('#tbGrade1').combobox({
+					valueField : 'id', //值字段
+					textField : 'name', //显示的字段
+					url : '${ctx}/upgrade/students/get_up_grade?gId='+ gId,
+					width : "120px",
+					editable : false,//不可编辑，只能选择
+					panelHeight : "auto",
+					onChange : function(Id) {
+						$('#tbClass1').combobox({
+							valueField : 'id', //值字段
+							textField : 'name', //显示的字段
+							url : '${ctx}/upgrade/students/get_class?gId='+ Id,
+							editable : false,//不可编辑，只能选择
+						});
+					}
+				});
+				$('#tbGrade1').combobox('setValue', gId + 1);
+			}
+		});
+		//查询出该班级下的所有学生
+		function loadDate(tbGrade, tbClass) {
+			//左表的，查询的所有学生
+			$('#tbStudent-list').datagrid({
+				url : ctx + '/upgrade/students/list',
+				columns : [ [ {
+					field : 'ck',
+					checkbox : true
+				}, {
+					field : 'tsId',
+					hidden : true
+				}, {
+					field : 'tsName',
+					title : '姓名',
+					width : 80,
+					align : 'center'
+				}, {
+					field : 'tsNumber',
+					title : '学号',
+					width : 120,
+					align : 'center'
+				}, {
+					field : 'tsSex',
+					title : '性别',
+					width : 50,
+					align : 'center',
+					formatter : function(value, rec) {
+						if (value == 1) {
+							return "男";
+						} else {
+							return "女";
+						}
+					}
+				}, {
+					field : 'tsStatus',
+					title : '状态',
+					width : 80,
+					align : 'center',
+					formatter : function(value, rec) {
+						if (value == 1) {
+							return "正常";
+						}
+					}
+				}, ] ],
+				queryParams : {
+					tbGrade : tbGrade,
+					tbClass : tbClass
+				},
+				fit : true,
+				fitColumns : true,
+				lines : false,
+				pagination : true,
+				sortOrder : 'desc',
+				pageSize : 15,
+				pageList : [ 15, 20, 30, 40, 50 ],
+				rowStyler : function(index, row) {
+					if ((index % 2) != 0) {
+						return 'background-color:#FAFAD2;';
+					}
+				},
+			});
+			//右表的信息
+			$('#upStudent-list').datagrid({
+				columns : [ [ {
+					field : 'tsId',
+					hidden : true
+				}, {
+					field : 'tsName',
+					title : '姓名',
+					width : 80,
+					align : 'center'
+				}, {
+					field : 'tsNumber',
+					title : '学号',
+					width : 120,
+					align : 'center'
+				}, {
+					field : 'tsSex',
+					title : '性别',
+					width : 50,
+					align : 'center',
+					formatter : function(value, rec) {
+						if (value == 1) {
+							return "男";
+						} else {
+							return "女";
+						}
+					}
+				}, {
+					field : 'tsStatus',
+					title : '状态',
+					width : 80,
+					align : 'center',
+					formatter : function(value, rec) {
+						if (value == 1) {
+							return "正常";
+						}
+					}
+				}, ] ],
+				queryParams : {
+					tbGrade : tbGrade,
+					tbClass : tbClass
+				},
+				fit : true,
+				fitColumns : true,
+				lines : false,
+				pagination : true,
+				sortOrder : 'desc',
+				pageSize : 15,
+				pageList : [ 15, 20, 30, 40, 50 ],
+				rowStyler : function(index, row) {
+					if ((index % 2) != 0) {
+						return 'background-color:#FAFAD2;';
+					}
+				},
+
+			});
+		}
+
+		// 添加学生到右边的表
+		function addRow() {
+			var rows = $('#tbStudent-list').datagrid('getChecked');
+			var rowNum = $('#upStudent-list').datagrid('getRows');
+			var cId = $('#tbClass1').combobox('getValue');
+			var gId = $('#tbGrade1').combobox('getValue');
+			if (rowNum.length == 0) {
+				$.ajax({
+					type : "POST",
+					dataType : 'json',
+					url : ctx + '/upgrade/students/get_stu?tbGrade=' + gId
+							+ '&tbClass=' + cId,
+					success : function(data) {
+						$('#cStudent-count').val(data.total);
+					}
+				});
+			}
+			$(rows)
+					.each(
+							function(i, val) {
+								for (var j = 0; j < rowNum.length; j++) {
+									if (rows[i].tsNumber == rowNum[j].tsNumber) {
+										//alert("学号："+rows[i].tsNumber+"姓名："+rows[i].tsName+"已经存在~~");
+										i++;
+									}
+								}
+								if (gId == 4) {
+									$('#upStudent-list').datagrid('appendRow',
+											{
+												tsId : rows[i].tsId,
+												tsName : rows[i].tsName,
+												tsNumber : rows[i].tsNumber,
+												tsSex : rows[i].tsSex,
+												tsStatus : rows[i].tsSex
+											});
+								} else {
+									if (($('#cStudent-count').val() + rowNum.length) >= 50) {
+										alert('v:' + $('#cStudent-count').val()
+												+ '~~rowNum.length：'
+												+ rowNum.length);
+										alert("此班的人数已满，不能在添加学生了。");
+									} else {
+										$('#upStudent-list')
+												.datagrid(
+														'appendRow',
+														{
+															tsId : rows[i].tsId,
+															tsName : rows[i].tsName,
+															tsNumber : rows[i].tsNumber,
+															tsSex : rows[i].tsSex,
+															tsStatus : rows[i].tsSex
+														});
+									}
+								}
+							});
+		}
+		//学生升年级
+		function upGrade() {
+			var cId = $('#tbClass1').combobox('getValue');
+			var gId = $('#tbGrade1').combobox('getValue');
+			if (cId == '' || cId == null || gId == '' || gId == null) {
+				$.messager.alert('提示', "请选择要升到的年级和班级！！", 'error');
+			} else {
+				var studentIds = '';
+				var rows = $('#upStudent-list').datagrid('getRows');
+				for (var i = 0; i < rows.length; i++) {
+					if (studentIds != '')
+						studentIds += ',';
+					studentIds += rows[i].tsId;
+				}
+				$('#p').progressbar({
+					value : 0,
+				});
+				$.ajax({
+					type : "POST",
+					dataType : 'json',
+					url : ctx + '/upgrade/students/up_grade?cId=' + cId
+							+ '&studentIds=' + studentIds+'&gId='+gId,
+					success : function() {
+						$('#p').progressbar('setValue', 100);
+						if ($('#p').progressbar('getValue') == 100) {
+							parent.addTabFun({
+								src : ctx + "/admin/students/init_page.htm",
+								title : "学生管理"
+							});
+						}
+					}
+				});
+			}
+		}
+	</script>
+</body>
+</html>

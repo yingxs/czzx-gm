@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/views/version/tbversion.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript">
+function searchMember(){
+	var end_time = $("#end_time").datebox("getValue");
+	if(trim(end_time).length > 0) {
+		end_time = end_time + " 23:59:59";
+	}
+	$("#version-list").datagrid('load',{tvName:$("#tvName").val(),tmPhone:$("#tmPhone").val(),
+		start_time:$("#start_time").datebox("getValue"),end_time:end_time});
+}
+</script>
+</head>
+<body >
+	<div class="datagrid-toolbar" id="tb" style="padding:10px 0px 10px 10px;">
+		&nbsp;&nbsp;APP名称：   
+			<input class="easyui-textbox"  style="width:100px"  
+					valueField="tvName" id="tvName" name="tvName" textField="text" data-options="prompt:'支持模糊搜索'" >  
+		&nbsp;&nbsp;创建时间：<input class="easyui-datebox" id='start_time' name='start_time' data-options="prompt:'请选择开始时间'" style="width:120px">  
+		&nbsp;&nbsp;至&nbsp;<input class="easyui-datebox" id='end_time' name='end_time' data-options="prompt:'请选择结束时间'" style="width:120px">  
+			&nbsp;&nbsp;<a class="searchcls" onclick="searchMember()" href="javascript:void(0)" iconCls="icon-search">查询</a>  
+			&nbsp;&nbsp;<a class="addcls" onclick="addRow()" href="javascript:void(0)" iconCls="icon-search">新增</a>  
+	</div>
+		<table id="version-list"   title="版本列表" data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true">
+		</table>
+</body>
+</html>

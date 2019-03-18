@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<@h.easyui />
+<script type="text/javascript" src="${ctx}/static/js/Validate.js"></script>
+<script type="text/javascript" src="${ctx}/static/js/views/applicatonInfo/tbApplicatonInfo.js"></script>
+</head>
+<body>
+		<table id="tbApplicatonInfo" title="内容管理  > 应用管理"  data-options="rownumbers:true,singleSelect:true,toolbar:'#tb',fit:true"></table>	
+	    <div id="tb" class="datagrid-toolbar" style="padding:5px;">			
+		<table>
+		        <tr height="10px"></tr>
+				<tr>
+				      <td align="right" width="80px" >应用名称：</td>
+                      <td><input id="taiName" name="taiName" style="width:100px;" class="easyui-textbox"  data-options="prompt:'请输入应用名称'" />&nbsp;</td>
+                      <td align="right" width="80px">创建时间:</td>
+				      <td>
+				      <input id="AddDate" name="AddDate" class="easyui-datebox" data-options="prompt:'开始时间'" style="width: 120px" /> --
+			          <input id="AddDateEnd" name="AddDateEnd" class="easyui-datebox" data-options="prompt:'结束时间'" style="width: 120px" />			                 				                 
+				      </td> 
+				      <td width="50px"></td>
+				      <td><a onclick="loadDate()" class="searchcls">查询</a>&nbsp;&nbsp;</td>
+				      <td><a onclick="addHtml()" class="addcls">新增</a></td>				                
+	            </tr>	
+	            <tr height="10px"></tr> 	                
+		</table>				     	
+</div>
+</body>
+</html>
